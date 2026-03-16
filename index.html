@@ -58,6 +58,8 @@
             align-items: center;
             z-index: 10;
             pointer-events: none;
+            /* Transition for the entire container to create black fade between steps */
+            transition: opacity 0.4s ease-in-out;
         }
 
         .image-wrapper {
@@ -85,10 +87,10 @@
             left: 0;
             width: 100%;
             height: 100%;
-            object-fit: contain; /* Ensures the whole image is visible */
+            object-fit: contain;
             cursor: pointer;
             opacity: 0;
-            transition: opacity 0.8s ease-in-out, transform 0.8s ease-in-out;
+            transition: opacity 0.6s ease-in-out, transform 0.6s ease-in-out;
             transform: scale(0.95);
         }
 
@@ -164,12 +166,10 @@
             transform: scale(1.15);
         }
 
-        /* Brand Colors */
         .spotify { color: #1DB954; }
         .youtube { color: #FF0000; }
         .soundcloud { color: #FF3300; }
 
-        /* Video Player Wrapper */
         .video-container {
             position: relative;
             width: 100%;
@@ -188,7 +188,6 @@
             height: 100%;
         }
 
-        /* Hide scrollbar but keep functionality */
         body::-webkit-scrollbar {
             display: none;
         }
@@ -210,7 +209,7 @@
     <div class="scroll-indicator" id="scrollIndicator"></div>
 
     <!-- Main Image Layers -->
-    <div class="fixed-image-layer">
+    <div id="imageLayer" class="fixed-image-layer">
         <div class="image-wrapper" onclick="openModal()">
             <img id="img1" src="" class="main-image active">
             <img id="img2" src="" class="main-image">
@@ -228,7 +227,6 @@
             <button onclick="closeModal()" class="absolute top-4 right-4 text-white/40 hover:text-white transition-colors text-3xl z-20">&times;</button>
             
             <div class="flex flex-col gap-4">
-                <!-- Title Row -->
                 <div class="flex flex-row pr-1">
                     <div class="flex-grow text-left" dir="ltr">
                         <h2 id="fullTitle" class="text-lg md:text-2xl font-black tracking-tighter text-white uppercase leading-tight">
@@ -239,14 +237,12 @@
                 </div>
 
                 <div class="flex flex-col md:flex-row gap-6 items-center">
-                    <!-- Video Player -->
                     <div class="w-full">
                         <div class="video-container border border-white/5 shadow-inner">
                             <iframe id="youtubePlayer" src="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                         </div>
                     </div>
 
-                    <!-- Social Icons Sidebar (Bottom on mobile, Right on Desktop) -->
                     <div class="flex flex-row md:flex-col gap-8 md:gap-8 px-1">
                         <a id="spotifyLink" href="#" target="_blank" class="social-icon spotify" title="Spotify">
                             <svg class="w-7 h-7" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.372 0 0 5.372 0 12s5.372 12 12 12 12-5.372 12-12S18.628 0 12 0zm5.503 17.306c-.214.351-.674.462-1.025.248-2.859-1.747-6.458-2.143-10.697-1.176-.401.092-.803-.16-.895-.561-.092-.401.16-.803.561-.895 4.636-1.059 8.625-.6 11.808 1.346.351.214.462.674.248 1.038zm1.472-3.26c-.269.438-.845.578-1.283.309-3.272-2.011-8.258-2.592-12.127-1.417-.492.149-1.011-.131-1.16-.622-.149-.491.131-1.011.622-1.16 4.417-1.341 9.914-.689 13.639 1.601.438.269.578.845.309 1.289zm.126-3.4c-3.924-2.33-10.387-2.545-14.151-1.403-.601.182-1.234-.165-1.416-.766-.182-.6.165-1.234.766-1.416 4.314-1.31 11.451-1.054 15.965 1.625.54.32.716 1.016.396 1.556-.32.54-1.016.716-1.556.396z"/></svg>
@@ -294,6 +290,7 @@
         const img2 = document.getElementById('img2');
         const glow1 = document.getElementById('glow1');
         const glow2 = document.getElementById('glow2');
+        const imageLayer = document.getElementById('imageLayer');
         const scrollArea = document.getElementById('scrollArea');
         const scrollIndicator = document.getElementById('scrollIndicator');
         const modal = document.getElementById('modal');
@@ -303,7 +300,6 @@
         const spotifyLink = document.getElementById('spotifyLink');
         const soundcloudLink = document.getElementById('soundcloudLink');
 
-        // Setup dots and sections
         tracks.forEach((_, i) => {
             const div = document.createElement('div');
             div.className = 'scroll-section';
@@ -321,17 +317,30 @@
             scrollIndicator.appendChild(dot);
         });
 
-        // Init
         img1.src = tracks[0].src;
         glow1.src = tracks[0].src;
         img2.src = tracks[0].src;
         glow2.src = tracks[0].src;
 
         window.addEventListener('scroll', () => {
+            const sectionHeight = window.innerHeight;
+            const scrollY = window.scrollY;
+            
+            // Calculate progress within current section (0 to 1)
+            const sectionProgress = (scrollY % sectionHeight) / sectionHeight;
+            
+            // Fade the entire layer to black in the middle of a transition
+            // When sectionProgress is near 0.5 (between sections), opacity goes to 0
+            if (sectionProgress > 0.4 && sectionProgress < 0.6) {
+                imageLayer.style.opacity = "0";
+            } else {
+                imageLayer.style.opacity = "1";
+            }
+
             const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
             const scrollPosition = window.scrollY;
             const scrollPercent = Math.max(0, Math.min(1, scrollPosition / scrollHeight));
-            const index = Math.min(tracks.length - 1, Math.floor(scrollPercent * tracks.length));
+            const index = Math.min(tracks.length - 1, Math.round(scrollPercent * (tracks.length - 1)));
             
             if (index !== currentIndex) {
                 currentIndex = index;
@@ -340,11 +349,9 @@
         });
 
         function updateUI(idx) {
-            // Dots
             document.querySelectorAll('.scroll-dot').forEach(dot => dot.classList.remove('active'));
             document.getElementById(`dot-${idx}`).classList.add('active');
 
-            // Images
             const nextImg = activeLayer === 1 ? img2 : img1;
             const currentImg = activeLayer === 1 ? img1 : img2;
             const nextGlow = activeLayer === 1 ? glow2 : glow1;
