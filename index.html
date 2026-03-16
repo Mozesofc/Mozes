@@ -113,7 +113,10 @@
         .logo-img {
             height: 60px;
             width: auto;
-            filter: drop-shadow(0 0 15px rgba(255,255,255,0.4));
+            /* Negative effect: Inverts colors based on background */
+            mix-blend-mode: difference;
+            filter: drop-shadow(0 0 15px rgba(255,255,255,0.2));
+            pointer-events: auto;
         }
 
         /* Modal enhancements */
