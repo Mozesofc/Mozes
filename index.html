@@ -8,7 +8,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700;900&display=swap" rel="stylesheet">
     <style>
         html {
-            /* גלילה ממגנטת */
+            /* גלילה ממגנטת רק לדף הבית */
             scroll-snap-type: y mandatory;
         }
 
@@ -64,7 +64,7 @@
             align-items: center;
             z-index: 10;
             pointer-events: none;
-            transition: opacity 0.4s ease; /* אפקט החשכה בין שירים */
+            transition: opacity 0.4s ease, visibility 0.4s ease;
         }
 
         .image-wrapper {
@@ -94,22 +94,20 @@
             object-fit: contain;
             cursor: pointer;
             opacity: 0;
-            /* אנימציה דו-כיוונית לכניסה ויציאה */
             transition: opacity 0.7s cubic-bezier(0.4, 0, 0.2, 1), 
                         transform 0.7s cubic-bezier(0.4, 0, 0.2, 1), 
                         filter 0.7s ease;
-            transform: scale(0.85); /* מצב התחלתי קטן */
+            transform: scale(0.85);
             filter: blur(10px);
         }
 
         .main-image.active {
             opacity: 1;
-            transform: scale(1); /* הגדלה במרכז */
+            transform: scale(1);
             z-index: 20;
             filter: blur(0px);
         }
 
-        /* מצב יציאה - כשהתמונה הופכת ללא פעילה היא נקטנת חזרה */
         .main-image:not(.active) {
             transform: scale(0.85);
             opacity: 0;
@@ -133,6 +131,7 @@
             display: flex;
             flex-direction: column;
             gap: 0.5rem;
+            transition: opacity 0.3s ease;
         }
 
         .scroll-dot {
@@ -151,7 +150,7 @@
             box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
         }
 
-        /* מודאל - אפקט זכוכית נוזלית */
+        /* מודאל */
         .modal-overlay {
             background-color: rgba(0, 0, 0, 0.4); 
             backdrop-filter: blur(8px);
@@ -183,6 +182,107 @@
             height: 100%;
         }
 
+        /* תפריט ניווט תחתון */
+        .bottom-nav {
+            position: fixed;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 150;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 0.5rem;
+            border-radius: 2rem;
+            display: flex;
+            gap: 0.5rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        .nav-btn {
+            padding: 0.6rem 1.5rem;
+            border-radius: 1.5rem;
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .nav-btn.active {
+            background: rgba(255, 255, 255, 0.15);
+            color: #fff;
+        }
+
+        .nav-btn:hover {
+            color: #fff;
+        }
+
+        /* עמוד RELEASES */
+        #releases-page {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            min-height: 100vh;
+            background: #000;
+            z-index: 140;
+            padding: 4rem 2rem 10rem 2rem;
+            display: none;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .releases-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .release-card {
+            position: relative;
+            aspect-ratio: 1/1;
+            overflow: hidden;
+            border-radius: 1rem;
+            cursor: pointer;
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .release-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s ease;
+        }
+
+        .release-card:hover {
+            transform: scale(1.03);
+            z-index: 10;
+        }
+
+        .release-card:hover img {
+            transform: scale(1.1);
+        }
+
+        .release-card .overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+            display: flex;
+            align-items: flex-end;
+            padding: 1.5rem;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .release-card:hover .overlay {
+            opacity: 1;
+        }
+
         /* הסתרת סרגל גלילה */
         body::-webkit-scrollbar { display: none; }
         body { -ms-overflow-style: none; scrollbar-width: none; }
@@ -204,7 +304,26 @@
         </div>
     </div>
 
+    <!-- דף הבית (אזורי גלילה) -->
     <div class="scroll-trigger-area" id="scrollArea"></div>
+
+    <!-- דף RELEASES -->
+    <div id="releases-page">
+        <div class="text-center mb-12">
+            <h1 class="text-5xl font-black tracking-tighter uppercase mb-2 text-white">Releases</h1>
+            <div class="w-12 h-1 bg-white mx-auto"></div>
+        </div>
+        <div class="releases-grid" id="releasesGrid">
+            <!-- כרטיסי שירים ייווצרו ב-JS -->
+        </div>
+    </div>
+
+    <!-- תפריט ניווט מעודכן: Releases במרכז -->
+    <nav class="bottom-nav" dir="ltr">
+        <button onclick="navigate('home')" id="nav-home" class="nav-btn active">MOZES</button>
+        <button onclick="navigate('releases')" id="nav-releases" class="nav-btn">Releases</button>
+        <a href="mailto:mozes@mozesmusic.com" class="nav-btn">Contact</a>
+    </nav>
 
     <!-- מודאל -->
     <div id="modal" class="hidden fixed inset-0 z-[200] flex items-center justify-center p-4">
@@ -276,8 +395,10 @@
         const modal = document.getElementById('modal');
         const fullTitle = document.getElementById('fullTitle');
         const ytPlayer = document.getElementById('youtubePlayer');
+        const releasesPage = document.getElementById('releases-page');
+        const releasesGrid = document.getElementById('releasesGrid');
 
-        // בניית אזורי הגלילה והנקודות
+        // בניית דף הבית
         tracks.forEach((_, i) => {
             const div = document.createElement('div');
             div.className = 'scroll-section';
@@ -292,14 +413,32 @@
             scrollIndicator.appendChild(dot);
         });
 
+        // בניית דף Releases
+        tracks.forEach((track, i) => {
+            const card = document.createElement('div');
+            card.className = 'release-card';
+            card.onclick = () => {
+                currentIndex = i;
+                openModal();
+            };
+            card.innerHTML = `
+                <img src="${track.src}" alt="${track.title}">
+                <div class="overlay">
+                    <span class="text-white font-bold text-sm tracking-tighter uppercase">${track.title}</span>
+                </div>
+            `;
+            releasesGrid.appendChild(card);
+        });
+
         img1.src = tracks[0].src; glow1.src = tracks[0].src;
         img2.src = tracks[0].src; glow2.src = tracks[0].src;
 
         window.addEventListener('scroll', () => {
+            if(releasesPage.style.display === 'block') return;
+
             const vh = window.innerHeight;
             const scrollY = window.scrollY;
             
-            // גשר שחור - החשכה קלה במעבר בין תמונות כדי למנוע ריצוד
             const sectionProgress = (scrollY % vh) / vh;
             if (sectionProgress > 0.4 && sectionProgress < 0.6) {
                 imageLayer.style.opacity = "0";
@@ -307,7 +446,6 @@
                 imageLayer.style.opacity = "1";
             }
 
-            // זיהוי האינדקס הנוכחי
             const index = Math.min(tracks.length - 1, Math.round(scrollY / vh));
             if (index !== currentIndex) {
                 currentIndex = index;
@@ -316,11 +454,10 @@
         });
 
         function updateUI(idx) {
-            // עדכון נקודות ניווט
             document.querySelectorAll('.scroll-dot').forEach(dot => dot.classList.remove('active'));
-            document.getElementById(`dot-${idx}`).classList.add('active');
+            const activeDot = document.getElementById(`dot-${idx}`);
+            if(activeDot) activeDot.classList.add('active');
 
-            // החלפת שכבות לתנועה חלקה
             const nextImg = activeLayer === 1 ? img2 : img1;
             const currentImg = activeLayer === 1 ? img1 : img2;
             const nextGlow = activeLayer === 1 ? glow2 : glow1;
@@ -329,13 +466,39 @@
             nextImg.src = tracks[idx].src;
             nextGlow.src = tracks[idx].src;
             
-            // הפעלת האנימציות
             nextImg.classList.add('active');
             nextGlow.classList.add('active');
             currentImg.classList.remove('active');
             currentGlow.classList.remove('active');
             
             activeLayer = activeLayer === 1 ? 2 : 1;
+        }
+
+        function navigate(page) {
+            document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+            document.getElementById(`nav-${page}`).classList.add('active');
+
+            if (page === 'home') {
+                releasesPage.style.opacity = "0";
+                setTimeout(() => {
+                    releasesPage.style.display = "none";
+                    imageLayer.style.visibility = "visible";
+                    imageLayer.style.opacity = "1";
+                    scrollIndicator.style.opacity = "1";
+                    document.documentElement.style.scrollSnapType = "y mandatory";
+                    window.scrollTo(0, currentIndex * window.innerHeight);
+                }, 400);
+            } else if (page === 'releases') {
+                imageLayer.style.opacity = "0";
+                scrollIndicator.style.opacity = "0";
+                setTimeout(() => {
+                    imageLayer.style.visibility = "hidden";
+                    releasesPage.style.display = "block";
+                    setTimeout(() => releasesPage.style.opacity = "1", 50);
+                    document.documentElement.style.scrollSnapType = "none";
+                    window.scrollTo(0, 0);
+                }, 400);
+            }
         }
 
         function openModal() {
