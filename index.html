@@ -99,24 +99,32 @@
             height: 100vh;
         }
 
-        /* Header / Logo Styling */
-        .site-header {
+        /* Right Side Scroll Indicator */
+        .scroll-indicator {
             position: fixed;
-            top: 3rem;
-            width: 100%;
+            right: 2rem;
+            top: 50%;
+            transform: translateY(-50%);
             z-index: 100;
             display: flex;
-            justify-content: center;
+            flex-col: column;
+            flex-direction: column;
+            gap: 0.75rem;
             pointer-events: none;
         }
 
-        .logo-img {
-            height: 60px;
-            width: auto;
-            filter: invert(1) drop-shadow(0 0 10px rgba(255,255,255,0.1));
-            mix-blend-mode: difference;
-            pointer-events: auto;
-            position: relative;
+        .scroll-dot {
+            width: 6px;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+
+        .scroll-dot.active {
+            background: #fff;
+            transform: scale(1.5);
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
         }
 
         /* Modal enhancements */
@@ -186,16 +194,14 @@
 </head>
 <body>
 
-    <!-- Header -->
-    <header class="site-header">
-        <img src="logo.png" alt="MOZES Logo" class="logo-img">
-    </header>
-
     <!-- Background Glow Layers -->
     <div class="glow-container" id="glowContainer">
         <img id="glow1" src="" class="ambient-glow active">
         <img id="glow2" src="" class="ambient-glow">
     </div>
+
+    <!-- Scroll Indicator (Dots) -->
+    <div class="scroll-indicator" id="scrollIndicator"></div>
 
     <!-- Main Image Layers -->
     <div class="fixed-image-layer">
@@ -284,6 +290,7 @@
         const glow1 = document.getElementById('glow1');
         const glow2 = document.getElementById('glow2');
         const scrollArea = document.getElementById('scrollArea');
+        const scrollIndicator = document.getElementById('scrollIndicator');
         const modal = document.getElementById('modal');
         const fullTitle = document.getElementById('fullTitle');
         const ytPlayer = document.getElementById('youtubePlayer');
@@ -291,11 +298,18 @@
         const spotifyLink = document.getElementById('spotifyLink');
         const soundcloudLink = document.getElementById('soundcloudLink');
 
-        // Create scroll sections
-        tracks.forEach(() => {
+        // Create scroll sections and dots
+        tracks.forEach((_, i) => {
+            // Scroll Trigger
             const div = document.createElement('div');
             div.className = 'scroll-section';
             scrollArea.appendChild(div);
+
+            // Dot Indicator
+            const dot = document.createElement('div');
+            dot.className = `scroll-dot ${i === 0 ? 'active' : ''}`;
+            dot.id = `dot-${i}`;
+            scrollIndicator.appendChild(dot);
         });
 
         // Initial state
@@ -311,10 +325,16 @@
             const index = Math.min(tracks.length - 1, Math.floor(scrollPercent * tracks.length));
             
             if (index !== currentIndex) {
+                updateDots(index);
                 currentIndex = index;
                 updateImages(currentIndex);
             }
         });
+
+        function updateDots(idx) {
+            document.querySelectorAll('.scroll-dot').forEach(dot => dot.classList.remove('active'));
+            document.getElementById(`dot-${idx}`).classList.add('active');
+        }
 
         function updateImages(idx) {
             const nextImg = activeLayer === 1 ? img2 : img1;
