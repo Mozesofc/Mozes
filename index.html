@@ -46,7 +46,7 @@
             opacity: 0.6;
         }
 
-        /* Fixed background container for the main image - Full Screen Height */
+        /* Fixed background container for the main image */
         .fixed-image-layer {
             position: fixed;
             top: 0;
@@ -62,9 +62,12 @@
 
         .image-wrapper {
             position: relative;
-            width: 100%; 
             height: 100vh; /* Full viewport height */
+            aspect-ratio: 1 / 1; /* Force 1:1 ratio */
             pointer-events: auto;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
         .main-image {
@@ -73,11 +76,11 @@
             left: 0;
             width: 100%;
             height: 100%;
-            object-fit: cover; /* Ensures image fills the container */
+            object-fit: cover;
             cursor: pointer;
             opacity: 0;
             transition: opacity 1s ease-in-out, transform 1s ease-in-out;
-            transform: scale(1.05); /* Slight zoom for transition effect */
+            transform: scale(0.98);
         }
 
         .main-image.active {
