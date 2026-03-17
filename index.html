@@ -208,9 +208,9 @@
             color: #fff;
         }
 
-        /* Modal */
+        /* MODAL LIQUID GLASS STYLE */
         #modal {
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
             opacity: 0;
             pointer-events: none;
             z-index: 3000;
@@ -221,10 +221,54 @@
             pointer-events: auto;
         }
 
-        .modal-content {
-            background: rgba(10, 10, 10, 0.85);
-            backdrop-filter: blur(40px);
-            border: 1px solid rgba(255, 255, 255, 0.05);
+        .liquid-glass {
+            background: rgba(255, 255, 255, 0.02);
+            backdrop-filter: blur(60px) saturate(1.8);
+            -webkit-backdrop-filter: blur(60px) saturate(1.8);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.8);
+            border-radius: 2rem;
+        }
+
+        .track-btn {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            padding: 0.6rem 1rem;
+            border-radius: 2rem;
+            font-size: 0.6rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.4rem;
+            color: rgba(255,255,255,0.4);
+        }
+
+        /* Brand Specific Hover Effects */
+        .btn-spotify:hover {
+            background: rgba(30, 215, 96, 0.15);
+            border-color: rgba(30, 215, 96, 0.5);
+            color: #1ED760;
+            box-shadow: 0 0 15px rgba(30, 215, 96, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .btn-soundcloud:hover {
+            background: rgba(255, 51, 0, 0.15);
+            border-color: rgba(255, 51, 0, 0.5);
+            color: #FF3300;
+            box-shadow: 0 0 15px rgba(255, 51, 0, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .btn-youtube:hover {
+            background: rgba(255, 0, 0, 0.15);
+            border-color: rgba(255, 0, 0, 0.5);
+            color: #FF0000;
+            box-shadow: 0 0 15px rgba(255, 0, 0, 0.2);
+            transform: translateY(-2px);
         }
 
         .scroll-dot {
@@ -271,7 +315,7 @@
     </div>
 
     <div id="imageLayer" class="fixed-image-layer">
-        <div class="image-wrapper" onclick="openModal()">
+        <div class="image-wrapper" onclick="openModal(currentIndex)">
             <img id="img1" src="" class="main-image active">
             <img id="img2" src="" class="main-image">
         </div>
@@ -281,17 +325,17 @@
     <div id="home-content">
         <div id="scrollArea"></div>
 
-        <!-- Social Section (Always at the end of the home flow) -->
+        <!-- Social Section -->
         <div id="social-section" class="social-section">
             <div class="mb-12">
                 <h2 class="text-4xl md:text-6xl font-thin uppercase tracking-[0.4em] mb-4">Connect</h2>
                 <div class="h-[1px] w-12 bg-white/20 mx-auto"></div>
             </div>
             <div class="flex flex-col gap-4">
-                <a href="https://gate.sc/?url=https%3A%2F%2Fopen.spotify.com%2Fartist%2F4uRpFQ2D51xyz2O4V9pqon%3Fsi%3DYChorytRR16_zt5os9q1OA&token=c861bb-1-1773742119572" target="_blank" class="social-link">Spotify</a>
-                <a href="https://gate.sc/?url=https%3A%2F%2Fwww.youtube.com%2F%40Mozesofc&token=3b43e5-1-1773742119573" target="_blank" class="social-link">YouTube</a>
+                <a href="https://open.spotify.com/artist/4uRpFQ2D51xyz2O4V9pqon" target="_blank" class="social-link">Spotify</a>
+                <a href="https://www.youtube.com/@Mozesofc" target="_blank" class="social-link">YouTube</a>
                 <a href="https://soundcloud.com/mozesofc" target="_blank" class="social-link">SoundCloud</a>
-                <a href="https://gate.sc/?url=https%3A%2F%2Fwww.instagram.com%2FMozesofc&token=63a593-1-1773742119572" target="_blank" class="social-link">Instagram</a>
+                <a href="https://www.instagram.com/Mozesofc" target="_blank" class="social-link">Instagram</a>
                 <a href="https://linktr.ee/mozesofc" target="_blank" class="social-link">Linktree</a>
                 <div class="mt-8">
                     <p class="text-[9px] uppercase tracking-[0.5em] text-white/20 mb-2">For contact and promos</p>
@@ -301,7 +345,7 @@
         </div>
     </div>
 
-    <!-- RELEASES Page (Separate Modal-like Page) -->
+    <!-- RELEASES Page -->
     <div id="releases-page">
         <div class="max-w-6xl mx-auto px-4 pb-32">
             <header class="mb-16 text-center">
@@ -316,43 +360,64 @@
     <nav class="bottom-nav" dir="ltr">
         <button onclick="navigate('home')" id="nav-home" class="nav-btn active">Mozes</button>
         <button onclick="navigate('releases')" id="nav-releases" class="nav-btn">Releases</button>
-        <button onclick="navigate('social')" id="nav-social" class="nav-btn">Social</button>
+        <button onclick="navigate('social')" id="nav-social" class="nav-btn">Socials</button>
     </nav>
 
-    <!-- Modal -->
+    <!-- Modal Liquid Glass -->
     <div id="modal" class="fixed inset-0 flex items-center justify-center p-6">
-        <div class="absolute inset-0 bg-black/80 backdrop-blur-xl" onclick="closeModal()"></div>
-        <div class="relative w-full max-w-2xl modal-content rounded-[1.5rem] p-8 md:p-12 flex flex-col gap-8">
-            <button onclick="closeModal()" class="absolute top-6 right-8 text-white/20 hover:text-white transition-all text-xl">&times;</button>
-            <h3 id="fullTitle" class="text-lg md:text-xl font-light uppercase tracking-[0.05em] text-white/90 text-left" dir="ltr">TRACK TITLE</h3>
-            <div class="aspect-video w-full rounded-xl overflow-hidden bg-black">
+        <div class="absolute inset-0 bg-black/50 backdrop-blur-sm" onclick="closeModal()"></div>
+        <div class="relative w-full max-w-2xl liquid-glass p-8 md:p-12 flex flex-col gap-8 transition-transform duration-500 scale-95" id="modalFrame">
+            <button onclick="closeModal()" class="absolute top-6 right-8 text-white/20 hover:text-white transition-all text-2xl font-light">&times;</button>
+            
+            <div class="flex flex-col gap-2">
+                <h3 id="fullTitle" class="text-base md:text-lg font-light uppercase tracking-[0.1em] text-white/80 text-left" dir="ltr">TRACK TITLE</h3>
+                <div class="h-[1px] w-6 bg-white/10"></div>
+            </div>
+
+            <div class="aspect-video w-full rounded-xl overflow-hidden bg-black/50 border border-white/5 shadow-2xl">
                 <iframe id="youtubePlayer" class="w-full h-full" src="" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+            </div>
+
+            <!-- External Links - Brand Glow -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-3" id="modalLinks">
+                <a id="linkSpotify" href="#" target="_blank" class="track-btn btn-spotify">
+                    <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.372 0 0 5.372 0 12s5.372 12 12 12 12-5.372 12-12S18.628 0 12 0zm5.508 17.307c-.223.367-.703.486-1.07.262-2.928-1.788-6.613-2.193-10.957-1.198-.42.096-.843-.17-.939-.59-.096-.42.17-.843.59-.939 4.756-1.087 8.826-.624 12.113 1.383.368.224.487.704.263 1.072zm1.47-3.253c-.282.458-.883.6-1.341.32-3.352-2.06-8.463-2.657-12.43-1.451-.515.157-1.066-.135-1.223-.65-.157-.515.135-1.066.65-1.223 4.54-1.378 10.177-.708 14.024 1.66.458.282.6.883.32 1.341zm.127-3.393c-4.022-2.387-10.647-2.607-14.493-1.44-.617.187-1.266-.168-1.453-.785-.187-.617.168-1.266.785-1.453 4.417-1.34 11.722-1.082 16.36 1.672.554.328.74 1.042.41 1.597-.33.554-1.045.74-1.597.41z"/></svg>
+                    Spotify
+                </a>
+                <a id="linkSoundcloud" href="#" target="_blank" class="track-btn btn-soundcloud">
+                    <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M11.56 8.35c.1 0 .21.01.32.02.32-2.8 2.68-4.97 5.56-4.97 3.09 0 5.59 2.5 5.59 5.59 0 .1 0 .2-.01.31.54.43.91 1.08.97 1.81.01.12.01.24.01.36 0 1.25-1.02 2.27-2.27 2.27H11.73c-.09 0-.17-.07-.17-.17V8.52c0-.09.08-.17.17-.17-.05 0-.11 0-.17 0zm-1.4 5.25c0 .1-.08.17-.17.17H9.82c-.09 0-.17-.07-.17-.17v-4.5c0-.09.08-.17.17-.17h.17c.09 0 .17.08.17.17v4.5zm-1.87 0c0 .1-.07.17-.17.17H7.95c-.1 0-.17-.07-.17-.17V9.75c0-.09.07-.17.17-.17h.17c.1 0 .17.08.17.17v3.85zm-1.86 0c0 .1-.08.17-.17.17H6.09c-.09 0-.17-.07-.17-.17v-3.11c0-.1.08-.17.17-.17h.17c.09 0 .17.07.17.17v3.11zm-1.87 0c0 .1-.07.17-.17.17H4.22c-.09 0-.17-.07-.17-.17v-2.12c0-.09.08-.17.17-.17h.17c.1 0 .17.08.17.17v2.12zm-1.87 0c0 .1-.07.17-.17.17H2.35c-.1 0-.17-.07-.17-.17V12.1c0-.09.07-.17.17-.17h.17c.1 0 .17.08.17.17v1.5zm-1.86 0c0 .1-.08.17-.17.17H.48c-.09 0-.17-.07-.17-.17v-.65c0-.1.08-.17.17-.17h.17c.09 0 .17.07.17.17v.65z"/></svg>
+                    SoundCloud
+                </a>
+                <a id="linkYoutube" href="#" target="_blank" class="track-btn btn-youtube">
+                    <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+                    YouTube
+                </a>
             </div>
         </div>
     </div>
 
     <script>
         const tracks = [
-            { src: "image1.jpg", title: "Mozes - BALAGAN", youtubeId: "yng3GffPK_U" },
-            { src: "image2.jpg", title: "Cosmic Gate, Christian Burns - Brave (Mozes Remix)", youtubeId: "kO8ylPtWT14" },
-            { src: "image3.jpg", title: "James Hype - Dont Wake Me Up (Mozes Remix)", youtubeId: "57W4t-hN3Vo" },
-            { src: "image4.jpg", title: "Tayri - Black Sheep (Mozes Remix)", youtubeId: "DKCr5GG4PXA" },
-            { src: "image5.jpg", title: "Mozes - What Took You So Long (Mozes Remix)", youtubeId: "gcReNaVNd4E" },
-            { src: "image6.jpg", title: "Mozes & Mushy - Found Myself", youtubeId: "It-mN5HDWvA" },
-            { src: "image7.jpg", title: "Mozes - Trust Me", youtubeId: "34tKhmQV2tc" },
-            { src: "image8.jpg", title: "Mozes - Nights In White Satin", youtubeId: "t1rYx5CewP8" },
-            { src: "image9.jpg", title: "Shaggy ft. Lavbbe - MOVE (Mozes Remix)", youtubeId: "yhUHCS-IRmQ" },
-            { src: "image10.jpg", title: "Mozes - Home", youtubeId: "KwZS_LO0ijc" },
-            { src: "image11.jpg", title: "Mozes - Two Souls", youtubeId: "_fe05MJLhy8" },
-            { src: "image12.jpg", title: "Mozes - They Say", youtubeId: "AIVBYJC1Gtg" },
-            { src: "image13.jpg", title: "Mozes ft. Sapir J. Fox - The Otherside", youtubeId: "y_LntJI2uqo" },
-            { src: "image14.jpg", title: "Mozes - Save Our Future", youtubeId: "AhefaUTmnwo" },
-            { src: "image15.jpg", title: "Mozes - Atlantis", youtubeId: "Tl4ZQ4KhtD4" },
-            { src: "image16.jpg", title: "Mozes - Nowhere To Hide", youtubeId: "0_tl1Xrsnus" },
-            { src: "image17.jpg", title: "Mozes ft. Sapir J. Fox - Reborn Again", youtubeId: "EJeLvlcBXas" },
-            { src: "image18.jpg", title: "Mozes - Trust Me (DnB Remix)", youtubeId: "Lk1KZFLwV3Q" },
-            { src: "image19.jpg", title: "Mozes & Jazz - Wealth, Power & Fame", youtubeId: "ecL3Out6ja8" },
-            { src: "image20.jpg", title: "Mozes - Late at Night", youtubeId: "4U_tvQ4WSRo" }
+            { src: "image1.jpg", title: "Mozes - BALAGAN", youtubeId: "yng3GffPK_U", spotify: "https://open.spotify.com/track/4jH1B5l5o0R7vX8m9P6Dq5", sc: "https://soundcloud.com/mozesofc/balagan" },
+            { src: "image2.jpg", title: "Cosmic Gate, Christian Burns - Brave (Mozes Remix)", youtubeId: "kO8ylPtWT14", spotify: "https://open.spotify.com/track/5uRpFQ2D51xyz2O4V9pqon", sc: "https://soundcloud.com/mozesofc/brave-remix" },
+            { src: "image3.jpg", title: "James Hype - Dont Wake Me Up (Mozes Remix)", youtubeId: "57W4t-hN3Vo", spotify: "https://open.spotify.com/album/4jH1B5l5o0R7vX8m9P6Dq5", sc: "https://soundcloud.com/mozesofc/dont-wake-me-up" },
+            { src: "image4.jpg", title: "Tayri - Black Sheep (Mozes Remix)", youtubeId: "DKCr5GG4PXA", spotify: "https://open.spotify.com/track/34tKhmQV2tc", sc: "https://soundcloud.com/mozesofc/black-sheep" },
+            { src: "image5.jpg", title: "Mozes - What Took You So Long (Mozes Remix)", youtubeId: "gcReNaVNd4E", spotify: "https://open.spotify.com/track/4uRpFQ2D51xyz2O4V9pqon", sc: "https://soundcloud.com/mozesofc/what-took-you-so-long" },
+            { src: "image6.jpg", title: "Mozes & Mushy - Found Myself", youtubeId: "It-mN5HDWvA", spotify: "https://open.spotify.com/track/34tKhmQV2tc", sc: "https://soundcloud.com/mozesofc/found-myself" },
+            { src: "image7.jpg", title: "Mozes - Trust Me", youtubeId: "34tKhmQV2tc", spotify: "https://open.spotify.com/track/34tKhmQV2tc", sc: "https://soundcloud.com/mozesofc/trust-me" },
+            { src: "image8.jpg", title: "Mozes - Nights In White Satin", youtubeId: "t1rYx5CewP8", spotify: "https://open.spotify.com/track/34tKhmQV2tc", sc: "https://soundcloud.com/mozesofc/nights-in-white-satin" },
+            { src: "image9.jpg", title: "Shaggy ft. Lavbbe - MOVE (Mozes Remix)", youtubeId: "yhUHCS-IRmQ", spotify: "https://open.spotify.com/track/34tKhmQV2tc", sc: "https://soundcloud.com/mozesofc/move-remix" },
+            { src: "image10.jpg", title: "Mozes - Home", youtubeId: "KwZS_LO0ijc", spotify: "https://open.spotify.com/track/34tKhmQV2tc", sc: "https://soundcloud.com/mozesofc/home" },
+            { src: "image11.jpg", title: "Mozes - Two Souls", youtubeId: "_fe05MJLhy8", spotify: "https://open.spotify.com/track/34tKhmQV2tc", sc: "https://soundcloud.com/mozesofc/two-souls" },
+            { src: "image12.jpg", title: "Mozes - They Say", youtubeId: "AIVBYJC1Gtg", spotify: "https://open.spotify.com/track/34tKhmQV2tc", sc: "https://soundcloud.com/mozesofc/they-say" },
+            { src: "image13.jpg", title: "Mozes ft. Sapir J. Fox - The Otherside", youtubeId: "y_LntJI2uqo", spotify: "https://open.spotify.com/track/34tKhmQV2tc", sc: "https://soundcloud.com/mozesofc/otherside" },
+            { src: "image14.jpg", title: "Mozes - Save Our Future", youtubeId: "AhefaUTmnwo", spotify: "https://open.spotify.com/track/34tKhmQV2tc", sc: "https://soundcloud.com/mozesofc/save-our-future" },
+            { src: "image15.jpg", title: "Mozes - Atlantis", youtubeId: "Tl4ZQ4KhtD4", spotify: "https://open.spotify.com/track/34tKhmQV2tc", sc: "https://soundcloud.com/mozesofc/atlantis" },
+            { src: "image16.jpg", title: "Mozes - Nowhere To Hide", youtubeId: "0_tl1Xrsnus", spotify: "https://open.spotify.com/track/34tKhmQV2tc", sc: "https://soundcloud.com/mozesofc/nowhere-to-hide" },
+            { src: "image17.jpg", title: "Mozes ft. Sapir J. Fox - Reborn Again", youtubeId: "EJeLvlcBXas", spotify: "https://open.spotify.com/track/34tKhmQV2tc", sc: "https://soundcloud.com/mozesofc/reborn-again" },
+            { src: "image18.jpg", title: "Mozes - Trust Me (DnB Remix)", youtubeId: "Lk1KZFLwV3Q", spotify: "https://open.spotify.com/track/34tKhmQV2tc", sc: "https://soundcloud.com/mozesofc/trust-me-dnb" },
+            { src: "image19.jpg", title: "Mozes & Jazz - Wealth, Power & Fame", youtubeId: "ecL3Out6ja8", spotify: "https://open.spotify.com/track/34tKhmQV2tc", sc: "https://soundcloud.com/mozesofc/wealth-power-fame" },
+            { src: "image20.jpg", title: "Mozes - Late at Night", youtubeId: "4U_tvQ4WSRo", spotify: "https://open.spotify.com/track/34tKhmQV2tc", sc: "https://soundcloud.com/mozesofc/late-at-night" }
         ];
 
         let currentIndex = 0;
@@ -369,16 +434,15 @@
         const scrollArea = document.getElementById('scrollArea');
         const sideNav = document.getElementById('side-nav');
 
-        // Setup Home Sections + 1 (Social)
+        // Setup sections
         const totalHomeSections = tracks.length + 1;
-
         for(let i=0; i < tracks.length; i++) {
             const sec = document.createElement('div');
             sec.className = 'scroll-section';
             scrollArea.appendChild(sec);
         }
 
-        // Setup indicators
+        // Setup dots
         for(let i=0; i < totalHomeSections; i++) {
             const dot = document.createElement('div');
             dot.className = `scroll-dot ${i === 0 ? 'active' : ''}`;
@@ -390,14 +454,11 @@
             scrollIndicator.appendChild(dot);
         }
 
+        // Fill Releases Grid
         tracks.forEach((track, i) => {
             const card = document.createElement('div');
             card.className = 'release-card';
-            card.onclick = () => { 
-                // When clicking in Releases page, we temporarily update currentIndex to play right track
-                currentIndex = i; 
-                openModal(); 
-            };
+            card.onclick = () => { openModal(i); };
             card.innerHTML = `<div class="aspect-square bg-zinc-900"><img src="${track.src}" class="w-full h-full object-cover"></div>
                              <div class="p-4 text-[10px] tracking-[0.2em] uppercase text-white/90 truncate text-left" dir="ltr">${track.title}</div>`;
             releasesGrid.appendChild(card);
@@ -408,11 +469,9 @@
 
         window.addEventListener('scroll', () => {
             if (isReleasesOpen) return;
-
             const scrollPos = window.scrollY;
             const idx = Math.min(totalHomeSections - 1, Math.floor((scrollPos + window.innerHeight/2) / window.innerHeight));
             
-            // If we reach the social section at the bottom of Home
             if (idx === tracks.length) {
                 document.getElementById('imageLayer').style.opacity = "0";
             } else if (idx < tracks.length) {
@@ -441,24 +500,19 @@
             document.getElementById(`nav-${page}`).classList.add('active');
 
             if (page === 'home' || page === 'social') {
-                // Return to Home view
                 isReleasesOpen = false;
                 releasesPage.style.opacity = "0";
                 setTimeout(() => { releasesPage.style.display = "none"; }, 500);
-                
                 document.documentElement.style.setProperty('--snap-type', 'y mandatory');
                 sideNav.style.opacity = "1";
                 sideNav.style.pointerEvents = "auto";
-                
                 const target = page === 'home' ? 0 : tracks.length * window.innerHeight;
                 window.scrollTo({ top: target, behavior: 'smooth' });
             } 
             else if (page === 'releases') {
-                // Open Releases as a separate page
                 isReleasesOpen = true;
                 releasesPage.style.display = "block";
                 setTimeout(() => { releasesPage.style.opacity = "1"; }, 10);
-                
                 document.documentElement.style.setProperty('--snap-type', 'none');
                 document.getElementById('imageLayer').style.opacity = "0";
                 sideNav.style.opacity = "0";
@@ -471,18 +525,33 @@
             window.scrollTo({ top: pos === 'top' ? 0 : (tracks.length) * window.innerHeight, behavior: 'smooth' });
         }
 
-        function openModal() {
-            const track = tracks[currentIndex];
+        function openModal(index) {
+            const track = tracks[index];
             document.getElementById('fullTitle').innerText = track.title;
             document.getElementById('youtubePlayer').src = `https://www.youtube.com/embed/${track.youtubeId}?autoplay=1`;
-            document.getElementById('modal').classList.add('active');
+            
+            // Update links
+            document.getElementById('linkSpotify').href = track.spotify || "#";
+            document.getElementById('linkSoundcloud').href = track.sc || "#";
+            document.getElementById('linkYoutube').href = `https://youtube.com/watch?v=${track.youtubeId}`;
+            
+            const modal = document.getElementById('modal');
+            const frame = document.getElementById('modalFrame');
+            modal.classList.add('active');
+            setTimeout(() => { frame.classList.remove('scale-95'); frame.classList.add('scale-100'); }, 10);
             document.body.style.overflow = 'hidden';
         }
 
         function closeModal() {
-            document.getElementById('modal').classList.remove('active');
-            document.getElementById('youtubePlayer').src = "";
-            document.body.style.overflow = 'auto';
+            const modal = document.getElementById('modal');
+            const frame = document.getElementById('modalFrame');
+            frame.classList.remove('scale-100');
+            frame.classList.add('scale-95');
+            setTimeout(() => {
+                modal.classList.remove('active');
+                document.getElementById('youtubePlayer').src = "";
+                document.body.style.overflow = 'auto';
+            }, 300);
         }
     </script>
 </body>
