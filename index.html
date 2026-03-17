@@ -3,7 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- WhatsApp & Social Media Preview Tags -->
     <title>MOZES</title>
+    <meta property="og:title" content="MOZES">
+    <meta property="og:description" content="Official Artist Website - New Releases & Socials">
+    <!-- החלף את הלינק למטה בכתובת האמיתית של התמונה לאחר העלאת האתר -->
+    <meta property="og:image" content="https://github.com/Mozesofc/Mozes/blob/main/image1.jpg">
+    <meta property="og:url" content="https://mozesmusic.com">
+    <meta property="og:type" content="website">
+
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Lato:wght@100;300;400;700;900&display=swap" rel="stylesheet">
     <style>
@@ -514,17 +523,26 @@
                 isReleasesOpen = false;
                 releasesPage.style.opacity = "0";
                 setTimeout(() => { releasesPage.style.display = "none"; }, 500);
-                document.documentElement.style.setProperty('--snap-type', 'y mandatory');
+                
+                // תיקון לאייפון: מבטל זמנית את ה-Snap כדי להגיע למיקום מדויק
+                document.documentElement.style.scrollSnapType = 'none';
+                
                 sideNav.style.opacity = "1";
                 sideNav.style.pointerEvents = "auto";
-                const target = page === 'home' ? 0 : tracks.length * window.innerHeight;
+                
+                const target = page === 'home' ? 0 : document.body.scrollHeight;
                 window.scrollTo({ top: target, behavior: 'smooth' });
+
+                // מחזיר את ה-Snap לאחר סיום הגלילה
+                setTimeout(() => {
+                    document.documentElement.style.scrollSnapType = 'y mandatory';
+                }, 1000);
             } 
             else if (page === 'releases') {
                 isReleasesOpen = true;
                 releasesPage.style.display = "block";
                 setTimeout(() => { releasesPage.style.opacity = "1"; }, 10);
-                document.documentElement.style.setProperty('--snap-type', 'none');
+                document.documentElement.style.scrollSnapType = 'none';
                 document.getElementById('imageLayer').style.opacity = "0";
                 sideNav.style.opacity = "0";
                 sideNav.style.pointerEvents = "none";
@@ -533,7 +551,8 @@
 
         function jumpTo(pos) {
             if (isReleasesOpen) return;
-            window.scrollTo({ top: pos === 'top' ? 0 : (tracks.length) * window.innerHeight, behavior: 'smooth' });
+            const target = pos === 'top' ? 0 : document.body.scrollHeight;
+            window.scrollTo({ top: target, behavior: 'smooth' });
         }
 
         function openModal(index) {
