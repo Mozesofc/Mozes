@@ -37,20 +37,31 @@
             align-items: center;
             z-index: 1;
             pointer-events: none;
+            overflow: hidden;
         }
 
         .ambient-glow {
             position: absolute;
-            width: 120vmin;
-            height: 120vmin;
+            width: 140vmin; /* מעט גדול יותר כדי למנוע קצוות חתוכים בזמן תנועה */
+            height: 140vmin;
             object-fit: cover;
             filter: blur(100px) saturate(3) contrast(1.2); 
             opacity: 0;
             transition: opacity 1.5s ease-in-out;
+            will-change: transform, opacity;
+        }
+
+        /* Fluid Movement & Breathing Animation */
+        @keyframes fluidMove {
+            0% { transform: translate(0, 0) scale(1) rotate(0deg); }
+            33% { transform: translate(5%, -5%) scale(1.05) rotate(2deg); }
+            66% { transform: translate(-3%, 7%) scale(0.95) rotate(-1deg); }
+            100% { transform: translate(0, 0) scale(1) rotate(0deg); }
         }
 
         .ambient-glow.active {
             opacity: 0.45;
+            animation: fluidMove 25s ease-in-out infinite;
         }
 
         /* Central Image Layer */
