@@ -4,69 +4,317 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
-    <!-- Social Media Meta Tags -->
-    <title>Mozes Official Website</title>
+    <!-- WhatsApp & Social Media Preview Tags -->
+    <title>Mozes Home</title>
     <meta property="og:title" content="Mozes Home">
-    <meta property="og:description" content=" The Official Website ">
-    
-    <!-- DIRECT RAW IMAGE URL (Fixed for Facebook/WhatsApp) -->
+    <meta property="og:description" content="The Official Website">
+    <!-- Fixed GitHub Direct Image URL for Meta Crawlers -->
     <meta property="og:image" content="https://raw.githubusercontent.com/Mozesofc/Mozes/main/image1.jpg">
-    <meta property="og:image:secure_url" content="https://raw.githubusercontent.com/Mozesofc/Mozes/main/image1.jpg">
     <meta property="og:image:type" content="image/jpeg">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
-    <meta property="og:image:alt" content="Mozes Official Website Banner">
-    
     <meta property="og:url" content="https://mozesmusic.com">
     <meta property="og:type" content="website">
 
-    <!-- Styles and Fonts -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Lato:wght@100;300;400;700;900&display=swap" rel="stylesheet">
     <style>
-        :root { --snap-type: y mandatory; }
-        html { scroll-snap-type: var(--snap-type); scroll-behavior: smooth; }
-        body { background-color: #000; color: #fff; font-family: 'Lato', sans-serif; margin: 0; padding: 0; overflow-x: hidden; }
-
-        /* Background Glow */
-        .glow-container { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; z-index: 1; pointer-events: none; display: flex; justify-content: center; align-items: center; overflow: hidden; }
-        .ambient-glow { position: absolute; width: 140vmin; height: 140vmin; filter: blur(100px) saturate(2); opacity: 0; transition: opacity 1.5s ease; will-change: transform, opacity; }
-        .ambient-glow.active { opacity: 0.4; animation: fluidMove 25s ease-in-out infinite; }
-        @keyframes fluidMove {
-            0% { transform: translate(0, 0) scale(1); }
-            50% { transform: translate(5%, -5%) scale(1.1); }
-            100% { transform: translate(0, 0) scale(1); }
+        :root {
+            --snap-type: y mandatory;
         }
 
-        /* Central Image */
-        .fixed-image-layer { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; display: flex; justify-content: center; align-items: center; z-index: 10; pointer-events: none; transition: opacity 0.6s ease; }
-        .image-wrapper { position: relative; width: 85vw; max-width: 500px; aspect-ratio: 1/1; pointer-events: auto; }
-        .main-image { position: absolute; width: 100%; height: 100%; object-fit: contain; opacity: 0; transition: all 0.9s cubic-bezier(0.23, 1, 0.32, 1); transform: scale(0.9); filter: blur(10px); cursor: pointer; }
-        .main-image.active { opacity: 1; transform: scale(1); filter: blur(0px); z-index: 20; }
+        html {
+            scroll-snap-type: var(--snap-type);
+            scroll-behavior: smooth;
+        }
 
-        /* Layout */
-        .scroll-section { height: 100vh; scroll-snap-align: start; }
-        .social-section { height: 100vh; scroll-snap-align: start; display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 100; position: relative; background: radial-gradient(circle, rgba(255,255,255,0.05) 0%, transparent 70%); }
-        .social-link { font-size: 1.4rem; font-weight: 300; letter-spacing: 0.3em; text-transform: uppercase; color: rgba(255,255,255,0.4); transition: 0.4s; margin: 0.4rem 0; }
-        .social-link:hover { color: #fff; transform: scale(1.05); letter-spacing: 0.4em; }
+        body {
+            background-color: #000;
+            color: #fff;
+            font-family: 'Lato', sans-serif;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+        }
 
-        /* Navigation */
-        .bottom-nav { position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%); z-index: 2000; background: rgba(15,15,15,0.7); backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.1); padding: 0.4rem; border-radius: 4rem; display: flex; }
-        .nav-btn { padding: 0.6rem 1.5rem; border-radius: 3rem; font-size: 0.7rem; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,0.4); cursor: pointer; transition: 0.3s; }
-        .nav-btn.active { background: rgba(255,255,255,0.1); color: #fff; }
+        /* Ambient Glow Layer */
+        .glow-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1;
+            pointer-events: none;
+            overflow: hidden;
+        }
 
-        /* Releases Page */
-        #releases-page { position: fixed; inset: 0; background: #000; z-index: 1000; display: none; opacity: 0; transition: 0.5s; overflow-y: auto; padding: 6rem 2rem; }
-        .releases-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 2rem; max-width: 1200px; margin: 0 auto; }
-        .release-card { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05); border-radius: 0.5rem; overflow: hidden; transition: 0.4s; cursor: pointer; }
-        .release-card:hover { transform: translateY(-5px); border-color: rgba(255,255,255,0.2); }
+        .ambient-glow {
+            position: absolute;
+            width: 140vmin;
+            height: 140vmin;
+            object-fit: cover;
+            filter: blur(100px) saturate(3) contrast(1.2); 
+            opacity: 0;
+            transition: opacity 1.5s ease-in-out;
+            will-change: transform, opacity;
+        }
 
-        /* Modal */
-        #modal { position: fixed; inset: 0; z-index: 3000; display: none; align-items: center; justify-content: center; padding: 1rem; }
-        #modal.active { display: flex; }
-        .modal-content { background: rgba(20,20,20,0.8); backdrop-filter: blur(40px); border: 1px solid rgba(255,255,255,0.1); border-radius: 1.5rem; width: 100%; max-width: 700px; padding: 2rem; position: relative; }
-        .track-btn { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); padding: 0.7rem; border-radius: 2rem; text-align: center; font-size: 0.65rem; letter-spacing: 1px; transition: 0.3s; color: rgba(255,255,255,0.5); }
-        .track-btn:hover { background: rgba(255,255,255,0.15); color: #fff; }
+        @keyframes fluidMove {
+            0% { transform: translate(0, 0) scale(1) rotate(0deg); }
+            33% { transform: translate(5%, -5%) scale(1.05) rotate(2deg); }
+            66% { transform: translate(-3%, 7%) scale(0.95) rotate(-1deg); }
+            100% { transform: translate(0, 0) scale(1) rotate(0deg); }
+        }
+
+        .ambient-glow.active {
+            opacity: 0.45;
+            animation: fluidMove 25s ease-in-out infinite;
+        }
+
+        /* Central Image Layer */
+        .fixed-image-layer {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 10;
+            pointer-events: none;
+            transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .image-wrapper {
+            position: relative;
+            width: 85vw;
+            max-width: 550px;
+            aspect-ratio: 1 / 1;
+            pointer-events: auto;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .main-image {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            cursor: pointer;
+            opacity: 0;
+            transition: all 0.9s cubic-bezier(0.23, 1, 0.32, 1);
+            transform: scale(0.9) translateY(20px);
+            filter: blur(15px);
+        }
+
+        .main-image.active {
+            opacity: 1;
+            transform: scale(1) translateY(0);
+            filter: blur(0px);
+            z-index: 20;
+        }
+
+        /* Scroll Sections */
+        .scroll-section {
+            height: 100vh;
+            scroll-snap-align: start;
+        }
+
+        /* RELEASES Page */
+        #releases-page {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background: #000;
+            z-index: 1000;
+            overflow-y: auto;
+            display: none;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            padding: 6rem 2rem;
+            box-sizing: border-box;
+        }
+
+        .releases-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 2.5rem;
+            max-width: 1300px;
+            margin: 0 auto;
+        }
+
+        .release-card {
+            background: rgba(255,255,255,0.03);
+            border-radius: 0.5rem;
+            overflow: hidden;
+            transition: all 0.5s cubic-bezier(0.2, 1, 0.3, 1);
+            border: 1px solid rgba(255,255,255,0.05);
+            cursor: pointer;
+        }
+
+        .release-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            border-color: rgba(255,255,255,0.2);
+            background: rgba(255,255,255,0.07);
+        }
+
+        /* Social Section */
+        .social-section {
+            height: 100vh;
+            scroll-snap-align: start;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            position: relative;
+            z-index: 100;
+            background: radial-gradient(circle at center, rgba(255,255,255,0.05) 0%, transparent 75%);
+        }
+
+        .social-link {
+            font-size: 1.5rem;
+            font-weight: 300;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.4);
+            transition: all 0.4s ease;
+            margin: 0.5rem 0;
+            display: block;
+        }
+
+        .social-link:hover {
+            color: #fff;
+            letter-spacing: 0.4em;
+            transform: scale(1.05);
+        }
+
+        /* Bottom Nav */
+        .bottom-nav {
+            position: fixed;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 2000;
+            background: rgba(15, 15, 15, 0.6);
+            backdrop-filter: blur(25px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 0.35rem;
+            border-radius: 4rem;
+            display: flex;
+            gap: 0.2rem;
+        }
+
+        .nav-btn {
+            padding: 0.6rem 1.4rem;
+            border-radius: 3rem;
+            font-size: 0.7rem;
+            font-weight: 400;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            transition: all 0.3s ease;
+            color: rgba(255, 255, 255, 0.4);
+            cursor: pointer;
+        }
+
+        .nav-btn.active {
+            background: rgba(255, 255, 255, 0.12);
+            color: #fff;
+        }
+
+        /* MODAL */
+        #modal {
+            transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            opacity: 0;
+            pointer-events: none;
+            z-index: 3000;
+        }
+
+        #modal.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .liquid-glass {
+            background: rgba(255, 255, 255, 0.02);
+            backdrop-filter: blur(60px) saturate(1.8);
+            -webkit-backdrop-filter: blur(60px) saturate(1.8);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 2rem;
+        }
+
+        .modal-nav-arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255,255,255,0.05);
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            opacity: 0.5;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            z-index: 100;
+        }
+
+        .modal-nav-arrow:hover {
+            opacity: 1;
+            background: rgba(255,255,255,0.15);
+        }
+
+        .arrow-prev { left: -60px; }
+        .arrow-next { right: -60px; }
+
+        @media (max-width: 768px) {
+            .arrow-prev { left: 10px; }
+            .arrow-next { right: 10px; }
+            .modal-nav-arrow { width: 35px; height: 35px; background: rgba(0,0,0,0.4); }
+        }
+
+        .track-btn {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            padding: 0.6rem 1rem;
+            border-radius: 2rem;
+            font-size: 0.6rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            transition: all 0.4s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.4rem;
+            color: rgba(255,255,255,0.4);
+        }
+
+        .btn-spotify:hover { background: rgba(30, 215, 96, 0.15); border-color: #1ED760; color: #1ED760; }
+        .btn-soundcloud:hover { background: rgba(255, 51, 0, 0.15); border-color: #FF3300; color: #FF3300; }
+        .btn-youtube:hover { background: rgba(255, 0, 0, 0.15); border-color: #FF0000; color: #FF0000; }
+
+        .scroll-dot {
+            width: 4px;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            transition: all 0.4s ease;
+        }
+
+        .scroll-dot.active {
+            background: #fff;
+            transform: scale(1.8);
+        }
     </style>
 </head>
 <body>
@@ -76,6 +324,11 @@
         <img id="glow2" src="" class="ambient-glow">
     </div>
 
+    <!-- Side Indicators -->
+    <div id="side-nav" class="fixed right-6 top-1/2 -translate-y-1/2 z-[100] flex flex-col items-center gap-6">
+        <div class="flex flex-col gap-4" id="scrollIndicator"></div>
+    </div>
+
     <div id="imageLayer" class="fixed-image-layer">
         <div class="image-wrapper" onclick="openModal(currentIndex)">
             <img id="img1" src="" class="main-image active">
@@ -83,137 +336,256 @@
         </div>
     </div>
 
-    <div id="home-view">
-        <div id="scroll-container"></div>
-        <section class="social-section">
-            <h2 class="text-3xl font-thin tracking-[0.4em] uppercase mb-12">Connect</h2>
-            <div class="flex flex-col gap-4 text-center">
+    <!-- Scroll Content -->
+    <div id="home-content">
+        <div id="scrollArea"></div>
+        <div id="social-section" class="social-section">
+            <div class="mb-12">
+                <h2 class="text-4xl md:text-6xl font-thin uppercase tracking-[0.4em] mb-4">Connect</h2>
+                <div class="h-[1px] w-12 bg-white/20 mx-auto"></div>
+            </div>
+            <div class="flex flex-col gap-4">
                 <a href="https://open.spotify.com/artist/4uRpFQ2D51xyz2O4V9pqon" target="_blank" class="social-link">Spotify</a>
                 <a href="https://www.youtube.com/@Mozesofc" target="_blank" class="social-link">YouTube</a>
                 <a href="https://soundcloud.com/mozesofc" target="_blank" class="social-link">SoundCloud</a>
                 <a href="https://www.instagram.com/Mozesofc" target="_blank" class="social-link">Instagram</a>
-                <a href="mailto:Info@mozesmusic.com" class="mt-8 text-white/40 hover:text-white text-xs tracking-widest">Info@mozesmusic.com</a>
+                <a href="https://linktr.ee/mozesofc" target="_blank" class="social-link">Linktree</a>
+                <div class="mt-8">
+                    <p class="text-[9px] uppercase tracking-[0.5em] text-white/20 mb-2">Contact</p>
+                    <a href="mailto:Info@mozesmusic.com" class="text-white/60 hover:text-white transition-all tracking-[0.1em]">Info@mozesmusic.com</a>
+                </div>
             </div>
-        </section>
+        </div>
     </div>
 
+    <!-- RELEASES -->
     <div id="releases-page">
-        <div class="releases-grid" id="releasesGrid"></div>
+        <div class="max-w-6xl mx-auto px-4 pb-32">
+            <header class="mb-16 text-center">
+                <h2 class="text-3xl md:text-5xl font-light uppercase tracking-[0.3em] mb-4">Releases</h2>
+            </header>
+            <div class="releases-grid" id="releasesGrid"></div>
+        </div>
     </div>
 
-    <nav class="bottom-nav">
-        <button onclick="changePage('home')" id="btn-home" class="nav-btn active">Mozes</button>
-        <button onclick="changePage('releases')" id="btn-releases" class="nav-btn">Releases</button>
+    <!-- Nav -->
+    <nav class="bottom-nav" dir="ltr">
+        <button onclick="navigate('home')" id="nav-home" class="nav-btn active">Mozes</button>
+        <button onclick="navigate('releases')" id="nav-releases" class="nav-btn">Releases</button>
+        <button onclick="navigate('social')" id="nav-social" class="nav-btn">Socials</button>
     </nav>
 
-    <div id="modal">
-        <div class="absolute inset-0 bg-black/80" onclick="closeModal()"></div>
-        <div class="modal-content">
-            <button onclick="closeModal()" class="absolute top-4 right-6 text-white/30 text-2xl hover:text-white">&times;</button>
-            <h3 id="modalTitle" class="text-sm font-light tracking-widest uppercase mb-6 border-l-2 border-white/20 pl-4">Track Title</h3>
-            <div class="aspect-video bg-black rounded-lg overflow-hidden border border-white/10 mb-6">
-                <iframe id="videoFrame" class="w-full h-full" src="" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+    <!-- Modal -->
+    <div id="modal" class="fixed inset-0 flex items-center justify-center p-4">
+        <div class="absolute inset-0 bg-black/70 backdrop-blur-sm" onclick="closeModal()"></div>
+        
+        <div class="relative w-full max-w-2xl liquid-glass p-6 md:p-10 flex flex-col gap-6 transition-transform duration-500 scale-95" id="modalFrame">
+            <!-- Modal Navigation Arrows -->
+            <div class="modal-nav-arrow arrow-prev" onclick="prevTrack(event)">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"></polyline></svg>
             </div>
-            <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
-                <a id="btnSpotify" href="#" target="_blank" class="track-btn">Spotify</a>
-                <a id="btnSC" href="#" target="_blank" class="track-btn">SoundCloud</a>
-                <a id="btnYT" href="#" target="_blank" class="track-btn">YouTube</a>
+            <div class="modal-nav-arrow arrow-next" onclick="nextTrack(event)">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
+            </div>
+
+            <button onclick="closeModal()" class="absolute top-4 right-6 text-white/20 hover:text-white text-2xl">&times;</button>
+            
+            <div class="flex flex-col gap-1">
+                <h3 id="fullTitle" class="text-sm md:text-base font-light uppercase tracking-[0.1em] text-white/90 text-left" dir="ltr">TRACK TITLE</h3>
+                <div class="h-[1px] w-8 bg-white/20"></div>
+            </div>
+
+            <div class="aspect-video w-full rounded-xl overflow-hidden bg-black/50 border border-white/5 shadow-2xl">
+                <iframe id="youtubePlayer" class="w-full h-full" src="" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                <a id="linkSpotify" href="#" target="_blank" class="track-btn btn-spotify">Spotify</a>
+                <a id="linkSoundcloud" href="#" target="_blank" class="track-btn btn-soundcloud">SoundCloud</a>
+                <a id="linkYoutube" href="#" target="_blank" class="track-btn btn-youtube">YouTube</a>
             </div>
         </div>
     </div>
 
     <script>
         const tracks = [
-            { src: "image1.jpg", title: "Mozes - BALAGAN", yt: "yng3GffPK_U", spotify: "https://open.spotify.com/track/4jH1B5l5o0R7vX8m9P6Dq5", sc: "https://soundcloud.com/mozesofc/balagan" },
-            { src: "image2.jpg", title: "Cosmic Gate - Brave (Mozes Remix)", yt: "kO8ylPtWT14", spotify: "https://open.spotify.com/track/5uRpFQ2D51xyz2O4V9pqon", sc: "https://soundcloud.com/mozesofc/brave-remix" },
-            { src: "image3.jpg", title: "James Hype - Dont Wake Me Up (Mozes Remix)", yt: "57W4t-hN3Vo", spotify: "https://open.spotify.com/album/4jH1B5l5o0R7vX8m9P6Dq5", sc: "https://soundcloud.com/mozesofc/dont-wake-me-up" },
-            { src: "image4.jpg", title: "Tayri - Black Sheep (Mozes Remix)", yt: "DKCr5GG4PXA", sc: "https://soundcloud.com/mozesofc/black-sheep" },
-            { src: "image5.jpg", title: "Mozes - What Took You So Long (Remix)", yt: "gcReNaVNd4E", sc: "https://soundcloud.com/mozesofc/what-took-you-so-long" },
-            { src: "image6.jpg", title: "Mozes & Mushy - Found Myself", yt: "It-mN5HDWvA", sc: "https://soundcloud.com/mozesofc/found-myself" }
+            { src: "image1.jpg", title: "Mozes - BALAGAN", youtubeId: "yng3GffPK_U", spotify: "https://open.spotify.com/track/4jH1B5l5o0R7vX8m9P6Dq5", sc: "https://soundcloud.com/mozesofc/balagan" },
+            { src: "image2.jpg", title: "Cosmic Gate, Christian Burns - Brave (Mozes Remix)", youtubeId: "kO8ylPtWT14", spotify: "https://open.spotify.com/track/5uRpFQ2D51xyz2O4V9pqon", sc: "https://soundcloud.com/mozesofc/brave-remix" },
+            { src: "image3.jpg", title: "James Hype - Dont Wake Me Up (Mozes Remix)", youtubeId: "57W4t-hN3Vo", spotify: "https://open.spotify.com/album/4jH1B5l5o0R7vX8m9P6Dq5", sc: "https://soundcloud.com/mozesofc/dont-wake-me-up" },
+            { src: "image4.jpg", title: "Tayri - Black Sheep (Mozes Remix)", youtubeId: "DKCr5GG4PXA", spotify: "https://open.spotify.com/track/34tKhmQV2tc", sc: "https://soundcloud.com/mozesofc/black-sheep" },
+            { src: "image5.jpg", title: "Mozes - What Took You So Long (Mozes Remix)", youtubeId: "gcReNaVNd4E", spotify: "https://open.spotify.com/track/4uRpFQ2D51xyz2O4V9pqon", sc: "https://soundcloud.com/mozesofc/what-took-you-so-long" },
+            { src: "image6.jpg", title: "Mozes & Mushy - Found Myself", youtubeId: "It-mN5HDWvA", spotify: "https://open.spotify.com/track/34tKhmQV2tc", sc: "https://soundcloud.com/mozesofc/found-myself" },
+            { src: "image7.jpg", title: "Mozes - Trust Me", youtubeId: "34tKhmQV2tc", spotify: "https://open.spotify.com/track/34tKhmQV2tc", sc: "https://soundcloud.com/mozesofc/trust-me" },
+            { src: "image8.jpg", title: "Mozes - Nights In White Satin", youtubeId: "t1rYx5CewP8", spotify: "https://open.spotify.com/track/34tKhmQV2tc", sc: "https://soundcloud.com/mozesofc/nights-in-white-satin" },
+            { src: "image9.jpg", title: "Shaggy ft. Lavbbe - MOVE (Mozes Remix)", youtubeId: "yhUHCS-IRmQ", spotify: "https://open.spotify.com/track/34tKhmQV2tc", sc: "https://soundcloud.com/mozesofc/move-remix" },
+            { src: "image10.jpg", title: "Mozes - Home", youtubeId: "KwZS_LO0ijc", spotify: "https://open.spotify.com/track/34tKhmQV2tc", sc: "https://soundcloud.com/mozesofc/home" },
+            { src: "image11.jpg", title: "Mozes - Two Souls", youtubeId: "_fe05MJLhy8", spotify: "https://open.spotify.com/track/34tKhmQV2tc", sc: "https://soundcloud.com/mozesofc/two-souls" },
+            { src: "image12.jpg", title: "Mozes - They Say", youtubeId: "AIVBYJC1Gtg", spotify: "https://open.spotify.com/track/34tKhmQV2tc", sc: "https://soundcloud.com/mozesofc/they-say" },
+            { src: "image13.jpg", title: "Mozes ft. Sapir J. Fox - The Otherside", youtubeId: "y_LntJI2uqo", spotify: "https://open.spotify.com/track/34tKhmQV2tc", sc: "https://soundcloud.com/mozesofc/otherside" },
+            { src: "image14.jpg", title: "Mozes - Save Our Future", youtubeId: "AhefaUTmnwo", spotify: "https://open.spotify.com/track/34tKhmQV2tc", sc: "https://soundcloud.com/mozesofc/save-our-future" },
+            { src: "image15.jpg", title: "Mozes - Atlantis", youtubeId: "Tl4ZQ4KhtD4", spotify: "https://open.spotify.com/track/34tKhmQV2tc", sc: "https://soundcloud.com/mozesofc/atlantis" },
+            { src: "image16.jpg", title: "Mozes - Nowhere To Hide", youtubeId: "0_tl1Xrsnus", spotify: "https://open.spotify.com/track/34tKhmQV2tc", sc: "https://soundcloud.com/mozesofc/nowhere-to-hide" },
+            { src: "image17.jpg", title: "Mozes ft. Sapir J. Fox - Reborn Again", youtubeId: "EJeLvlcBXas", spotify: "https://open.spotify.com/track/34tKhmQV2tc", sc: "https://soundcloud.com/mozesofc/reborn-again" },
+            { src: "image18.jpg", title: "Mozes - Trust Me (DnB Remix)", youtubeId: "Lk1KZFLwV3Q", spotify: "https://open.spotify.com/track/34tKhmQV2tc", sc: "https://soundcloud.com/mozesofc/trust-me-dnb" },
+            { src: "image19.jpg", title: "Mozes & Jazz - Wealth, Power & Fame", youtubeId: "ecL3Out6ja8", spotify: "https://open.spotify.com/track/34tKhmQV2tc", sc: "https://soundcloud.com/mozesofc/wealth-power-fame" },
+            { src: "image20.jpg", title: "Mozes - Late at Night", youtubeId: "4U_tvQ4WSRo", spotify: "https://open.spotify.com/track/34tKhmQV2tc", sc: "https://soundcloud.com/mozesofc/late-at-night" }
         ];
 
         let currentIndex = 0;
         let activeLayer = 1;
+        let isReleasesOpen = false;
+        let isModalOpen = false;
+        let modalIndex = 0;
 
-        // Setup Home Sections
-        const container = document.getElementById('scroll-container');
-        tracks.forEach(() => {
+        const img1 = document.getElementById('img1');
+        const img2 = document.getElementById('img2');
+        const glow1 = document.getElementById('glow1');
+        const glow2 = document.getElementById('glow2');
+        const scrollIndicator = document.getElementById('scrollIndicator');
+        const releasesGrid = document.getElementById('releasesGrid');
+        const releasesPage = document.getElementById('releases-page');
+        const scrollArea = document.getElementById('scrollArea');
+
+        // Init Sections
+        const totalHomeSections = tracks.length + 1;
+        for(let i=0; i < tracks.length; i++) {
             const sec = document.createElement('div');
             sec.className = 'scroll-section';
-            container.appendChild(sec);
-        });
+            scrollArea.appendChild(sec);
+        }
 
-        // Setup Grid
-        const grid = document.getElementById('releasesGrid');
-        tracks.forEach((t, i) => {
+        // Init Dots
+        for(let i=0; i < totalHomeSections; i++) {
+            const dot = document.createElement('div');
+            dot.className = `scroll-dot ${i === 0 ? 'active' : ''}`;
+            dot.id = `dot-${i}`;
+            scrollIndicator.appendChild(dot);
+        }
+
+        // Fill Grid
+        tracks.forEach((track, i) => {
             const card = document.createElement('div');
             card.className = 'release-card';
             card.onclick = () => openModal(i);
-            card.innerHTML = `<img src="${t.src}" class="w-full aspect-square object-cover opacity-80"><div class="p-3 text-[10px] tracking-tighter uppercase opacity-60">${t.title}</div>`;
-            grid.appendChild(card);
+            card.innerHTML = `<img src="${track.src}" class="w-full aspect-square object-cover">
+                             <div class="p-4 text-[9px] tracking-[0.2em] uppercase text-white/80 truncate text-left" dir="ltr">${track.title}</div>`;
+            releasesGrid.appendChild(card);
         });
 
-        // Initial state
-        document.getElementById('img1').src = tracks[0].src;
-        document.getElementById('glow1').src = tracks[0].src;
+        img1.src = tracks[0].src; glow1.src = tracks[0].src;
+        img2.src = tracks[0].src; glow2.src = tracks[0].src;
 
         window.addEventListener('scroll', () => {
-            const idx = Math.min(tracks.length, Math.floor((window.scrollY + window.innerHeight/2) / window.innerHeight));
+            if (isReleasesOpen) return;
+            const scrollPos = window.scrollY;
+            const idx = Math.min(totalHomeSections - 1, Math.floor((scrollPos + window.innerHeight/2) / window.innerHeight));
             
-            if (idx >= tracks.length) {
+            if (idx === tracks.length) {
                 document.getElementById('imageLayer').style.opacity = "0";
-            } else {
+            } else if (idx < tracks.length) {
                 document.getElementById('imageLayer').style.opacity = "1";
                 if (idx !== currentIndex) {
                     currentIndex = idx;
-                    const nextImg = activeLayer === 1 ? document.getElementById('img2') : document.getElementById('img1');
-                    const currImg = activeLayer === 1 ? document.getElementById('img1') : document.getElementById('img2');
-                    const nextGlow = activeLayer === 1 ? document.getElementById('glow2') : document.getElementById('glow1');
-                    const currGlow = activeLayer === 1 ? document.getElementById('glow1') : document.getElementById('glow2');
-                    
-                    nextImg.src = tracks[idx].src;
-                    nextGlow.src = tracks[idx].src;
-                    nextImg.classList.add('active');
-                    nextGlow.classList.add('active');
-                    currImg.classList.remove('active');
-                    currGlow.classList.remove('active');
-                    activeLayer = activeLayer === 1 ? 2 : 1;
+                    updateUI(idx);
                 }
+            }
+            
+            document.querySelectorAll('.scroll-dot').forEach(d => d.classList.remove('active'));
+            document.getElementById(`dot-${idx}`)?.classList.add('active');
+        });
+
+        // Keyboard Navigation Support
+        window.addEventListener('keydown', (e) => {
+            if (!isModalOpen) return;
+            
+            if (e.key === "ArrowRight") {
+                nextTrack(e);
+            } else if (e.key === "ArrowLeft") {
+                prevTrack(e);
+            } else if (e.key === "Escape") {
+                closeModal();
             }
         });
 
-        function changePage(page) {
-            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-            document.getElementById(`btn-${page}`).classList.add('active');
+        function updateUI(idx) {
+            const [nextImg, currImg] = activeLayer === 1 ? [img2, img1] : [img1, img2];
+            const [nextGlow, currGlow] = activeLayer === 1 ? [glow2, glow1] : [glow1, glow2];
+            nextImg.src = tracks[idx].src; nextGlow.src = tracks[idx].src;
+            nextImg.classList.add('active'); nextGlow.classList.add('active');
+            currImg.classList.remove('active'); currGlow.classList.remove('active');
+            activeLayer = activeLayer === 1 ? 2 : 1;
+        }
 
-            if (page === 'home') {
-                document.getElementById('releases-page').style.display = 'none';
-                document.getElementById('home-view').style.display = 'block';
-                document.getElementById('imageLayer').style.opacity = '1';
-                window.scrollTo(0, 0);
-            } else {
-                document.getElementById('home-view').style.display = 'none';
-                document.getElementById('releases-page').style.display = 'block';
-                document.getElementById('releases-page').style.opacity = '1';
-                document.getElementById('imageLayer').style.opacity = '0';
+        function navigate(page) {
+            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById(`nav-${page}`).classList.add('active');
+
+            if (page === 'home' || page === 'social') {
+                isReleasesOpen = false;
+                releasesPage.style.opacity = "0";
+                setTimeout(() => { releasesPage.style.display = "none"; }, 500);
+                
+                document.documentElement.style.scrollSnapType = 'none';
+                document.getElementById('side-nav').style.opacity = "1";
+                
+                const target = page === 'home' ? 0 : document.body.scrollHeight;
+                window.scrollTo({ top: target, behavior: 'smooth' });
+
+                setTimeout(() => { document.documentElement.style.scrollSnapType = 'y mandatory'; }, 1000);
+            } 
+            else if (page === 'releases') {
+                isReleasesOpen = true;
+                releasesPage.style.display = "block";
+                setTimeout(() => { releasesPage.style.opacity = "1"; }, 10);
+                document.documentElement.style.scrollSnapType = 'none';
+                document.getElementById('imageLayer').style.opacity = "0";
+                document.getElementById('side-nav').style.opacity = "0";
             }
         }
 
-        function openModal(i) {
-            const t = tracks[i];
-            document.getElementById('modalTitle').innerText = t.title;
-            document.getElementById('videoFrame').src = `https://www.youtube.com/embed/${t.yt}?autoplay=1`;
-            document.getElementById('btnSpotify').href = t.spotify || "#";
-            document.getElementById('btnSC').href = t.sc || "#";
-            document.getElementById('btnYT').href = `https://youtube.com/watch?v=${t.yt}`;
-            document.getElementById('modal').classList.add('active');
+        function openModal(index) {
+            modalIndex = index;
+            isModalOpen = true;
+            updateModalContent();
+            
+            const modal = document.getElementById('modal');
+            const frame = document.getElementById('modalFrame');
+            modal.classList.add('active');
+            setTimeout(() => { frame.classList.remove('scale-95'); frame.classList.add('scale-100'); }, 10);
             document.body.style.overflow = 'hidden';
         }
 
+        function updateModalContent() {
+            const track = tracks[modalIndex];
+            document.getElementById('fullTitle').innerText = track.title;
+            document.getElementById('youtubePlayer').src = `https://www.youtube.com/embed/${track.youtubeId}?autoplay=1`;
+            document.getElementById('linkSpotify').href = track.spotify || "#";
+            document.getElementById('linkSoundcloud').href = track.sc || "#";
+            document.getElementById('linkYoutube').href = `https://youtube.com/watch?v=${track.youtubeId}`;
+        }
+
+        function nextTrack(e) {
+            if (e) e.stopPropagation();
+            modalIndex = (modalIndex + 1) % tracks.length;
+            updateModalContent();
+        }
+
+        function prevTrack(e) {
+            if (e) e.stopPropagation();
+            modalIndex = (modalIndex - 1 + tracks.length) % tracks.length;
+            updateModalContent();
+        }
+
         function closeModal() {
-            document.getElementById('modal').classList.remove('active');
-            document.getElementById('videoFrame').src = "";
-            document.body.style.overflow = 'auto';
+            isModalOpen = false;
+            const modal = document.getElementById('modal');
+            const frame = document.getElementById('modalFrame');
+            frame.classList.remove('scale-100'); frame.classList.add('scale-95');
+            setTimeout(() => {
+                modal.classList.remove('active');
+                document.getElementById('youtubePlayer').src = "";
+                document.body.style.overflow = 'auto';
+            }, 300);
         }
     </script>
 </body>
