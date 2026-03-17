@@ -4,6 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
+    <!-- Site Icon (Favicon) -->
+    <link rel="icon" type="image/x-icon" href="https://raw.githubusercontent.com/Mozesofc/Mozes/main/favicon.ico">
+    <link rel="shortcut icon" href="https://raw.githubusercontent.com/Mozesofc/Mozes/main/favicon.ico">
+
     <!-- WhatsApp & Social Media Preview Tags -->
     <title>Mozes Home</title>
     <meta property="og:title" content="Mozes Home">
@@ -196,6 +200,18 @@
             transform: scale(1.05);
         }
 
+        /* Side Nav & Arrows */
+        .scroll-arrow {
+            color: rgba(255, 255, 255, 0.2);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            padding: 5px;
+        }
+        .scroll-arrow:hover {
+            color: #fff;
+            transform: scale(1.2);
+        }
+
         /* Bottom Nav */
         .bottom-nav {
             position: fixed;
@@ -308,6 +324,7 @@
             background: rgba(255, 255, 255, 0.1);
             border-radius: 50%;
             transition: all 0.4s ease;
+            cursor: pointer;
         }
 
         .scroll-dot.active {
@@ -325,7 +342,13 @@
 
     <!-- Side Indicators -->
     <div id="side-nav" class="fixed right-6 top-1/2 -translate-y-1/2 z-[100] flex flex-col items-center gap-6">
+        <div class="scroll-arrow" onclick="scrollStep(-1)">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="18 15 12 9 6 15"></polyline></svg>
+        </div>
         <div class="flex flex-col gap-4" id="scrollIndicator"></div>
+        <div class="scroll-arrow" onclick="scrollStep(1)">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+        </div>
     </div>
 
     <div id="imageLayer" class="fixed-image-layer">
@@ -419,7 +442,7 @@
             { src: "image9.jpg", title: "Shaggy ft. Lavbbe - MOVE (Mozes Remix)", youtubeId: "yhUHCS-IRmQ", spotify: "https://open.spotify.com/track/0xw5UUG2sOJxp8LaM08MAH?si=be5c8011bd364fea", sc: "" },
             { src: "image10.jpg", title: "Mozes - Home", youtubeId: "KwZS_LO0ijc", spotify: "https://open.spotify.com/track/5gRfW2abrCOZQpG9PbWikH?si=619603f0165c421a", sc: "https://soundcloud.com/mozesofc/mozes-home-radio-edit" },
             { src: "image11.jpg", title: "Mozes - Two Souls", youtubeId: "_fe05MJLhy8", spotify: "https://open.spotify.com/track/0xVrvo5uHs6I210jsv3vfy?si=9196baa8ac5c48b5", sc: "https://soundcloud.com/mozesofc/mozes-2-souls" },
-            { src: "image12.jpg", title: "Mozes - They Say", youtubeId: "AIVBYJC1Gtg", spotify: "https://open.spotify.com/track/452MRziT5Dq7opF97opF9GCf5U?si=8466ebe7493e4550", sc: "https://soundcloud.com/mozesofc/mozes-they-say-r" },
+            { src: "image12.jpg", title: "Mozes - They Say", youtubeId: "AIVBYJC1Gtg", spotify: "https://open.spotify.com/track/452MRziT5Dq7opF9GCf5U?si=8466ebe7493e4550", sc: "https://soundcloud.com/mozesofc/mozes-they-say-r" },
             { src: "image13.jpg", title: "Mozes ft. Sapir J. Fox - The Otherside", youtubeId: "y_LntJI2uqo", spotify: "https://open.spotify.com/track/4leube2v9p8EuVb52Dd3YG?si=c193f92a2d7a42c6", sc: "https://soundcloud.com/mozesofc/mozes-sapir-the-otherside" },
             { src: "image14.jpg", title: "Mozes - Save Our Future", youtubeId: "AhefaUTmnwo", spotify: "https://open.spotify.com/track/5ea19cn1sh6lOCXMun7fzl?si=2d588f08d5cc415f", sc: "https://soundcloud.com/mozesofc/mozes-save-our-future-r" },
             { src: "image15.jpg", title: "Mozes - Atlantis", youtubeId: "Tl4ZQ4KhtD4", spotify: "https://open.spotify.com/track/6z9GxXxcAvtcso9z0Q5ENz?si=5ccd25477dea4c1c", sc: "https://soundcloud.com/mozesofc/mozes-atlantis" },
@@ -458,6 +481,7 @@
             const dot = document.createElement('div');
             dot.className = `scroll-dot ${i === 0 ? 'active' : ''}`;
             dot.id = `dot-${i}`;
+            dot.onclick = () => window.scrollTo({ top: i * window.innerHeight, behavior: 'smooth' });
             scrollIndicator.appendChild(dot);
         }
 
@@ -493,11 +517,17 @@
             document.getElementById(`dot-${idx}`)?.classList.add('active');
         });
 
+        function scrollStep(dir) {
+            const next = Math.max(0, Math.min(totalHomeSections - 1, currentIndex + dir));
+            window.scrollTo({ top: next * window.innerHeight, behavior: 'smooth' });
+        }
+
         window.addEventListener('keydown', (e) => {
-            if (!isModalOpen) return;
-            if (e.key === "ArrowRight") nextTrack(e);
-            else if (e.key === "ArrowLeft") prevTrack(e);
-            else if (e.key === "Escape") closeModal();
+            if (isModalOpen) {
+                if (e.key === "ArrowRight") nextTrack(e);
+                else if (e.key === "ArrowLeft") prevTrack(e);
+                else if (e.key === "Escape") closeModal();
+            }
         });
 
         function updateUI(idx) {
