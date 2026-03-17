@@ -5,23 +5,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MOZES</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@100;300;400;700;900&display=swap" rel="stylesheet">
     <style>
         html {
-            /* גלילה ממגנטת רק לדף הבית */
             scroll-snap-type: y mandatory;
         }
 
         body {
             background-color: #000;
             color: #fff;
-            font-family: 'Inter', sans-serif;
+            font-family: 'Lato', sans-serif;
             margin: 0;
             padding: 0;
             overflow-x: hidden;
         }
 
-        /* שכבת ההילה סביב התמונה */
+        /* שכבת ההילה */
         .glow-container {
             position: fixed;
             top: 0;
@@ -33,7 +32,6 @@
             align-items: center;
             z-index: 1;
             pointer-events: none;
-            overflow: hidden;
         }
 
         .ambient-glow {
@@ -41,18 +39,16 @@
             width: 120vmin;
             height: 120vmin;
             object-fit: cover;
-            filter: blur(100px) saturate(4) contrast(1.5); 
+            filter: blur(100px) saturate(3) contrast(1.2); 
             opacity: 0;
-            transition: opacity 1.2s ease-in-out, transform 1.2s ease-in-out;
-            transform: scale(1.1);
+            transition: opacity 1.5s ease-in-out;
         }
 
         .ambient-glow.active {
-            opacity: 0.6;
-            transform: scale(1.4);
+            opacity: 0.45;
         }
 
-        /* שכבת התמונה המרכזית */
+        /* תמונה מרכזית */
         .fixed-image-layer {
             position: fixed;
             top: 0;
@@ -64,13 +60,13 @@
             align-items: center;
             z-index: 10;
             pointer-events: none;
-            transition: opacity 0.4s ease, visibility 0.4s ease;
+            transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .image-wrapper {
             position: relative;
-            width: 90vw;
-            max-width: 600px;
+            width: 85vw;
+            max-width: 550px;
             aspect-ratio: 1 / 1;
             pointer-events: auto;
             display: flex;
@@ -78,148 +74,57 @@
             align-items: center;
         }
 
-        @media (min-height: 700px) and (min-width: 1024px) {
-            .image-wrapper {
-                height: 80vh;
-                width: auto;
-            }
-        }
-
         .main-image {
             position: absolute;
-            top: 0;
-            left: 0;
             width: 100%;
             height: 100%;
             object-fit: contain;
             cursor: pointer;
             opacity: 0;
-            transition: opacity 0.7s cubic-bezier(0.4, 0, 0.2, 1), 
-                        transform 0.7s cubic-bezier(0.4, 0, 0.2, 1), 
-                        filter 0.7s ease;
-            transform: scale(0.85);
-            filter: blur(10px);
+            transition: all 0.9s cubic-bezier(0.23, 1, 0.32, 1);
+            transform: scale(0.9) translateY(20px);
+            filter: blur(15px);
         }
 
         .main-image.active {
             opacity: 1;
-            transform: scale(1);
-            z-index: 20;
+            transform: scale(1) translateY(0);
             filter: blur(0px);
-        }
-
-        .main-image:not(.active) {
-            transform: scale(0.85);
-            opacity: 0;
-            filter: blur(10px);
+            z-index: 20;
         }
 
         /* סקשנים של גלילה */
         .scroll-section {
             height: 100vh;
             scroll-snap-align: start;
-            scroll-snap-stop: always;
         }
 
-        /* נקודות ניווט בצד */
-        .scroll-indicator {
-            position: fixed;
-            right: 1.5rem;
-            top: 50%;
-            transform: translateY(-50%);
-            z-index: 100;
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
-            transition: opacity 0.3s ease;
+        /* מודאל מעודן */
+        #modal {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            opacity: 0;
+            pointer-events: none;
         }
 
-        .scroll-dot {
-            width: 8px;
-            height: 8px;
-            background: rgba(255, 255, 255, 0.2);
-            border-radius: 50%;
-            transition: all 0.3s ease;
-            cursor: pointer;
+        #modal.active {
+            opacity: 1;
             pointer-events: auto;
         }
 
-        .scroll-dot.active {
-            background: #fff;
-            transform: scale(1.4);
-            box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
-        }
-
-        /* מודאל */
-        .modal-overlay {
-            background-color: rgba(0, 0, 0, 0.4); 
-            backdrop-filter: blur(8px);
-        }
-
         .modal-content {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(25px) saturate(180%);
-            -webkit-backdrop-filter: blur(25px) saturate(180%);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.8), inset 0 0 0 1px rgba(255, 255, 255, 0.05);
+            background: rgba(10, 10, 10, 0.8);
+            backdrop-filter: blur(40px) saturate(160%);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transform: scale(0.97) translateY(10px);
+            transition: all 0.5s cubic-bezier(0.2, 1, 0.3, 1);
+            box-shadow: 0 40px 100px -20px rgba(0, 0, 0, 0.9);
         }
 
-        .video-container {
-            position: relative;
-            width: 100%;
-            padding-bottom: 56.25%; 
-            height: 0;
-            overflow: hidden;
-            border-radius: 12px;
-            background: #000;
+        #modal.active .modal-content {
+            transform: scale(1) translateY(0);
         }
 
-        .video-container iframe {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-        }
-
-        /* תפריט ניווט תחתון */
-        .bottom-nav {
-            position: fixed;
-            bottom: 2rem;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 150;
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 0.5rem;
-            border-radius: 2rem;
-            display: flex;
-            gap: 0.5rem;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-        }
-
-        .nav-btn {
-            padding: 0.6rem 1.5rem;
-            border-radius: 1.5rem;
-            font-size: 0.85rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            transition: all 0.3s ease;
-            color: rgba(255, 255, 255, 0.5);
-        }
-
-        .nav-btn.active {
-            background: rgba(255, 255, 255, 0.15);
-            color: #fff;
-        }
-
-        .nav-btn:hover {
-            color: #fff;
-        }
-
-        /* עמוד RELEASES */
+        /* דף Releases משופר */
         #releases-page {
             position: absolute;
             top: 0;
@@ -228,74 +133,99 @@
             min-height: 100vh;
             background: #000;
             z-index: 140;
-            padding: 4rem 2rem 10rem 2rem;
+            padding: 6rem 2rem 12rem 2rem;
             display: none;
             opacity: 0;
-            transition: opacity 0.5s ease;
+            transition: opacity 0.6s ease;
+            box-sizing: border-box;
         }
 
         .releases-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 1.5rem;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 2rem;
             max-width: 1200px;
             margin: 0 auto;
         }
 
         .release-card {
-            position: relative;
-            aspect-ratio: 1/1;
-            overflow: hidden;
+            background: rgba(255,255,255,0.02);
             border-radius: 1rem;
-            cursor: pointer;
-            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-        }
-
-        .release-card img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.6s ease;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.2, 1, 0.3, 1);
+            border: 1px solid rgba(255,255,255,0.03);
         }
 
         .release-card:hover {
-            transform: scale(1.03);
-            z-index: 10;
+            transform: translateY(-5px);
+            border-color: rgba(255,255,255,0.1);
+            background: rgba(255,255,255,0.04);
         }
 
-        .release-card:hover img {
-            transform: scale(1.1);
-        }
-
-        .release-card .overlay {
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+        /* תפריט ניווט */
+        .bottom-nav {
+            position: fixed;
+            bottom: 2.5rem;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 150;
+            background: rgba(15, 15, 15, 0.5);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 0.35rem;
+            border-radius: 4rem;
             display: flex;
-            align-items: flex-end;
-            padding: 1.5rem;
-            opacity: 0;
-            transition: opacity 0.3s ease;
+            gap: 0.2rem;
         }
 
-        .release-card:hover .overlay {
-            opacity: 1;
+        .nav-btn {
+            padding: 0.6rem 1.4rem;
+            border-radius: 3rem;
+            font-size: 0.7rem;
+            font-weight: 400;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            transition: all 0.3s ease;
+            color: rgba(255, 255, 255, 0.3);
         }
 
-        /* הסתרת סרגל גלילה */
-        body::-webkit-scrollbar { display: none; }
-        body { -ms-overflow-style: none; scrollbar-width: none; }
+        .nav-btn.active {
+            background: rgba(255, 255, 255, 0.08);
+            color: #fff;
+        }
+
+        .video-wrapper {
+            aspect-ratio: 16 / 9;
+            width: 100%;
+            border-radius: 0.75rem;
+            overflow: hidden;
+            background: #000;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.6);
+        }
+
+        .scroll-dot {
+            width: 4px;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            transition: all 0.4s ease;
+            cursor: pointer;
+        }
+
+        .scroll-dot.active {
+            background: #fff;
+            transform: scale(1.8);
+        }
     </style>
 </head>
 <body>
 
-    <div class="glow-container" id="glowContainer">
+    <div class="glow-container">
         <img id="glow1" src="" class="ambient-glow active">
         <img id="glow2" src="" class="ambient-glow">
     </div>
 
-    <div class="scroll-indicator" id="scrollIndicator"></div>
+    <div class="fixed right-8 top-1/2 -translate-y-1/2 z-[100] flex flex-col gap-5" id="scrollIndicator"></div>
 
     <div id="imageLayer" class="fixed-image-layer">
         <div class="image-wrapper" onclick="openModal()">
@@ -304,56 +234,54 @@
         </div>
     </div>
 
-    <!-- דף הבית (אזורי גלילה) -->
-    <div class="scroll-trigger-area" id="scrollArea"></div>
+    <!-- גלילה עמוד הבית -->
+    <div id="scrollArea"></div>
 
     <!-- דף RELEASES -->
     <div id="releases-page">
-        <div class="text-center mb-12">
-            <h1 class="text-5xl font-black tracking-tighter uppercase mb-2 text-white">Releases</h1>
-            <div class="w-12 h-1 bg-white mx-auto"></div>
-        </div>
-        <div class="releases-grid" id="releasesGrid">
-            <!-- כרטיסי שירים ייווצרו ב-JS -->
+        <div class="max-w-6xl mx-auto px-4">
+            <header class="mb-16 text-center">
+                <h2 class="text-3xl md:text-5xl font-light uppercase tracking-[0.3em] mb-4">Releases</h2>
+                <div class="h-[1px] w-12 bg-white/20 mx-auto mb-4"></div>
+                <p class="text-white/30 font-light tracking-[0.5em] text-[10px] uppercase">Discography</p>
+            </header>
+            <div class="releases-grid" id="releasesGrid"></div>
         </div>
     </div>
 
-    <!-- תפריט ניווט מעודכן: Releases במרכז -->
+    <!-- ניווט תחתון -->
     <nav class="bottom-nav" dir="ltr">
-        <button onclick="navigate('home')" id="nav-home" class="nav-btn active">MOZES</button>
+        <button onclick="navigate('home')" id="nav-home" class="nav-btn active">Mozes</button>
         <button onclick="navigate('releases')" id="nav-releases" class="nav-btn">Releases</button>
         <a href="mailto:mozes@mozesmusic.com" class="nav-btn">Contact</a>
     </nav>
 
-    <!-- מודאל -->
-    <div id="modal" class="hidden fixed inset-0 z-[200] flex items-center justify-center p-4">
-        <div class="modal-overlay absolute inset-0" onclick="closeModal()"></div>
-        <div class="modal-content relative p-6 md:p-8 max-w-4xl w-full rounded-[2.5rem] overflow-hidden">
-            <button onclick="closeModal()" class="absolute top-6 right-6 text-white/40 hover:text-white transition-colors text-3xl z-20">&times;</button>
-            <div class="flex flex-col gap-4">
-                <div class="flex flex-row pr-1">
-                    <div class="flex-grow text-left" dir="ltr">
-                        <h2 id="fullTitle" class="text-xl md:text-3xl font-black tracking-tighter text-white uppercase leading-tight drop-shadow-md">TRACK NAME</h2>
-                    </div>
-                </div>
-                <div class="flex flex-col md:flex-row gap-8 items-center">
-                    <div class="w-full">
-                        <div class="video-container border border-white/10">
-                            <iframe id="youtubePlayer" src="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                        </div>
-                    </div>
-                    <div class="flex flex-row md:flex-col gap-8 px-2">
-                        <a id="spotifyLink" href="#" target="_blank" class="text-[#1DB954] hover:scale-125 transition-transform filter drop-shadow-lg">
-                            <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.372 0 0 5.372 0 12s5.372 12 12 12 12-5.372 12-12S18.628 0 12 0zm5.503 17.306c-.214.351-.674.462-1.025.248-2.859-1.747-6.458-2.143-10.697-1.176-.401.092-.803-.16-.895-.561-.092-.401.16-.803.561-.895 4.636-1.059 8.625-.6 11.808 1.346.351.214.462.674.248 1.038zm1.472-3.26c-.269.438-.845.578-1.283.309-3.272-2.011-8.258-2.592-12.127-1.417-.492.149-1.011-.131-1.16-.622-.149-.491.131-1.011.622-1.16 4.417-1.341 9.914-.689 13.639 1.601.438.269.578.845.309 1.289zm.126-3.4c-3.924-2.33-10.387-2.545-14.151-1.403-.601.182-1.234-.165-1.416-.766-.182-.6.165-1.234.766-1.416 4.314-1.31 11.451-1.054 15.965 1.625.54.32.716 1.016.396 1.556-.32.54-1.016.716-1.556.396z"/></svg>
-                        </a>
-                        <a id="youtubeIconLink" href="#" target="_blank" class="text-[#FF0000] hover:scale-125 transition-transform filter drop-shadow-lg">
-                            <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
-                        </a>
-                        <a id="soundcloudLink" href="#" target="_blank" class="text-[#FF3300] hover:scale-125 transition-transform filter drop-shadow-lg">
-                            <svg class="w-10 h-10" fill="currentColor" viewBox="0 0 24 24"><path d="M7 16h-.5c-.276 0-.5-.224-.5-.5v-4c0-.276.224-.5.5-.5H7c.276 0 .5.224.5.5v4c0 .276-.224.5-.5.5zm3 1h-.5c-.276 0-.5-.224-.5-.5v-6c0-.276.224-.5.5-.5H10c.276 0 .5.224.5.5v6c0 .276-.224.5-.5.5zm3 1h-.5c-.276 0-.5-.224-.5-.5v-10c0-.276.224-.5.5-.5H13c.276 0 .5.224.5.5v10c0 .276-.224.5-.5.5zm3-1h-.5c-.276 0-.5-.224-.5-.5v-7c0-.276.224-.5.5-.5H16c.276 0 .5.224.5.5v7c0 .276-.224.5-.5.5zm3-2h-.5c-.276 0-.5-.224-.5-.5v-4c0-.276.224-.5.5-.5H19c.276 0 .5.224.5.5v4c0 .276-.224.5-.5.5zM4 15h-.5c-.276 0-.5-.224-.5-.5v-2c0-.276.224-.5.5-.5H4c.276 0 .5.224.5.5v2c0 .276-.224.5-.5.5z"/></svg>
-                        </a>
-                    </div>
-                </div>
+    <!-- מודאל מעודן עם פונט Lato -->
+    <div id="modal" class="fixed inset-0 z-[200] flex items-center justify-center p-6">
+        <div class="absolute inset-0 bg-black/70 backdrop-blur-md" onclick="closeModal()"></div>
+        <div class="modal-content relative w-full max-w-2xl rounded-[1.5rem] p-8 md:p-12 flex flex-col gap-8">
+            <button onclick="closeModal()" class="absolute top-6 right-8 text-white/20 hover:text-white transition-all text-xl font-light">&times;</button>
+            
+            <div class="text-center" dir="ltr">
+                <!-- צמצום הריווח בין האותיות לבקשת המשתמש מ-0.4em ל-0.15em -->
+                <h3 id="fullTitle" class="text-lg md:text-xl font-light uppercase tracking-[0.15em] text-white/90">TRACK TITLE</h3>
+                <div class="h-[1px] w-8 bg-white/10 mx-auto mt-4"></div>
+            </div>
+
+            <div class="video-wrapper">
+                <iframe id="youtubePlayer" class="w-full h-full" src="" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+            </div>
+
+            <div class="flex justify-center gap-12 items-center opacity-40 hover:opacity-100 transition-opacity duration-700">
+                <a id="spotifyLink" href="#" target="_blank" class="hover:scale-110 transition-transform">
+                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.372 0 0 5.372 0 12s5.372 12 12 12 12-5.372 12-12S18.628 0 12 0zm5.503 17.306c-.214.351-.674.462-1.025.248-2.859-1.747-6.458-2.143-10.697-1.176-.401.092-.803-.16-.895-.561-.092-.401.16-.803.561-.895 4.636-1.059 8.625-.6 11.808 1.346.351.214.462.674.248 1.038zm1.472-3.26c-.269.438-.845.578-1.283.309-3.272-2.011-8.258-2.592-12.127-1.417-.492.149-1.011-.131-1.16-.622-.149-.491.131-1.011.622-1.16 4.417-1.341 9.914-.689 13.639 1.601.438.269.578.845.309 1.289zm.126-3.4c-3.924-2.33-10.387-2.545-14.151-1.403-.601.182-1.234-.165-1.416-.766-.182-.6.165-1.234.766-1.416 4.314-1.31 11.451-1.054 15.965 1.625.54.32.716 1.016.396 1.556-.32.54-1.016.716-1.556.396z"/></svg>
+                </a>
+                <a id="youtubeIconLink" href="#" target="_blank" class="hover:scale-110 transition-transform">
+                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+                </a>
+                <a id="soundcloudLink" href="#" target="_blank" class="hover:scale-110 transition-transform">
+                    <svg class="w-7 h-7" fill="currentColor" viewBox="0 0 24 24"><path d="M7 16h-.5c-.276 0-.5-.224-.5-.5v-4c0-.276.224-.5.5-.5H7c.276 0 .5.224.5.5v4c0 .276-.224.5-.5.5zm3 1h-.5c-.276 0-.5-.224-.5-.5v-6c0-.276.224-.5.5-.5H10c.276 0 .5.224.5.5v6c0 .276-.224.5-.5.5zm3 1h-.5c-.276 0-.5-.224-.5-.5v-10c0-.276.224-.5.5-.5H13c.276 0 .5.224.5.5v10c0 .276-.224.5-.5.5zm3-1h-.5c-.276 0-.5-.224-.5-.5v-7c0-.276.224-.5.5-.5H16c.276 0 .5.224.5.5v7c0 .276-.224.5-.5.5zm3-2h-.5c-.276 0-.5-.224-.5-.5v-4c0-.276.224-.5.5-.5H19c.276 0 .5.224.5.5v4c0 .276-.224.5-.5.5zM4 15h-.5c-.276 0-.5-.224-.5-.5v-2c0-.276.224-.5.5-.5H4c.276 0 .5.224.5.5v2c0 .276-.224.5-.5.5z"/></svg>
+                </a>
             </div>
         </div>
     </div>
@@ -364,7 +292,7 @@
             { src: "image2.jpg", title: "Cosmic Gate, Christian Burns - Brave (Mozes Remix)", youtubeId: "kO8ylPtWT14", spotify: "https://open.spotify.com/track/4L0swo2Q5bgMFt7QLW2VLJ?si=2a65641dd59345b8", soundcloud: "https://soundcloud.com/cosmicgateofficial/brave-mozes-remix" },
             { src: "image3.jpg", title: "James Hype - Dont Wake Me Up (Mozes Remix)", youtubeId: "57W4t-hN3Vo", spotify: "", soundcloud: "https://soundcloud.com/mozesofc/james-hype-dont-wake-me-up-mozes-remix" },
             { src: "image4.jpg", title: "Tayri - Black Sheep (Mozes Remix)", youtubeId: "DKCr5GG4PXA", spotify: "https://open.spotify.com/track/4W9jAYLHL9WY0VSJReAWyz?si=e6cc592efde24263", soundcloud: "https://soundcloud.com/tayrimusic/black-sheep-mozes-remix" },
-            { src: "image5.jpg", title: "Mozes ft. Sapir J. Fox - What Took You So Long (Mozes Remix)", youtubeId: "gcReNaVNd4E", spotify: "https://open.spotify.com/track/11GmTco3PeaDi8YL4e1bW9?si=9d1b0bb5358d45ac", soundcloud: "https://soundcloud.com/mozesofc/wtyslmozesrmx" },
+            { src: "image5.jpg", title: "Mozes - What Took You So Long (Mozes Remix)", youtubeId: "gcReNaVNd4E", spotify: "https://open.spotify.com/track/11GmTco3PeaDi8YL4e1bW9?si=9d1b0bb5358d45ac", soundcloud: "https://soundcloud.com/mozesofc/wtyslmozesrmx" },
             { src: "image6.jpg", title: "Mozes & Mushy - Found Myself", youtubeId: "Lk1KZFLwV3Q", spotify: "https://open.spotify.com/track/2MBh2ud1J7vKwR4uJwwAJU?si=340c87450a8c4c3a", soundcloud: "https://soundcloud.com/mozesofc/mozesxmushy-found-myself" },
             { src: "image7.jpg", title: "Mozes - Trust Me", youtubeId: "34tKhmQV2tc", spotify: "https://open.spotify.com/track/5lEI5Ywvd7zUC9x6JATxkU?si=9e49dc74ef094e53", soundcloud: "https://soundcloud.com/mozesofc/mozes-trust-me-r" },
             { src: "image8.jpg", title: "Mozes - Nights In White Satin", youtubeId: "t1rYx5CewP8", spotify: "https://open.spotify.com/track/0nu2UYXq3rhxa1fNFRcfPu?si=1f53656a94124448", soundcloud: "https://soundcloud.com/mozesofc/mozes-nights-in-white-satin" },
@@ -372,59 +300,51 @@
             { src: "image10.jpg", title: "Mozes - Home", youtubeId: "KwZS_LO0ijc", spotify: "https://open.spotify.com/track/5gRfW2abrCOZQpG9PbWikH?si=619603f0165c421a", soundcloud: "https://soundcloud.com/mozesofc/mozes-home-radio-edit" },
             { src: "image11.jpg", title: "Mozes - Two Souls", youtubeId: "_fe05MJLhy8", spotify: "https://open.spotify.com/track/0xVrvo5uHs6I210jsv3vfy?si=9196baa8ac5c48b5", soundcloud: "https://soundcloud.com/mozesofc/mozes-2-souls" },
             { src: "image12.jpg", title: "Mozes - They Say", youtubeId: "AIVBYJC1Gtg", spotify: "https://open.spotify.com/track/452MRziT5Dq7opF9qGCf5U?si=8466ebe7493e4550", soundcloud: "https://soundcloud.com/mozesofc/mozes-they-say-r" },
-            { src: "image13.jpg", title: "Mozes Feat Sapir J. Fox - The Otherside", youtubeId: "y_LntJI2uqo", spotify: "https://open.spotify.com/track/4leube2v9p8EuVb52Dd3YG?si=c193f92a2d7a42c6", soundcloud: "https://soundcloud.com/mozesofc/mozes-sapir-the-otherside" },
+            { src: "image13.jpg", title: "Mozes ft. Sapir J. Fox - The Otherside", youtubeId: "y_LntJI2uqo", spotify: "https://open.spotify.com/track/4leube2v9p8EuVb52Dd3YG?si=c193f92a2d7a42c6", soundcloud: "https://soundcloud.com/mozesofc/mozes-sapir-the-otherside" },
             { src: "image14.jpg", title: "Mozes - Save Our Future", youtubeId: "AhefaUTmnwo", spotify: "https://open.spotify.com/track/5ea19cn1sh6lOCXMun7fzl?si=2d588f08d5cc415f", soundcloud: "https://soundcloud.com/mozesofc/mozes-save-our-future-r" },
             { src: "image15.jpg", title: "Mozes - Atlantis", youtubeId: "Tl4ZQ4KhtD4", spotify: "https://open.spotify.com/track/6z9GxXxcAvtcso9z0Q5ENz?si=5ccd25477dea4c1c", soundcloud: "https://soundcloud.com/mozesofc/mozes-atlantis" },
             { src: "image16.jpg", title: "Mozes - Nowhere To Hide", youtubeId: "0_tl1Xrsnus", spotify: "https://open.spotify.com/track/3K8fQDov2z6KgmrikuGeIA?si=85b1af1dd9834eb0", soundcloud: "https://soundcloud.com/mozesofc/mozes-nowhere-to-hide-r" },
             { src: "image17.jpg", title: "Mozes ft. Sapir J. Fox - Reborn Again", youtubeId: "EJeLvlcBXas", spotify: "https://open.spotify.com/track/3lbh8xwPegIaUzctkT2GNd?si=7cde9b64fd6d4eb7", soundcloud: "https://soundcloud.com/mozesofc/mozes-sapir-reborn-again" },
-            { src: "image18.jpg", title: "Mozes - Trust Me (The DnB Version)", youtubeId: "Lk1KZFLwV3Q", spotify: "https://open.spotify.com/track/1d8Z4FpBiPmLzF15mTrUbA?si=f963e61c2ff840e5", soundcloud: "https://soundcloud.com/mozesofc/mozes-trust-me-the-dnb-4" },
+            { src: "image18.jpg", title: "Mozes - Trust Me (DnB Remix)", youtubeId: "Lk1KZFLwV3Q", spotify: "https://open.spotify.com/track/1d8Z4FpBiPmLzF15mTrUbA?si=f963e61c2ff840e5", soundcloud: "https://soundcloud.com/mozesofc/mozes-trust-me-the-dnb-4" },
             { src: "image19.jpg", title: "Mozes & Jazz - Wealth, Power & Fame", youtubeId: "ecL3Out6ja8", spotify: "https://open.spotify.com/track/5axqxREDfJF5vRibAghSWP?si=f5b9252112f24dd2", soundcloud: "https://soundcloud.com/mozesofc/mozes-jazz-wealth-power-and-fame" },
             { src: "image20.jpg", title: "Mozes - Late at Night", youtubeId: "4U_tvQ4WSRo", spotify: "https://open.spotify.com/track/7bUSduMOSEcBORTvDZcq5J?si=abebea2b300f44ca", soundcloud: "https://soundcloud.com/mozesofc/mozes-late-at-night-radio-edit" }
         ];
 
         let currentIndex = 0;
         let activeLayer = 1;
-
         const img1 = document.getElementById('img1');
         const img2 = document.getElementById('img2');
         const glow1 = document.getElementById('glow1');
         const glow2 = document.getElementById('glow2');
-        const imageLayer = document.getElementById('imageLayer');
-        const scrollArea = document.getElementById('scrollArea');
         const scrollIndicator = document.getElementById('scrollIndicator');
-        const modal = document.getElementById('modal');
-        const fullTitle = document.getElementById('fullTitle');
-        const ytPlayer = document.getElementById('youtubePlayer');
-        const releasesPage = document.getElementById('releases-page');
         const releasesGrid = document.getElementById('releasesGrid');
+        const releasesPage = document.getElementById('releases-page');
+        const modal = document.getElementById('modal');
 
-        // בניית דף הבית
+        // אתחול עמוד הבית
         tracks.forEach((_, i) => {
-            const div = document.createElement('div');
-            div.className = 'scroll-section';
-            scrollArea.appendChild(div);
-
+            const sec = document.createElement('div');
+            sec.className = 'scroll-section';
+            document.getElementById('scrollArea').appendChild(sec);
             const dot = document.createElement('div');
             dot.className = `scroll-dot ${i === 0 ? 'active' : ''}`;
             dot.id = `dot-${i}`;
-            dot.onclick = () => {
-                window.scrollTo({ top: i * window.innerHeight, behavior: 'smooth' });
-            };
+            dot.onclick = () => window.scrollTo({ top: i * window.innerHeight, behavior: 'smooth' });
             scrollIndicator.appendChild(dot);
         });
 
-        // בניית דף Releases
+        // אתחול Releases
         tracks.forEach((track, i) => {
             const card = document.createElement('div');
-            card.className = 'release-card';
-            card.onclick = () => {
-                currentIndex = i;
-                openModal();
-            };
+            card.className = 'release-card group cursor-pointer';
+            card.onclick = () => { currentIndex = i; openModal(); };
             card.innerHTML = `
-                <img src="${track.src}" alt="${track.title}">
-                <div class="overlay">
-                    <span class="text-white font-bold text-sm tracking-tighter uppercase">${track.title}</span>
+                <div class="aspect-square overflow-hidden">
+                    <img src="${track.src}" class="w-full h-full object-cover opacity-60 group-hover:opacity-100 transition-all duration-700 scale-100 group-hover:scale-105">
+                </div>
+                <div class="p-4 bg-white/[0.02]">
+                    <p class="text-[9px] uppercase tracking-[0.2em] text-white/20 mb-1">Track</p>
+                    <p class="text-[11px] font-light uppercase tracking-wider text-white/80 truncate">${track.title}</p>
                 </div>
             `;
             releasesGrid.appendChild(card);
@@ -435,64 +355,40 @@
 
         window.addEventListener('scroll', () => {
             if(releasesPage.style.display === 'block') return;
-
-            const vh = window.innerHeight;
-            const scrollY = window.scrollY;
-            
-            const sectionProgress = (scrollY % vh) / vh;
-            if (sectionProgress > 0.4 && sectionProgress < 0.6) {
-                imageLayer.style.opacity = "0";
-            } else {
-                imageLayer.style.opacity = "1";
-            }
-
-            const index = Math.min(tracks.length - 1, Math.round(scrollY / vh));
-            if (index !== currentIndex) {
-                currentIndex = index;
-                updateUI(currentIndex);
+            const idx = Math.min(tracks.length - 1, Math.round(window.scrollY / window.innerHeight));
+            if (idx !== currentIndex) {
+                currentIndex = idx;
+                updateUI(idx);
             }
         });
 
         function updateUI(idx) {
-            document.querySelectorAll('.scroll-dot').forEach(dot => dot.classList.remove('active'));
-            const activeDot = document.getElementById(`dot-${idx}`);
-            if(activeDot) activeDot.classList.add('active');
-
-            const nextImg = activeLayer === 1 ? img2 : img1;
-            const currentImg = activeLayer === 1 ? img1 : img2;
-            const nextGlow = activeLayer === 1 ? glow2 : glow1;
-            const currentGlow = activeLayer === 1 ? glow1 : glow2;
-            
-            nextImg.src = tracks[idx].src;
-            nextGlow.src = tracks[idx].src;
-            
-            nextImg.classList.add('active');
-            nextGlow.classList.add('active');
-            currentImg.classList.remove('active');
-            currentGlow.classList.remove('active');
-            
+            document.querySelectorAll('.scroll-dot').forEach(d => d.classList.remove('active'));
+            document.getElementById(`dot-${idx}`)?.classList.add('active');
+            const [nextImg, currImg] = activeLayer === 1 ? [img2, img1] : [img1, img2];
+            const [nextGlow, currGlow] = activeLayer === 1 ? [glow2, glow1] : [glow1, glow2];
+            nextImg.src = tracks[idx].src; nextGlow.src = tracks[idx].src;
+            nextImg.classList.add('active'); nextGlow.classList.add('active');
+            currImg.classList.remove('active'); currGlow.classList.remove('active');
             activeLayer = activeLayer === 1 ? 2 : 1;
         }
 
         function navigate(page) {
-            document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
             document.getElementById(`nav-${page}`).classList.add('active');
-
             if (page === 'home') {
                 releasesPage.style.opacity = "0";
                 setTimeout(() => {
                     releasesPage.style.display = "none";
-                    imageLayer.style.visibility = "visible";
-                    imageLayer.style.opacity = "1";
+                    document.getElementById('imageLayer').style.opacity = "1";
                     scrollIndicator.style.opacity = "1";
                     document.documentElement.style.scrollSnapType = "y mandatory";
                     window.scrollTo(0, currentIndex * window.innerHeight);
                 }, 400);
-            } else if (page === 'releases') {
-                imageLayer.style.opacity = "0";
+            } else {
+                document.getElementById('imageLayer').style.opacity = "0";
                 scrollIndicator.style.opacity = "0";
                 setTimeout(() => {
-                    imageLayer.style.visibility = "hidden";
                     releasesPage.style.display = "block";
                     setTimeout(() => releasesPage.style.opacity = "1", 50);
                     document.documentElement.style.scrollSnapType = "none";
@@ -502,26 +398,21 @@
         }
 
         function openModal() {
-            const currentTrack = tracks[currentIndex];
-            fullTitle.innerText = currentTrack.title;
-            ytPlayer.src = `https://www.youtube.com/embed/${currentTrack.youtubeId}?autoplay=1&modestbranding=1&rel=0`;
-            document.getElementById('youtubeIconLink').href = `https://www.youtube.com/watch?v=${currentTrack.youtubeId}`;
-            
-            const spLink = document.getElementById('spotifyLink');
-            spLink.style.display = currentTrack.spotify ? 'flex' : 'none';
-            if(currentTrack.spotify) spLink.href = currentTrack.spotify;
-
-            const scLink = document.getElementById('soundcloudLink');
-            scLink.style.display = currentTrack.soundcloud ? 'flex' : 'none';
-            if(currentTrack.soundcloud) scLink.href = currentTrack.soundcloud;
-            
-            modal.classList.remove('hidden');
+            const track = tracks[currentIndex];
+            document.getElementById('fullTitle').innerText = track.title;
+            document.getElementById('youtubePlayer').src = `https://www.youtube.com/embed/${track.youtubeId}?autoplay=1&modestbranding=1&rel=0`;
+            document.getElementById('youtubeIconLink').href = `https://www.youtube.com/watch?v=${track.youtubeId}`;
+            const s = document.getElementById('spotifyLink');
+            s.style.display = track.spotify ? 'block' : 'none'; s.href = track.spotify;
+            const sc = document.getElementById('soundcloudLink');
+            sc.style.display = track.soundcloud ? 'block' : 'none'; sc.href = track.soundcloud;
+            modal.classList.add('active');
             document.body.style.overflow = 'hidden';
         }
 
         function closeModal() {
-            ytPlayer.src = ""; 
-            modal.classList.add('hidden');
+            modal.classList.remove('active');
+            document.getElementById('youtubePlayer').src = "";
             document.body.style.overflow = 'auto';
         }
     </script>
