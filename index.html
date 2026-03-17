@@ -8,8 +8,7 @@
     <title>MOZES</title>
     <meta property="og:title" content="MOZES">
     <meta property="og:description" content="Official Artist Website - New Releases & Socials">
-    <!-- החלף את הלינק למטה בכתובת האמיתית של התמונה לאחר העלאת האתר -->
-    <meta property="og:image" content="https://github.com/Mozesofc/Mozes/blob/main/image1.jpg">
+    <meta property="og:image" content="https://github.com/Mozesofc/Mozes/blob/main/image1.jpg?raw=true">
     <meta property="og:url" content="https://mozesmusic.com">
     <meta property="og:type" content="website">
 
@@ -51,7 +50,7 @@
 
         .ambient-glow {
             position: absolute;
-            width: 140vmin; /* מעט גדול יותר כדי למנוע קצוות חתוכים בזמן תנועה */
+            width: 140vmin;
             height: 140vmin;
             object-fit: cover;
             filter: blur(100px) saturate(3) contrast(1.2); 
@@ -60,7 +59,6 @@
             will-change: transform, opacity;
         }
 
-        /* Fluid Movement & Breathing Animation */
         @keyframes fluidMove {
             0% { transform: translate(0, 0) scale(1) rotate(0deg); }
             33% { transform: translate(5%, -5%) scale(1.05) rotate(2deg); }
@@ -124,7 +122,7 @@
             scroll-snap-align: start;
         }
 
-        /* RELEASES Page (Hidden Overlay) */
+        /* RELEASES Page */
         #releases-page {
             position: fixed;
             top: 0;
@@ -164,7 +162,7 @@
             background: rgba(255,255,255,0.07);
         }
 
-        /* Social Section At Bottom of Home */
+        /* Social Section */
         .social-section {
             height: 100vh;
             scroll-snap-align: start;
@@ -198,7 +196,7 @@
         /* Bottom Nav */
         .bottom-nav {
             position: fixed;
-            bottom: 2.5rem;
+            bottom: 2rem;
             left: 50%;
             transform: translateX(-50%);
             z-index: 2000;
@@ -228,7 +226,7 @@
             color: #fff;
         }
 
-        /* MODAL LIQUID GLASS STYLE */
+        /* MODAL */
         #modal {
             transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
             opacity: 0;
@@ -246,8 +244,39 @@
             backdrop-filter: blur(60px) saturate(1.8);
             -webkit-backdrop-filter: blur(60px) saturate(1.8);
             border: 1px solid rgba(255, 255, 255, 0.08);
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.8);
             border-radius: 2rem;
+        }
+
+        .modal-nav-arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255,255,255,0.05);
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            opacity: 0.5;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            z-index: 100;
+        }
+
+        .modal-nav-arrow:hover {
+            opacity: 1;
+            background: rgba(255,255,255,0.15);
+        }
+
+        .arrow-prev { left: -60px; }
+        .arrow-next { right: -60px; }
+
+        @media (max-width: 768px) {
+            .arrow-prev { left: 10px; }
+            .arrow-next { right: 10px; }
+            .modal-nav-arrow { width: 35px; height: 35px; background: rgba(0,0,0,0.4); }
         }
 
         .track-btn {
@@ -258,7 +287,7 @@
             font-size: 0.6rem;
             letter-spacing: 0.15em;
             text-transform: uppercase;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transition: all 0.4s ease;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -266,30 +295,9 @@
             color: rgba(255,255,255,0.4);
         }
 
-        /* Brand Specific Hover Effects */
-        .btn-spotify:hover {
-            background: rgba(30, 215, 96, 0.15);
-            border-color: rgba(30, 215, 96, 0.5);
-            color: #1ED760;
-            box-shadow: 0 0 15px rgba(30, 215, 96, 0.2);
-            transform: translateY(-2px);
-        }
-
-        .btn-soundcloud:hover {
-            background: rgba(255, 51, 0, 0.15);
-            border-color: rgba(255, 51, 0, 0.5);
-            color: #FF3300;
-            box-shadow: 0 0 15px rgba(255, 51, 0, 0.2);
-            transform: translateY(-2px);
-        }
-
-        .btn-youtube:hover {
-            background: rgba(255, 0, 0, 0.15);
-            border-color: rgba(255, 0, 0, 0.5);
-            color: #FF0000;
-            box-shadow: 0 0 15px rgba(255, 0, 0, 0.2);
-            transform: translateY(-2px);
-        }
+        .btn-spotify:hover { background: rgba(30, 215, 96, 0.15); border-color: #1ED760; color: #1ED760; }
+        .btn-soundcloud:hover { background: rgba(255, 51, 0, 0.15); border-color: #FF3300; color: #FF3300; }
+        .btn-youtube:hover { background: rgba(255, 0, 0, 0.15); border-color: #FF0000; color: #FF0000; }
 
         .scroll-dot {
             width: 4px;
@@ -297,22 +305,11 @@
             background: rgba(255, 255, 255, 0.1);
             border-radius: 50%;
             transition: all 0.4s ease;
-            cursor: pointer;
         }
 
         .scroll-dot.active {
             background: #fff;
             transform: scale(1.8);
-        }
-
-        .jump-btn-integrated {
-            width: 24px;
-            height: 24px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            color: rgba(255, 255, 255, 0.2);
         }
     </style>
 </head>
@@ -323,15 +320,9 @@
         <img id="glow2" src="" class="ambient-glow">
     </div>
 
-    <!-- Scroll Indicators -->
-    <div id="side-nav" class="fixed right-8 top-1/2 -translate-y-1/2 z-[100] flex flex-col items-center gap-6 transition-opacity duration-500">
-        <button onclick="jumpTo('top')" class="jump-btn-integrated">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="18 15 12 9 6 15"></polyline></svg>
-        </button>
+    <!-- Side Indicators -->
+    <div id="side-nav" class="fixed right-6 top-1/2 -translate-y-1/2 z-[100] flex flex-col items-center gap-6">
         <div class="flex flex-col gap-4" id="scrollIndicator"></div>
-        <button onclick="jumpTo('bottom')" class="jump-btn-integrated">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"></polyline></svg>
-        </button>
     </div>
 
     <div id="imageLayer" class="fixed-image-layer">
@@ -341,11 +332,9 @@
         </div>
     </div>
 
-    <!-- Main Home Scroll Container -->
+    <!-- Scroll Content -->
     <div id="home-content">
         <div id="scrollArea"></div>
-
-        <!-- Social Section -->
         <div id="social-section" class="social-section">
             <div class="mb-12">
                 <h2 class="text-4xl md:text-6xl font-thin uppercase tracking-[0.4em] mb-4">Connect</h2>
@@ -358,60 +347,58 @@
                 <a href="https://www.instagram.com/Mozesofc" target="_blank" class="social-link">Instagram</a>
                 <a href="https://linktr.ee/mozesofc" target="_blank" class="social-link">Linktree</a>
                 <div class="mt-8">
-                    <p class="text-[9px] uppercase tracking-[0.5em] text-white/20 mb-2">For contact and promos</p>
-                    <a href="mailto:Info@mozesmusic.com" class="text-white/60 hover:text-white transition-all tracking-[0.1em] font-light">Info@mozesmusic.com</a>
+                    <p class="text-[9px] uppercase tracking-[0.5em] text-white/20 mb-2">Contact</p>
+                    <a href="mailto:Info@mozesmusic.com" class="text-white/60 hover:text-white transition-all tracking-[0.1em]">Info@mozesmusic.com</a>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- RELEASES Page -->
+    <!-- RELEASES -->
     <div id="releases-page">
         <div class="max-w-6xl mx-auto px-4 pb-32">
             <header class="mb-16 text-center">
                 <h2 class="text-3xl md:text-5xl font-light uppercase tracking-[0.3em] mb-4">Releases</h2>
-                <div class="h-[1px] w-12 bg-white/20 mx-auto mb-4"></div>
             </header>
             <div class="releases-grid" id="releasesGrid"></div>
         </div>
     </div>
 
-    <!-- Bottom Nav -->
+    <!-- Nav -->
     <nav class="bottom-nav" dir="ltr">
         <button onclick="navigate('home')" id="nav-home" class="nav-btn active">Mozes</button>
         <button onclick="navigate('releases')" id="nav-releases" class="nav-btn">Releases</button>
         <button onclick="navigate('social')" id="nav-social" class="nav-btn">Socials</button>
     </nav>
 
-    <!-- Modal Liquid Glass -->
-    <div id="modal" class="fixed inset-0 flex items-center justify-center p-6">
-        <div class="absolute inset-0 bg-black/50 backdrop-blur-sm" onclick="closeModal()"></div>
-        <div class="relative w-full max-w-2xl liquid-glass p-8 md:p-12 flex flex-col gap-8 transition-transform duration-500 scale-95" id="modalFrame">
-            <button onclick="closeModal()" class="absolute top-6 right-8 text-white/20 hover:text-white transition-all text-2xl font-light">&times;</button>
+    <!-- Modal -->
+    <div id="modal" class="fixed inset-0 flex items-center justify-center p-4">
+        <div class="absolute inset-0 bg-black/70 backdrop-blur-sm" onclick="closeModal()"></div>
+        
+        <div class="relative w-full max-w-2xl liquid-glass p-6 md:p-10 flex flex-col gap-6 transition-transform duration-500 scale-95" id="modalFrame">
+            <!-- Modal Navigation Arrows -->
+            <div class="modal-nav-arrow arrow-prev" onclick="prevTrack(event)">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"></polyline></svg>
+            </div>
+            <div class="modal-nav-arrow arrow-next" onclick="nextTrack(event)">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
+            </div>
+
+            <button onclick="closeModal()" class="absolute top-4 right-6 text-white/20 hover:text-white text-2xl">&times;</button>
             
-            <div class="flex flex-col gap-2">
-                <h3 id="fullTitle" class="text-base md:text-lg font-light uppercase tracking-[0.1em] text-white/80 text-left" dir="ltr">TRACK TITLE</h3>
-                <div class="h-[1px] w-6 bg-white/10"></div>
+            <div class="flex flex-col gap-1">
+                <h3 id="fullTitle" class="text-sm md:text-base font-light uppercase tracking-[0.1em] text-white/90 text-left" dir="ltr">TRACK TITLE</h3>
+                <div class="h-[1px] w-8 bg-white/20"></div>
             </div>
 
             <div class="aspect-video w-full rounded-xl overflow-hidden bg-black/50 border border-white/5 shadow-2xl">
                 <iframe id="youtubePlayer" class="w-full h-full" src="" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
             </div>
 
-            <!-- External Links - Brand Glow -->
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-3" id="modalLinks">
-                <a id="linkSpotify" href="#" target="_blank" class="track-btn btn-spotify">
-                    <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.372 0 0 5.372 0 12s5.372 12 12 12 12-5.372 12-12S18.628 0 12 0zm5.508 17.307c-.223.367-.703.486-1.07.262-2.928-1.788-6.613-2.193-10.957-1.198-.42.096-.843-.17-.939-.59-.096-.42.17-.843.59-.939 4.756-1.087 8.826-.624 12.113 1.383.368.224.487.704.263 1.072zm1.47-3.253c-.282.458-.883.6-1.341.32-3.352-2.06-8.463-2.657-12.43-1.451-.515.157-1.066-.135-1.223-.65-.157-.515.135-1.066.65-1.223 4.54-1.378 10.177-.708 14.024 1.66.458.282.6.883.32 1.341zm.127-3.393c-4.022-2.387-10.647-2.607-14.493-1.44-.617.187-1.266-.168-1.453-.785-.187-.617.168-1.266.785-1.453 4.417-1.34 11.722-1.082 16.36 1.672.554.328.74 1.042.41 1.597-.33.554-1.045.74-1.597.41z"/></svg>
-                    Spotify
-                </a>
-                <a id="linkSoundcloud" href="#" target="_blank" class="track-btn btn-soundcloud">
-                    <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M11.56 8.35c.1 0 .21.01.32.02.32-2.8 2.68-4.97 5.56-4.97 3.09 0 5.59 2.5 5.59 5.59 0 .1 0 .2-.01.31.54.43.91 1.08.97 1.81.01.12.01.24.01.36 0 1.25-1.02 2.27-2.27 2.27H11.73c-.09 0-.17-.07-.17-.17V8.52c0-.09.08-.17.17-.17-.05 0-.11 0-.17 0zm-1.4 5.25c0 .1-.08.17-.17.17H9.82c-.09 0-.17-.07-.17-.17v-4.5c0-.09.08-.17.17-.17h.17c.09 0 .17.08.17.17v4.5zm-1.87 0c0 .1-.07.17-.17.17H7.95c-.1 0-.17-.07-.17-.17V9.75c0-.09.07-.17.17-.17h.17c.1 0 .17.08.17.17v3.85zm-1.86 0c0 .1-.08.17-.17.17H6.09c-.09 0-.17-.07-.17-.17v-3.11c0-.1.08-.17.17-.17h.17c.09 0 .17.07.17.17v3.11zm-1.87 0c0 .1-.07.17-.17.17H4.22c-.09 0-.17-.07-.17-.17v-2.12c0-.09.08-.17.17-.17h.17c.1 0 .17.08.17.17v2.12zm-1.87 0c0 .1-.07.17-.17.17H2.35c-.1 0-.17-.07-.17-.17V12.1c0-.09.07-.17.17-.17h.17c.1 0 .17.08.17.17v1.5zm-1.86 0c0 .1-.08.17-.17.17H.48c-.09 0-.17-.07-.17-.17v-.65c0-.1.08-.17.17-.17h.17c.09 0 .17.07.17.17v.65z"/></svg>
-                    SoundCloud
-                </a>
-                <a id="linkYoutube" href="#" target="_blank" class="track-btn btn-youtube">
-                    <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
-                    YouTube
-                </a>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                <a id="linkSpotify" href="#" target="_blank" class="track-btn btn-spotify">Spotify</a>
+                <a id="linkSoundcloud" href="#" target="_blank" class="track-btn btn-soundcloud">SoundCloud</a>
+                <a id="linkYoutube" href="#" target="_blank" class="track-btn btn-youtube">YouTube</a>
             </div>
         </div>
     </div>
@@ -443,6 +430,8 @@
         let currentIndex = 0;
         let activeLayer = 1;
         let isReleasesOpen = false;
+        let isModalOpen = false;
+        let modalIndex = 0;
 
         const img1 = document.getElementById('img1');
         const img2 = document.getElementById('img2');
@@ -452,9 +441,8 @@
         const releasesGrid = document.getElementById('releasesGrid');
         const releasesPage = document.getElementById('releases-page');
         const scrollArea = document.getElementById('scrollArea');
-        const sideNav = document.getElementById('side-nav');
 
-        // Setup sections
+        // Init Sections
         const totalHomeSections = tracks.length + 1;
         for(let i=0; i < tracks.length; i++) {
             const sec = document.createElement('div');
@@ -462,25 +450,21 @@
             scrollArea.appendChild(sec);
         }
 
-        // Setup dots
+        // Init Dots
         for(let i=0; i < totalHomeSections; i++) {
             const dot = document.createElement('div');
             dot.className = `scroll-dot ${i === 0 ? 'active' : ''}`;
             dot.id = `dot-${i}`;
-            dot.onclick = () => {
-                if(isReleasesOpen) navigate('home');
-                window.scrollTo({ top: i * window.innerHeight, behavior: 'smooth' });
-            };
             scrollIndicator.appendChild(dot);
         }
 
-        // Fill Releases Grid
+        // Fill Grid
         tracks.forEach((track, i) => {
             const card = document.createElement('div');
             card.className = 'release-card';
-            card.onclick = () => { openModal(i); };
-            card.innerHTML = `<div class="aspect-square bg-zinc-900"><img src="${track.src}" class="w-full h-full object-cover"></div>
-                             <div class="p-4 text-[10px] tracking-[0.2em] uppercase text-white/90 truncate text-left" dir="ltr">${track.title}</div>`;
+            card.onclick = () => openModal(i);
+            card.innerHTML = `<img src="${track.src}" class="w-full aspect-square object-cover">
+                             <div class="p-4 text-[9px] tracking-[0.2em] uppercase text-white/80 truncate text-left" dir="ltr">${track.title}</div>`;
             releasesGrid.appendChild(card);
         });
 
@@ -506,6 +490,19 @@
             document.getElementById(`dot-${idx}`)?.classList.add('active');
         });
 
+        // Keyboard Navigation Support
+        window.addEventListener('keydown', (e) => {
+            if (!isModalOpen) return;
+            
+            if (e.key === "ArrowRight") {
+                nextTrack(e);
+            } else if (e.key === "ArrowLeft") {
+                prevTrack(e);
+            } else if (e.key === "Escape") {
+                closeModal();
+            }
+        });
+
         function updateUI(idx) {
             const [nextImg, currImg] = activeLayer === 1 ? [img2, img1] : [img1, img2];
             const [nextGlow, currGlow] = activeLayer === 1 ? [glow2, glow1] : [glow1, glow2];
@@ -524,19 +521,13 @@
                 releasesPage.style.opacity = "0";
                 setTimeout(() => { releasesPage.style.display = "none"; }, 500);
                 
-                // תיקון לאייפון: מבטל זמנית את ה-Snap כדי להגיע למיקום מדויק
                 document.documentElement.style.scrollSnapType = 'none';
-                
-                sideNav.style.opacity = "1";
-                sideNav.style.pointerEvents = "auto";
+                document.getElementById('side-nav').style.opacity = "1";
                 
                 const target = page === 'home' ? 0 : document.body.scrollHeight;
                 window.scrollTo({ top: target, behavior: 'smooth' });
 
-                // מחזיר את ה-Snap לאחר סיום הגלילה
-                setTimeout(() => {
-                    document.documentElement.style.scrollSnapType = 'y mandatory';
-                }, 1000);
+                setTimeout(() => { document.documentElement.style.scrollSnapType = 'y mandatory'; }, 1000);
             } 
             else if (page === 'releases') {
                 isReleasesOpen = true;
@@ -544,26 +535,14 @@
                 setTimeout(() => { releasesPage.style.opacity = "1"; }, 10);
                 document.documentElement.style.scrollSnapType = 'none';
                 document.getElementById('imageLayer').style.opacity = "0";
-                sideNav.style.opacity = "0";
-                sideNav.style.pointerEvents = "none";
+                document.getElementById('side-nav').style.opacity = "0";
             }
         }
 
-        function jumpTo(pos) {
-            if (isReleasesOpen) return;
-            const target = pos === 'top' ? 0 : document.body.scrollHeight;
-            window.scrollTo({ top: target, behavior: 'smooth' });
-        }
-
         function openModal(index) {
-            const track = tracks[index];
-            document.getElementById('fullTitle').innerText = track.title;
-            document.getElementById('youtubePlayer').src = `https://www.youtube.com/embed/${track.youtubeId}?autoplay=1`;
-            
-            // Update links
-            document.getElementById('linkSpotify').href = track.spotify || "#";
-            document.getElementById('linkSoundcloud').href = track.sc || "#";
-            document.getElementById('linkYoutube').href = `https://youtube.com/watch?v=${track.youtubeId}`;
+            modalIndex = index;
+            isModalOpen = true;
+            updateModalContent();
             
             const modal = document.getElementById('modal');
             const frame = document.getElementById('modalFrame');
@@ -572,11 +551,32 @@
             document.body.style.overflow = 'hidden';
         }
 
+        function updateModalContent() {
+            const track = tracks[modalIndex];
+            document.getElementById('fullTitle').innerText = track.title;
+            document.getElementById('youtubePlayer').src = `https://www.youtube.com/embed/${track.youtubeId}?autoplay=1`;
+            document.getElementById('linkSpotify').href = track.spotify || "#";
+            document.getElementById('linkSoundcloud').href = track.sc || "#";
+            document.getElementById('linkYoutube').href = `https://youtube.com/watch?v=${track.youtubeId}`;
+        }
+
+        function nextTrack(e) {
+            if (e) e.stopPropagation();
+            modalIndex = (modalIndex + 1) % tracks.length;
+            updateModalContent();
+        }
+
+        function prevTrack(e) {
+            if (e) e.stopPropagation();
+            modalIndex = (modalIndex - 1 + tracks.length) % tracks.length;
+            updateModalContent();
+        }
+
         function closeModal() {
+            isModalOpen = false;
             const modal = document.getElementById('modal');
             const frame = document.getElementById('modalFrame');
-            frame.classList.remove('scale-100');
-            frame.classList.add('scale-95');
+            frame.classList.remove('scale-100'); frame.classList.add('scale-95');
             setTimeout(() => {
                 modal.classList.remove('active');
                 document.getElementById('youtubePlayer').src = "";
