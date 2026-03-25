@@ -4,11 +4,25 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
-    <!-- Site Icon (Favicon) -->
+    <!-- Google Analytics (GA4) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-SJYT8M3ZZ2"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-SJYT8M3ZZ2');
+
+      function trackClick(platform, trackTitle) {
+          gtag('event', 'click_music_link', {
+              'platform': platform,
+              'track_title': trackTitle
+          });
+      }
+    </script>
+
     <link rel="icon" type="image/x-icon" href="https://raw.githubusercontent.com/Mozesofc/Mozes/main/favicon.ico">
     <link rel="shortcut icon" href="https://raw.githubusercontent.com/Mozesofc/Mozes/main/favicon.ico">
 
-    <!-- WhatsApp & Social Media Preview Tags -->
     <title>Mozes Home</title>
     <meta property="og:title" content="Mozes Home">
     <meta property="og:description" content="The Official Website">
@@ -22,315 +36,54 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Lato:wght@100;300;400;700;900&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --snap-type: y mandatory;
-        }
+        :root { --snap-type: y mandatory; }
+        html { scroll-snap-type: var(--snap-type); scroll-behavior: smooth; }
+        body { background-color: #000; color: #fff; font-family: 'Lato', sans-serif; margin: 0; padding: 0; overflow-x: hidden; }
 
-        html {
-            scroll-snap-type: var(--snap-type);
-            scroll-behavior: smooth;
-        }
+        .glow-container { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; display: flex; justify-content: center; align-items: center; z-index: 1; pointer-events: none; overflow: hidden; }
+        .ambient-glow { position: absolute; width: 140vmin; height: 140vmin; object-fit: cover; filter: blur(100px) saturate(3) contrast(1.2); opacity: 0; transition: opacity 1.5s ease-in-out; will-change: transform, opacity; }
+        @keyframes fluidMove { 0% { transform: translate(0, 0) scale(1) rotate(0deg); } 33% { transform: translate(5%, -5%) scale(1.05) rotate(2deg); } 66% { transform: translate(-3%, 7%) scale(0.95) rotate(-1deg); } 100% { transform: translate(0, 0) scale(1) rotate(0deg); } }
+        .ambient-glow.active { opacity: 0.45; animation: fluidMove 25s ease-in-out infinite; }
 
-        body {
-            background-color: #000;
-            color: #fff;
-            font-family: 'Lato', sans-serif;
-            margin: 0;
-            padding: 0;
-            overflow-x: hidden;
-        }
+        .fixed-image-layer { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; display: flex; justify-content: center; align-items: center; z-index: 10; pointer-events: none; transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1); }
+        .image-wrapper { position: relative; width: 85vw; max-width: 550px; aspect-ratio: 1 / 1; pointer-events: auto; display: flex; justify-content: center; align-items: center; }
+        .main-image { position: absolute; width: 100%; height: 100%; object-fit: contain; cursor: pointer; opacity: 0; transition: all 0.9s cubic-bezier(0.23, 1, 0.32, 1); transform: scale(0.9) translateY(20px); filter: blur(15px); }
+        .main-image.active { opacity: 1; transform: scale(1) translateY(0); filter: blur(0px); z-index: 20; }
 
-        /* Ambient Glow Layer */
-        .glow-container {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 1;
-            pointer-events: none;
-            overflow: hidden;
-        }
+        .scroll-section { height: 100vh; scroll-snap-align: start; }
+        #releases-page { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: #000; z-index: 1000; overflow-y: auto; display: none; opacity: 0; transition: opacity 0.5s ease; padding: 6rem 2rem; box-sizing: border-box; }
+        .releases-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 2.5rem; max-width: 1300px; margin: 0 auto; }
+        .release-card { background: rgba(255,255,255,0.03); border-radius: 0.5rem; overflow: hidden; transition: all 0.5s cubic-bezier(0.2, 1, 0.3, 1); border: 1px solid rgba(255,255,255,0.05); cursor: pointer; }
+        .release-card:hover { transform: translateY(-10px) scale(1.02); border-color: rgba(255,255,255,0.2); background: rgba(255,255,255,0.07); }
 
-        .ambient-glow {
-            position: absolute;
-            width: 140vmin;
-            height: 140vmin;
-            object-fit: cover;
-            filter: blur(100px) saturate(3) contrast(1.2); 
-            opacity: 0;
-            transition: opacity 1.5s ease-in-out;
-            will-change: transform, opacity;
-        }
+        .social-section { height: 100vh; scroll-snap-align: start; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; position: relative; z-index: 100; background: radial-gradient(circle at center, rgba(255,255,255,0.05) 0%, transparent 75%); }
+        .social-link { font-size: 1.5rem; font-weight: 300; letter-spacing: 0.3em; text-transform: uppercase; color: rgba(255,255,255,0.4); transition: all 0.4s ease; margin: 0.5rem 0; display: block; }
+        .social-link:hover { color: #fff; letter-spacing: 0.4em; transform: scale(1.05); }
 
-        @keyframes fluidMove {
-            0% { transform: translate(0, 0) scale(1) rotate(0deg); }
-            33% { transform: translate(5%, -5%) scale(1.05) rotate(2deg); }
-            66% { transform: translate(-3%, 7%) scale(0.95) rotate(-1deg); }
-            100% { transform: translate(0, 0) scale(1) rotate(0deg); }
-        }
+        .scroll-arrow { color: rgba(255, 255, 255, 0.2); cursor: pointer; transition: all 0.3s ease; padding: 10px; }
+        .scroll-arrow:hover { color: #fff; transform: scale(1.3); }
 
-        .ambient-glow.active {
-            opacity: 0.45;
-            animation: fluidMove 25s ease-in-out infinite;
-        }
+        .bottom-nav { position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%); z-index: 2000; background: rgba(15, 15, 15, 0.6); backdrop-filter: blur(25px); border: 1px solid rgba(255, 255, 255, 0.1); padding: 0.35rem; border-radius: 4rem; display: flex; gap: 0.2rem; }
+        .nav-btn { padding: 0.6rem 1.4rem; border-radius: 3rem; font-size: 0.7rem; font-weight: 400; text-transform: uppercase; letter-spacing: 2px; transition: all 0.3s ease; color: rgba(255, 255, 255, 0.4); cursor: pointer; }
+        .nav-btn.active { background: rgba(255, 255, 255, 0.12); color: #fff; }
 
-        /* Central Image Layer */
-        .fixed-image-layer {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 10;
-            pointer-events: none;
-            transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-        }
+        /* סגנון למחווני הגלילה */
+        .scroll-dot { width: 4px; height: 4px; background: rgba(255, 255, 255, 0.15); border-radius: 50%; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); cursor: pointer; }
+        .scroll-dot.milestone { width: 8px; height: 8px; background: rgba(255, 255, 255, 0.3); }
+        .scroll-dot.active { background: #fff; transform: scale(1.8); box-shadow: 0 0 10px rgba(255,255,255,0.5); }
 
-        .image-wrapper {
-            position: relative;
-            width: 85vw;
-            max-width: 550px;
-            aspect-ratio: 1 / 1;
-            pointer-events: auto;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
+        #modal { transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1); opacity: 0; pointer-events: none; z-index: 3000; }
+        #modal.active { opacity: 1; pointer-events: auto; }
+        .liquid-glass { background: rgba(255, 255, 255, 0.02); backdrop-filter: blur(60px) saturate(1.8); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 2rem; }
+        .modal-nav-arrow { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(255,255,255,0.05); width: 45px; height: 45px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; opacity: 0.5; transition: all 0.3s ease; cursor: pointer; z-index: 100; }
+        .modal-nav-arrow:hover { opacity: 1; background: rgba(255,255,255,0.15); }
+        .arrow-prev { left: -60px; } .arrow-next { right: -60px; }
+        @media (max-width: 768px) { .arrow-prev { left: 10px; } .arrow-next { right: 10px; } .modal-nav-arrow { width: 35px; height: 35px; background: rgba(0,0,0,0.4); } }
 
-        .main-image {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-            cursor: pointer;
-            opacity: 0;
-            transition: all 0.9s cubic-bezier(0.23, 1, 0.32, 1);
-            transform: scale(0.9) translateY(20px);
-            filter: blur(15px);
-        }
-
-        .main-image.active {
-            opacity: 1;
-            transform: scale(1) translateY(0);
-            filter: blur(0px);
-            z-index: 20;
-        }
-
-        /* Scroll Sections */
-        .scroll-section {
-            height: 100vh;
-            scroll-snap-align: start;
-        }
-
-        /* RELEASES Page */
-        #releases-page {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100vh;
-            background: #000;
-            z-index: 1000;
-            overflow-y: auto;
-            display: none;
-            opacity: 0;
-            transition: opacity 0.5s ease;
-            padding: 6rem 2rem;
-            box-sizing: border-box;
-        }
-
-        .releases-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-            gap: 2.5rem;
-            max-width: 1300px;
-            margin: 0 auto;
-        }
-
-        .release-card {
-            background: rgba(255,255,255,0.03);
-            border-radius: 0.5rem;
-            overflow: hidden;
-            transition: all 0.5s cubic-bezier(0.2, 1, 0.3, 1);
-            border: 1px solid rgba(255,255,255,0.05);
-            cursor: pointer;
-        }
-
-        .release-card:hover {
-            transform: translateY(-10px) scale(1.02);
-            border-color: rgba(255,255,255,0.2);
-            background: rgba(255,255,255,0.07);
-        }
-
-        /* Social Section */
-        .social-section {
-            height: 100vh;
-            scroll-snap-align: start;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            position: relative;
-            z-index: 100;
-            background: radial-gradient(circle at center, rgba(255,255,255,0.05) 0%, transparent 75%);
-        }
-
-        .social-link {
-            font-size: 1.5rem;
-            font-weight: 300;
-            letter-spacing: 0.3em;
-            text-transform: uppercase;
-            color: rgba(255,255,255,0.4);
-            transition: all 0.4s ease;
-            margin: 0.5rem 0;
-            display: block;
-        }
-
-        .social-link:hover {
-            color: #fff;
-            letter-spacing: 0.4em;
-            transform: scale(1.05);
-        }
-
-        /* Side Nav & Arrows */
-        .scroll-arrow {
-            color: rgba(255, 255, 255, 0.2);
-            cursor: pointer;
-            transition: all 0.3s ease;
-            padding: 5px;
-        }
-        .scroll-arrow:hover {
-            color: #fff;
-            transform: scale(1.2);
-        }
-
-        /* Bottom Nav */
-        .bottom-nav {
-            position: fixed;
-            bottom: 2rem;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 2000;
-            background: rgba(15, 15, 15, 0.6);
-            backdrop-filter: blur(25px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 0.35rem;
-            border-radius: 4rem;
-            display: flex;
-            gap: 0.2rem;
-        }
-
-        .nav-btn {
-            padding: 0.6rem 1.4rem;
-            border-radius: 3rem;
-            font-size: 0.7rem;
-            font-weight: 400;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            transition: all 0.3s ease;
-            color: rgba(255, 255, 255, 0.4);
-            cursor: pointer;
-        }
-
-        .nav-btn.active {
-            background: rgba(255, 255, 255, 0.12);
-            color: #fff;
-        }
-
-        /* MODAL */
-        #modal {
-            transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-            opacity: 0;
-            pointer-events: none;
-            z-index: 3000;
-        }
-
-        #modal.active {
-            opacity: 1;
-            pointer-events: auto;
-        }
-
-        .liquid-glass {
-            background: rgba(255, 255, 255, 0.02);
-            backdrop-filter: blur(60px) saturate(1.8);
-            -webkit-backdrop-filter: blur(60px) saturate(1.8);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 2rem;
-        }
-
-        .modal-nav-arrow {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            background: rgba(255,255,255,0.05);
-            width: 45px;
-            height: 45px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            opacity: 0.5;
-            transition: all 0.3s ease;
-            cursor: pointer;
-            z-index: 100;
-        }
-
-        .modal-nav-arrow:hover {
-            opacity: 1;
-            background: rgba(255,255,255,0.15);
-        }
-
-        .arrow-prev { left: -60px; }
-        .arrow-next { right: -60px; }
-
-        @media (max-width: 768px) {
-            .arrow-prev { left: 10px; }
-            .arrow-next { right: 10px; }
-            .modal-nav-arrow { width: 35px; height: 35px; background: rgba(0,0,0,0.4); }
-        }
-
-        .track-btn {
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.06);
-            padding: 0.6rem 1rem;
-            border-radius: 2rem;
-            font-size: 0.6rem;
-            letter-spacing: 0.15em;
-            text-transform: uppercase;
-            transition: all 0.4s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.4rem;
-            color: rgba(255,255,255,0.4);
-        }
-
+        .track-btn { background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.06); padding: 0.6rem 1rem; border-radius: 2rem; font-size: 0.6rem; letter-spacing: 0.15em; text-transform: uppercase; transition: all 0.4s ease; display: flex; align-items: center; justify-content: center; gap: 0.4rem; color: rgba(255,255,255,0.4); }
         .btn-spotify:hover { background: rgba(30, 215, 96, 0.15); border-color: #1ED760; color: #1ED760; }
         .btn-soundcloud:hover { background: rgba(255, 51, 0, 0.15); border-color: #FF3300; color: #FF3300; }
         .btn-youtube:hover { background: rgba(255, 0, 0, 0.15); border-color: #FF0000; color: #FF0000; }
-
-        .scroll-dot {
-            width: 4px;
-            height: 4px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 50%;
-            transition: all 0.4s ease;
-            cursor: pointer;
-        }
-
-        .scroll-dot.active {
-            background: #fff;
-            transform: scale(1.8);
-        }
     </style>
 </head>
 <body>
@@ -340,14 +93,14 @@
         <img id="glow2" src="" class="ambient-glow">
     </div>
 
-    <!-- Side Indicators -->
+    <!-- ניווט צדדי מעודכן -->
     <div id="side-nav" class="fixed right-6 top-1/2 -translate-y-1/2 z-[100] flex flex-col items-center gap-6">
-        <div class="scroll-arrow" onclick="scrollStep(-1)">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="18 15 12 9 6 15"></polyline></svg>
+        <div class="scroll-arrow" title="קפוץ להתחלה" onclick="scrollToExtreme('start')">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M18 15l-6-6-6 6M12 9v12M12 3v3"/></svg>
         </div>
-        <div class="flex flex-col gap-4" id="scrollIndicator"></div>
-        <div class="scroll-arrow" onclick="scrollStep(1)">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+        <div class="flex flex-col gap-5 items-center" id="scrollIndicator"></div>
+        <div class="scroll-arrow" title="קפוץ לתמונה האחרונה" onclick="scrollToExtreme('last-image')">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 9l6 6 6-6M12 15V3M12 21v-3"/></svg>
         </div>
     </div>
 
@@ -358,7 +111,6 @@
         </div>
     </div>
 
-    <!-- Scroll Content -->
     <div id="home-content">
         <div id="scrollArea"></div>
         <div id="social-section" class="social-section">
@@ -380,7 +132,6 @@
         </div>
     </div>
 
-    <!-- RELEASES -->
     <div id="releases-page">
         <div class="max-w-6xl mx-auto px-4 pb-32">
             <header class="mb-16 text-center">
@@ -390,41 +141,33 @@
         </div>
     </div>
 
-    <!-- Nav -->
     <nav class="bottom-nav" dir="ltr">
         <button onclick="navigate('home')" id="nav-home" class="nav-btn active">Mozes</button>
         <button onclick="navigate('releases')" id="nav-releases" class="nav-btn">Releases</button>
         <button onclick="navigate('social')" id="nav-social" class="nav-btn">Socials</button>
     </nav>
 
-    <!-- Modal -->
     <div id="modal" class="fixed inset-0 flex items-center justify-center p-4">
         <div class="absolute inset-0 bg-black/70 backdrop-blur-sm" onclick="closeModal()"></div>
-        
         <div class="relative w-full max-w-2xl liquid-glass p-6 md:p-10 flex flex-col gap-6 transition-transform duration-500 scale-95" id="modalFrame">
-            <!-- Modal Navigation Arrows -->
             <div class="modal-nav-arrow arrow-prev" onclick="prevTrack(event)">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"></polyline></svg>
             </div>
             <div class="modal-nav-arrow arrow-next" onclick="nextTrack(event)">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
             </div>
-
-            <button onclick="closeModal()" class="absolute top-4 right-6 text-white/20 hover:text-white text-2xl">&times;</button>
-            
+            <button onclick="closeModal()" class="absolute top-4 right-6 text-white/20 hover:text-white text-2xl">×</button>
             <div class="flex flex-col gap-1">
                 <h3 id="fullTitle" class="text-sm md:text-base font-light uppercase tracking-[0.1em] text-white/90 text-left" dir="ltr">TRACK TITLE</h3>
                 <div class="h-[1px] w-8 bg-white/20"></div>
             </div>
-
             <div class="aspect-video w-full rounded-xl overflow-hidden bg-black/50 border border-white/5 shadow-2xl">
                 <iframe id="youtubePlayer" class="w-full h-full" src="" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
             </div>
-
             <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
-                <a id="linkSpotify" href="#" target="_blank" class="track-btn btn-spotify">Spotify</a>
-                <a id="linkSoundcloud" href="#" target="_blank" class="track-btn btn-soundcloud">SoundCloud</a>
-                <a id="linkYoutube" href="#" target="_blank" class="track-btn btn-youtube">YouTube</a>
+                <a id="linkSpotify" href="#" target="_blank" onclick="trackClick('Spotify', document.getElementById('fullTitle').innerText)" class="track-btn btn-spotify">Spotify</a>
+                <a id="linkSoundcloud" href="#" target="_blank" onclick="trackClick('SoundCloud', document.getElementById('fullTitle').innerText)" class="track-btn btn-soundcloud">SoundCloud</a>
+                <a id="linkYoutube" href="#" target="_blank" onclick="trackClick('YouTube', document.getElementById('fullTitle').innerText)" class="track-btn btn-youtube">YouTube</a>
             </div>
         </div>
     </div>
@@ -453,83 +196,65 @@
             { src: "image20.jpg", title: "Mozes - Late at Night", youtubeId: "4U_tvQ4WSRo", spotify: "https://open.spotify.com/track/7bUSduMOSEcBORTvDZcq5J?si=abebea2b300f44ca", sc: "https://soundcloud.com/mozesofc/mozes-late-at-night-radio-edit" }
         ];
 
-        let currentIndex = 0;
-        let activeLayer = 1;
-        let isReleasesOpen = false;
-        let isModalOpen = false;
-        let modalIndex = 0;
+        let currentIndex = 0; let activeLayer = 1; let isReleasesOpen = false; let isModalOpen = false; let modalIndex = 0;
+        const img1 = document.getElementById('img1'); const img2 = document.getElementById('img2');
+        const glow1 = document.getElementById('glow1'); const glow2 = document.getElementById('glow2');
+        const scrollIndicator = document.getElementById('scrollIndicator'); const releasesGrid = document.getElementById('releasesGrid');
+        const releasesPage = document.getElementById('releases-page'); const scrollArea = document.getElementById('scrollArea');
 
-        const img1 = document.getElementById('img1');
-        const img2 = document.getElementById('img2');
-        const glow1 = document.getElementById('glow1');
-        const glow2 = document.getElementById('glow2');
-        const scrollIndicator = document.getElementById('scrollIndicator');
-        const releasesGrid = document.getElementById('releasesGrid');
-        const releasesPage = document.getElementById('releases-page');
-        const scrollArea = document.getElementById('scrollArea');
-
-        // Init Sections
         const totalHomeSections = tracks.length + 1;
+        
+        // יצירת אזורי גלילה
         for(let i=0; i < tracks.length; i++) {
-            const sec = document.createElement('div');
-            sec.className = 'scroll-section';
-            scrollArea.appendChild(sec);
+            const sec = document.createElement('div'); sec.className = 'scroll-section'; scrollArea.appendChild(sec);
         }
 
-        // Init Dots
+        // יצירת נקודות גלילה עם ציוני דרך (כל 5 נקודות)
         for(let i=0; i < totalHomeSections; i++) {
-            const dot = document.createElement('div');
-            dot.className = `scroll-dot ${i === 0 ? 'active' : ''}`;
+            const isMilestone = i % 5 === 0 || i === totalHomeSections - 1;
+            const dot = document.createElement('div'); 
+            dot.className = `scroll-dot ${i === 0 ? 'active' : ''} ${isMilestone ? 'milestone' : ''}`; 
             dot.id = `dot-${i}`;
             dot.onclick = () => window.scrollTo({ top: i * window.innerHeight, behavior: 'smooth' });
             scrollIndicator.appendChild(dot);
         }
 
-        // Fill Grid
         tracks.forEach((track, i) => {
-            const card = document.createElement('div');
-            card.className = 'release-card';
-            card.onclick = () => openModal(i);
+            const card = document.createElement('div'); card.className = 'release-card'; card.onclick = () => openModal(i);
             card.innerHTML = `<img src="${track.src}" class="w-full aspect-square object-cover">
                              <div class="p-4 text-[9px] tracking-[0.2em] uppercase text-white/80 truncate text-left" dir="ltr">${track.title}</div>`;
             releasesGrid.appendChild(card);
         });
 
-        img1.src = tracks[0].src; glow1.src = tracks[0].src;
-        img2.src = tracks[0].src; glow2.src = tracks[0].src;
+        img1.src = tracks[0].src; glow1.src = tracks[0].src; img2.src = tracks[0].src; glow2.src = tracks[0].src;
 
         window.addEventListener('scroll', () => {
             if (isReleasesOpen) return;
             const scrollPos = window.scrollY;
             const idx = Math.min(totalHomeSections - 1, Math.floor((scrollPos + window.innerHeight/2) / window.innerHeight));
-            
-            if (idx === tracks.length) {
-                document.getElementById('imageLayer').style.opacity = "0";
-            } else if (idx < tracks.length) {
+            if (idx === tracks.length) document.getElementById('imageLayer').style.opacity = "0";
+            else if (idx < tracks.length) {
                 document.getElementById('imageLayer').style.opacity = "1";
-                if (idx !== currentIndex) {
-                    currentIndex = idx;
-                    updateUI(idx);
-                }
+                if (idx !== currentIndex) { currentIndex = idx; updateUI(idx); }
             }
-            
             document.querySelectorAll('.scroll-dot').forEach(d => d.classList.remove('active'));
             document.getElementById(`dot-${idx}`)?.classList.add('active');
         });
 
-        function scrollStep(dir) {
-            const next = Math.max(0, Math.min(totalHomeSections - 1, currentIndex + dir));
-            window.scrollTo({ top: next * window.innerHeight, behavior: 'smooth' });
+        // פונקציה להקפצה להתחלה או לתמונה האחרונה
+        function scrollToExtreme(pos) {
+            let target = 0;
+            if (pos === 'start') {
+                target = 0;
+            } else if (pos === 'last-image') {
+                // המיקום של התמונה האחרונה הוא האינדקס האחרון של רשימת השירים (לפני הסושיאלס)
+                target = (tracks.length - 1) * window.innerHeight;
+            }
+            window.scrollTo({ top: target, behavior: 'smooth' });
         }
 
-        window.addEventListener('keydown', (e) => {
-            if (isModalOpen) {
-                if (e.key === "ArrowRight") nextTrack(e);
-                else if (e.key === "ArrowLeft") prevTrack(e);
-                else if (e.key === "Escape") closeModal();
-            }
-        });
-
+        window.addEventListener('keydown', (e) => { if (isModalOpen) { if (e.key === "ArrowRight") nextTrack(e); else if (e.key === "ArrowLeft") prevTrack(e); else if (e.key === "Escape") closeModal(); } });
+        
         function updateUI(idx) {
             const [nextImg, currImg] = activeLayer === 1 ? [img2, img1] : [img1, img2];
             const [nextGlow, currGlow] = activeLayer === 1 ? [glow2, glow1] : [glow1, glow2];
@@ -542,39 +267,23 @@
         function navigate(page) {
             document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
             document.getElementById(`nav-${page}`).classList.add('active');
-
             if (page === 'home' || page === 'social') {
-                isReleasesOpen = false;
-                releasesPage.style.opacity = "0";
-                setTimeout(() => { releasesPage.style.display = "none"; }, 500);
-                
-                document.documentElement.style.scrollSnapType = 'none';
-                document.getElementById('side-nav').style.opacity = "1";
-                
+                isReleasesOpen = false; releasesPage.style.opacity = "0"; setTimeout(() => { releasesPage.style.display = "none"; }, 500);
+                document.documentElement.style.scrollSnapType = 'none'; document.getElementById('side-nav').style.opacity = "1";
                 const target = page === 'home' ? 0 : document.body.scrollHeight;
                 window.scrollTo({ top: target, behavior: 'smooth' });
-
                 setTimeout(() => { document.documentElement.style.scrollSnapType = 'y mandatory'; }, 1000);
             } 
             else if (page === 'releases') {
-                isReleasesOpen = true;
-                releasesPage.style.display = "block";
-                setTimeout(() => { releasesPage.style.opacity = "1"; }, 10);
-                document.documentElement.style.scrollSnapType = 'none';
-                document.getElementById('imageLayer').style.opacity = "0";
-                document.getElementById('side-nav').style.opacity = "0";
+                isReleasesOpen = true; releasesPage.style.display = "block"; setTimeout(() => { releasesPage.style.opacity = "1"; }, 10);
+                document.documentElement.style.scrollSnapType = 'none'; document.getElementById('imageLayer').style.opacity = "0"; document.getElementById('side-nav').style.opacity = "0";
             }
         }
 
         function openModal(index) {
-            modalIndex = index;
-            isModalOpen = true;
-            updateModalContent();
-            
-            const modal = document.getElementById('modal');
-            const frame = document.getElementById('modalFrame');
-            modal.classList.add('active');
-            setTimeout(() => { frame.classList.remove('scale-95'); frame.classList.add('scale-100'); }, 10);
+            modalIndex = index; isModalOpen = true; updateModalContent();
+            const modal = document.getElementById('modal'); const frame = document.getElementById('modalFrame');
+            modal.classList.add('active'); setTimeout(() => { frame.classList.remove('scale-95'); frame.classList.add('scale-100'); }, 10);
             document.body.style.overflow = 'hidden';
         }
 
@@ -582,49 +291,17 @@
             const track = tracks[modalIndex];
             document.getElementById('fullTitle').innerText = track.title;
             document.getElementById('youtubePlayer').src = `https://www.youtube.com/embed/${track.youtubeId}?autoplay=1`;
-            
-            const spBtn = document.getElementById('linkSpotify');
-            const scBtn = document.getElementById('linkSoundcloud');
-            
-            if(track.spotify) {
-                spBtn.style.display = "flex";
-                spBtn.href = track.spotify;
-            } else {
-                spBtn.style.display = "none";
-            }
-            
-            if(track.sc) {
-                scBtn.style.display = "flex";
-                scBtn.href = track.sc;
-            } else {
-                scBtn.style.display = "none";
-            }
-            
+            const spBtn = document.getElementById('linkSpotify'); const scBtn = document.getElementById('linkSoundcloud');
+            if(track.spotify) { spBtn.style.display = "flex"; spBtn.href = track.spotify; } else { spBtn.style.display = "none"; }
+            if(track.sc) { scBtn.style.display = "flex"; scBtn.href = track.sc; } else { scBtn.style.display = "none"; }
             document.getElementById('linkYoutube').href = `https://youtube.com/watch?v=${track.youtubeId}`;
         }
-
-        function nextTrack(e) {
-            if (e) e.stopPropagation();
-            modalIndex = (modalIndex + 1) % tracks.length;
-            updateModalContent();
-        }
-
-        function prevTrack(e) {
-            if (e) e.stopPropagation();
-            modalIndex = (modalIndex - 1 + tracks.length) % tracks.length;
-            updateModalContent();
-        }
-
+        function nextTrack(e) { if (e) e.stopPropagation(); modalIndex = (modalIndex + 1) % tracks.length; updateModalContent(); }
+        function prevTrack(e) { if (e) e.stopPropagation(); modalIndex = (modalIndex - 1 + tracks.length) % tracks.length; updateModalContent(); }
         function closeModal() {
-            isModalOpen = false;
-            const modal = document.getElementById('modal');
-            const frame = document.getElementById('modalFrame');
+            isModalOpen = false; const modal = document.getElementById('modal'); const frame = document.getElementById('modalFrame');
             frame.classList.remove('scale-100'); frame.classList.add('scale-95');
-            setTimeout(() => {
-                modal.classList.remove('active');
-                document.getElementById('youtubePlayer').src = "";
-                document.body.style.overflow = 'auto';
-            }, 300);
+            setTimeout(() => { modal.classList.remove('active'); document.getElementById('youtubePlayer').src = ""; document.body.style.overflow = 'auto'; }, 300);
         }
     </script>
 </body>
