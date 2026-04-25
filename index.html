@@ -27,9 +27,6 @@
     <meta property="og:title" content="Mozes Home">
     <meta property="og:description" content="The Official Website">
     <meta property="og:image" content="https://raw.githubusercontent.com/Mozesofc/Mozes/main/image1.jpg">
-    <meta property="og:image:type" content="image/jpeg">
-    <meta property="og:image:width" content="1200">
-    <meta property="og:image:height" content="630">
     <meta property="og:url" content="https://mozesmusic.com">
     <meta property="og:type" content="website">
 
@@ -37,98 +34,86 @@
     <link href="https://fonts.googleapis.com/css2?family=Lato:wght@100;300;400;700;900&display=swap" rel="stylesheet">
     <style>
         :root { --snap-type: y mandatory; }
-        html { scroll-snap-type: var(--snap-type); scroll-behavior: smooth; }
+        html { scroll-behavior: smooth; }
         body { background-color: #000; color: #fff; font-family: 'Lato', sans-serif; margin: 0; padding: 0; overflow-x: hidden; }
 
+        /* Background & Glow */
         .glow-container { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; display: flex; justify-content: center; align-items: center; z-index: 1; pointer-events: none; overflow: hidden; }
         .ambient-glow { position: absolute; width: 140vmin; height: 140vmin; object-fit: cover; filter: blur(100px) saturate(3) contrast(1.2); opacity: 0; transition: opacity 1.5s ease-in-out; will-change: transform, opacity; }
         @keyframes fluidMove { 0% { transform: translate(0, 0) scale(1) rotate(0deg); } 33% { transform: translate(5%, -5%) scale(1.05) rotate(2deg); } 66% { transform: translate(-3%, 7%) scale(0.95) rotate(-1deg); } 100% { transform: translate(0, 0) scale(1) rotate(0deg); } }
         .ambient-glow.active { opacity: 0.45; animation: fluidMove 25s ease-in-out infinite; }
 
+        /* Main Image Layers */
         .fixed-image-layer { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; display: flex; justify-content: center; align-items: center; z-index: 10; pointer-events: none; transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1); }
         .image-wrapper { position: relative; width: 85vw; max-width: 550px; aspect-ratio: 1 / 1; pointer-events: auto; display: flex; justify-content: center; align-items: center; }
         .main-image { position: absolute; width: 100%; height: 100%; object-fit: contain; cursor: pointer; opacity: 0; transition: all 0.9s cubic-bezier(0.23, 1, 0.32, 1); transform: scale(0.9) translateY(20px); filter: blur(15px); }
         .main-image.active { opacity: 1; transform: scale(1) translateY(0); filter: blur(0px); z-index: 20; }
 
         /* Social Header - First Page Top */
-        .hero-socials { position: absolute; top: 40px; left: 50%; transform: translateX(-50%); z-index: 50; display: flex; gap: 2rem; opacity: 1; transition: opacity 0.5s ease; }
+        .hero-socials { position: absolute; top: 30px; left: 50%; transform: translateX(-50%); z-index: 500; display: flex; gap: 1.5rem; transition: opacity 0.4s ease; }
         .hero-social-link { color: rgba(255,255,255,0.4); transition: all 0.3s ease; }
-        .hero-social-link:hover { color: #fff; transform: translateY(-2px); }
+        .hero-social-link:hover { color: #fff; transform: scale(1.1); }
 
+        /* Sections & Navigation */
         .scroll-section { height: 100vh; scroll-snap-align: start; }
         
-        /* Layouts for sub-pages */
-        .page-container { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: #000; z-index: 1000; overflow-y: auto; display: none; opacity: 0; transition: opacity 0.5s ease; padding: 6rem 2rem; box-sizing: border-box; }
+        /* Page Containers (News / Releases) */
+        .page-container { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: #000; z-index: 1000; overflow-y: auto; display: none; opacity: 0; transition: opacity 0.4s ease; padding-top: 5rem; padding-bottom: 8rem; }
         
-        .releases-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 2.5rem; max-width: 1300px; margin: 0 auto; }
-        .release-card { background: rgba(255,255,255,0.03); border-radius: 0.5rem; overflow: hidden; transition: all 0.5s cubic-bezier(0.2, 1, 0.3, 1); border: 1px solid rgba(255,255,255,0.05); cursor: pointer; }
-        .release-card:hover { transform: translateY(-10px) scale(1.02); border-color: rgba(255,255,255,0.2); background: rgba(255,255,255,0.07); }
-
-        /* News Section Styles */
-        .news-item { margin-bottom: 4rem; max-width: 900px; margin-left: auto; margin-right: auto; }
-        .video-container { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 1rem; background: #111; border: 1px solid rgba(255,255,255,0.1); }
+        /* News Specific */
+        .video-wrapper { margin-bottom: 3rem; position: relative; width: 100%; border-radius: 12px; overflow: hidden; border: 1px solid rgba(255,255,255,0.1); background: #0a0a0a; }
+        .video-container { position: relative; padding-bottom: 56.25%; height: 0; }
         .video-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
 
-        .social-section { height: 100vh; scroll-snap-align: start; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; position: relative; z-index: 100; background: radial-gradient(circle at center, rgba(255,255,255,0.05) 0%, transparent 75%); }
+        .releases-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 2.5rem; max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .release-card { background: rgba(255,255,255,0.03); border-radius: 0.5rem; overflow: hidden; transition: all 0.4s ease; border: 1px solid rgba(255,255,255,0.05); cursor: pointer; }
+        .release-card:hover { transform: translateY(-8px); border-color: rgba(255,255,255,0.2); }
+
+        .social-section { height: 100vh; scroll-snap-align: start; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; position: relative; z-index: 100; }
         .social-link { font-size: 1.5rem; font-weight: 300; letter-spacing: 0.3em; text-transform: uppercase; color: rgba(255,255,255,0.4); transition: all 0.4s ease; margin: 0.5rem 0; display: block; }
-        .social-link:hover { color: #fff; letter-spacing: 0.4em; transform: scale(1.05); }
+        .social-link:hover { color: #fff; letter-spacing: 0.4em; }
 
-        .scroll-arrow { color: rgba(255, 255, 255, 0.2); cursor: pointer; transition: all 0.3s ease; padding: 10px; }
-        .scroll-arrow:hover { color: #fff; transform: scale(1.3); }
+        .bottom-nav { position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%); z-index: 2000; background: rgba(10, 10, 10, 0.7); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.1); padding: 0.4rem; border-radius: 4rem; display: flex; gap: 0.2rem; }
+        .nav-btn { padding: 0.6rem 1.2rem; border-radius: 3rem; font-size: 0.7rem; font-weight: 400; text-transform: uppercase; letter-spacing: 2px; transition: all 0.3s ease; color: rgba(255, 255, 255, 0.4); cursor: pointer; }
+        .nav-btn.active { background: rgba(255, 255, 255, 0.1); color: #fff; }
 
-        .bottom-nav { position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%); z-index: 2000; background: rgba(15, 15, 15, 0.6); backdrop-filter: blur(25px); border: 1px solid rgba(255, 255, 255, 0.1); padding: 0.35rem; border-radius: 4rem; display: flex; gap: 0.2rem; }
-        .nav-btn { padding: 0.6rem 1.4rem; border-radius: 3rem; font-size: 0.7rem; font-weight: 400; text-transform: uppercase; letter-spacing: 2px; transition: all 0.3s ease; color: rgba(255, 255, 255, 0.4); cursor: pointer; white-space: nowrap; }
-        .nav-btn.active { background: rgba(255, 255, 255, 0.12); color: #fff; }
+        .scroll-dot { width: 5px; height: 5px; background: rgba(255, 255, 255, 0.2); border-radius: 50%; transition: all 0.3s ease; cursor: pointer; }
+        .scroll-dot.active { background: #fff; transform: scale(1.6); }
 
-        .scroll-dot { width: 4px; height: 4px; background: rgba(255, 255, 255, 0.15); border-radius: 50%; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); cursor: pointer; }
-        .scroll-dot.milestone { width: 8px; height: 8px; background: rgba(255, 255, 255, 0.3); }
-        .scroll-dot.active { background: #fff; transform: scale(1.8); box-shadow: 0 0 10px rgba(255,255,255,0.5); }
-
-        #modal { transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1); opacity: 0; pointer-events: none; z-index: 3000; }
+        #modal { transition: all 0.4s ease; opacity: 0; pointer-events: none; z-index: 3000; }
         #modal.active { opacity: 1; pointer-events: auto; }
-        .liquid-glass { background: rgba(255, 255, 255, 0.02); backdrop-filter: blur(60px) saturate(1.8); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 2rem; }
-        .modal-nav-arrow { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(255,255,255,0.05); width: 45px; height: 45px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; opacity: 0.5; transition: all 0.3s ease; cursor: pointer; z-index: 100; }
-        .modal-nav-arrow:hover { opacity: 1; background: rgba(255,255,255,0.15); }
-        .arrow-prev { left: -60px; } .arrow-next { right: -60px; }
-        @media (max-width: 768px) { .arrow-prev { left: 10px; } .arrow-next { right: 10px; } .modal-nav-arrow { width: 35px; height: 35px; background: rgba(0,0,0,0.4); } }
+        .liquid-glass { background: rgba(20, 20, 20, 0.8); backdrop-filter: blur(40px); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 1.5rem; }
 
-        .track-btn { background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.06); padding: 0.6rem 1rem; border-radius: 2rem; font-size: 0.6rem; letter-spacing: 0.15em; text-transform: uppercase; transition: all 0.4s ease; display: flex; align-items: center; justify-content: center; gap: 0.4rem; color: rgba(255,255,255,0.4); }
-        .btn-spotify:hover { background: rgba(30, 215, 96, 0.15); border-color: #1ED760; color: #1ED760; }
-        .btn-soundcloud:hover { background: rgba(255, 51, 0, 0.15); border-color: #FF3300; color: #FF3300; }
-        .btn-youtube:hover { background: rgba(255, 0, 0, 0.15); border-color: #FF0000; color: #FF0000; }
+        .track-btn { background: rgba(255, 255, 255, 0.05); padding: 0.6rem 1rem; border-radius: 2rem; font-size: 0.6rem; letter-spacing: 0.15em; text-transform: uppercase; transition: all 0.3s ease; display: flex; align-items: center; justify-content: center; color: rgba(255,255,255,0.5); }
+        .track-btn:hover { background: rgba(255, 255, 255, 0.1); color: #fff; }
     </style>
 </head>
-<body>
+<body class="bg-black">
 
     <div class="glow-container">
         <img id="glow1" src="" class="ambient-glow active">
         <img id="glow2" src="" class="ambient-glow">
     </div>
 
-    <!-- Socials Header (Home Page Only) -->
+    <!-- Social Bar on First Page -->
     <div id="hero-socials" class="hero-socials">
         <a href="https://www.youtube.com/@Mozesofc" target="_blank" class="hero-social-link">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
         </a>
         <a href="https://open.spotify.com/artist/4uRpFQ2D51xyz2O4V9pqon" target="_blank" class="hero-social-link">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.496 17.306c-.215.353-.675.465-1.028.249-2.846-1.74-6.429-2.134-10.648-1.172-.403.092-.806-.162-.898-.565-.092-.403.162-.806.565-.898 4.613-1.054 8.57-.605 11.762 1.348.353.215.465.675.247 1.038zm1.468-3.26c-.272.443-.846.582-1.29.31-3.258-2.003-8.225-2.585-12.078-1.415-.494.15-1.018-.13-1.168-.624-.15-.495.13-1.019.624-1.168 4.403-1.336 9.888-.68 13.602 1.6 0.444.273.583.847.31 1.291zm.127-3.39c-3.906-2.32-10.334-2.533-14.077-1.396-.6.182-1.23-.16-1.412-.76-.183-.6.16-1.23.76-1.412 4.298-1.306 11.408-1.055 15.908 1.616.54.32.716 1.014.396 1.554-.32.54-1.014.716-1.554.397z"/></svg>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.496 17.306c-.215.353-.675.465-1.028.249-2.846-1.74-6.429-2.134-10.648-1.172-.403.092-.806-.162-.898-.565-.092-.403.162-.806.565-.898 4.613-1.054 8.57-.605 11.762 1.348.353.215.465.675.247 1.038zm1.468-3.26c-.272.443-.846.582-1.29.31-3.258-2.003-8.225-2.585-12.078-1.415-.494.15-1.018-.13-1.168-.624-.15-.495.13-1.019.624-1.168 4.403-1.336 9.888-.68 13.602 1.6 0.444.273.583.847.31 1.291zm.127-3.39c-3.906-2.32-10.334-2.533-14.077-1.396-.6.182-1.23-.16-1.412-.76-.183-.6.16-1.23.76-1.412 4.298-1.306 11.408-1.055 15.908 1.616.54.32.716 1.014.396 1.554-.32.54-1.014.716-1.554.397z"/></svg>
         </a>
         <a href="https://www.instagram.com/Mozesofc" target="_blank" class="hero-social-link">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
         </a>
     </div>
 
-    <!-- Side Navigation -->
-    <div id="side-nav" class="fixed right-6 top-1/2 -translate-y-1/2 z-[100] flex flex-col items-center gap-6">
-        <div class="scroll-arrow" title="קפוץ להתחלה" onclick="scrollToExtreme('start')">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M18 15l-6-6-6 6M12 9v12M12 3v3"/></svg>
-        </div>
-        <div class="flex flex-col gap-5 items-center" id="scrollIndicator"></div>
-        <div class="scroll-arrow" title="קפוץ לתמונה האחרונה" onclick="scrollToExtreme('last-image')">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 9l6 6 6-6M12 15V3M12 21v-3"/></svg>
-        </div>
+    <!-- Scroll Indicator (Home only) -->
+    <div id="side-nav" class="fixed right-6 top-1/2 -translate-y-1/2 z-[100] flex flex-col items-center gap-5">
+        <div id="scrollIndicator" class="flex flex-col gap-4"></div>
     </div>
 
+    <!-- Visual Layer -->
     <div id="imageLayer" class="fixed-image-layer">
         <div class="image-wrapper" onclick="openModal(currentIndex)">
             <img id="img1" src="" class="main-image active">
@@ -136,64 +121,54 @@
         </div>
     </div>
 
-    <div id="home-content">
+    <!-- Main Content Areas -->
+    <div id="home-area">
         <div id="scrollArea"></div>
-        <div id="social-section" class="social-section">
-            <div class="mb-12">
-                <h2 class="text-4xl md:text-6xl font-thin uppercase tracking-[0.4em] mb-4">Connect</h2>
-                <div class="h-[1px] w-12 bg-white/20 mx-auto"></div>
-            </div>
-            <div class="flex flex-col gap-4">
+        <div id="social-anchor" class="social-section">
+            <h2 class="text-3xl md:text-5xl font-thin uppercase tracking-[0.4em] mb-12">Connect</h2>
+            <div class="flex flex-col gap-3">
                 <a href="https://open.spotify.com/artist/4uRpFQ2D51xyz2O4V9pqon" target="_blank" class="social-link">Spotify</a>
                 <a href="https://www.youtube.com/@Mozesofc" target="_blank" class="social-link">YouTube</a>
                 <a href="https://soundcloud.com/mozesofc" target="_blank" class="social-link">SoundCloud</a>
                 <a href="https://www.instagram.com/Mozesofc" target="_blank" class="social-link">Instagram</a>
-                <a href="https://linktr.ee/mozesofc" target="_blank" class="social-link">Linktree</a>
-                <div class="mt-8">
-                    <p class="text-[9px] uppercase tracking-[0.5em] text-white/20 mb-2">Contact</p>
-                    <a href="mailto:Info@mozesmusic.com" class="text-white/60 hover:text-white transition-all tracking-[0.1em]">Info@mozesmusic.com</a>
-                </div>
             </div>
         </div>
     </div>
 
-    <!-- News Page -->
+    <!-- News Page (Hidden by default) -->
     <div id="news-page" class="page-container">
-        <div class="max-w-6xl mx-auto px-4 pb-32">
-            <header class="mb-16 text-center">
-                <h2 class="text-3xl md:text-5xl font-light uppercase tracking-[0.3em] mb-4">News</h2>
-                <div class="h-[1px] w-12 bg-white/20 mx-auto"></div>
-            </header>
-            <div class="space-y-20">
-                <div class="news-item">
-                    <div class="video-container">
-                        <iframe src="https://www.youtube.com/embed/NNAMMayVLFg" frameborder="0" allowfullscreen></iframe>
-                    </div>
+        <div class="max-w-4xl mx-auto px-6">
+            <h2 class="text-4xl font-light tracking-[0.3em] uppercase text-center mb-12">News</h2>
+            
+            <div class="video-wrapper">
+                <div class="video-container">
+                    <iframe src="https://www.youtube.com/embed/NNAMMayVLFg" frameborder="0" allowfullscreen></iframe>
                 </div>
-                <div class="news-item">
-                    <div class="video-container">
-                        <iframe src="https://www.youtube.com/embed/yng3GffPK_U" frameborder="0" allowfullscreen></iframe>
-                    </div>
+            </div>
+
+            <div class="video-wrapper">
+                <div class="video-container">
+                    <iframe src="https://www.youtube.com/embed/yng3GffPK_U" frameborder="0" allowfullscreen></iframe>
                 </div>
-                <div class="news-item">
-                    <div class="video-container">
-                        <iframe src="https://www.youtube.com/embed/kO8ylPtWT14" frameborder="0" allowfullscreen></iframe>
-                    </div>
+            </div>
+
+            <div class="video-wrapper">
+                <div class="video-container">
+                    <iframe src="https://www.youtube.com/embed/kO8ylPtWT14" frameborder="0" allowfullscreen></iframe>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Releases Page -->
+    <!-- Releases Page (Hidden by default) -->
     <div id="releases-page" class="page-container">
-        <div class="max-w-6xl mx-auto px-4 pb-32">
-            <header class="mb-16 text-center">
-                <h2 class="text-3xl md:text-5xl font-light uppercase tracking-[0.3em] mb-4">Releases</h2>
-            </header>
-            <div class="releases-grid" id="releasesGrid"></div>
+        <div class="max-w-6xl mx-auto px-6">
+            <h2 class="text-4xl font-light tracking-[0.3em] uppercase text-center mb-12">Releases</h2>
+            <div id="releasesGrid" class="releases-grid"></div>
         </div>
     </div>
 
+    <!-- Persistent Bottom Nav -->
     <nav class="bottom-nav" dir="ltr">
         <button onclick="navigate('home')" id="nav-home" class="nav-btn active">Mozes</button>
         <button onclick="navigate('news')" id="nav-news" class="nav-btn">News</button>
@@ -201,169 +176,156 @@
         <button onclick="navigate('social')" id="nav-social" class="nav-btn">Socials</button>
     </nav>
 
+    <!-- Track Modal -->
     <div id="modal" class="fixed inset-0 flex items-center justify-center p-4">
-        <div class="absolute inset-0 bg-black/70 backdrop-blur-sm" onclick="closeModal()"></div>
-        <div class="relative w-full max-w-2xl liquid-glass p-6 md:p-10 flex flex-col gap-6 transition-transform duration-500 scale-95" id="modalFrame">
-            <div class="modal-nav-arrow arrow-prev" onclick="prevTrack(event)">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"></polyline></svg>
+        <div class="absolute inset-0 bg-black/80" onclick="closeModal()"></div>
+        <div id="modalFrame" class="relative w-full max-w-xl liquid-glass p-8 flex flex-col gap-6 transform transition-all duration-300 scale-95">
+            <button onclick="closeModal()" class="absolute top-4 right-4 text-white/30 hover:text-white text-xl">×</button>
+            <h3 id="modalTitle" class="text-xs tracking-[0.2em] font-light uppercase text-white/80"></h3>
+            <div class="aspect-video w-full rounded-lg overflow-hidden bg-black">
+                <iframe id="ytPlayer" class="w-full h-full" src="" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
             </div>
-            <div class="modal-nav-arrow arrow-next" onclick="nextTrack(event)">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
-            </div>
-            <button onclick="closeModal()" class="absolute top-4 right-6 text-white/20 hover:text-white text-2xl">×</button>
-            <div class="flex flex-col gap-1">
-                <h3 id="fullTitle" class="text-sm md:text-base font-light uppercase tracking-[0.1em] text-white/90 text-left" dir="ltr">TRACK TITLE</h3>
-                <div class="h-[1px] w-8 bg-white/20"></div>
-            </div>
-            <div class="aspect-video w-full rounded-xl overflow-hidden bg-black/50 border border-white/5 shadow-2xl">
-                <iframe id="youtubePlayer" class="w-full h-full" src="" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-            </div>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
-                <a id="linkSpotify" href="#" target="_blank" onclick="trackClick('Spotify', document.getElementById('fullTitle').innerText)" class="track-btn btn-spotify">Spotify</a>
-                <a id="linkSoundcloud" href="#" target="_blank" onclick="trackClick('SoundCloud', document.getElementById('fullTitle').innerText)" class="track-btn btn-soundcloud">SoundCloud</a>
-                <a id="linkYoutube" href="#" target="_blank" onclick="trackClick('YouTube', document.getElementById('fullTitle').innerText)" class="track-btn btn-youtube">YouTube</a>
+            <div class="grid grid-cols-2 gap-4">
+                <a id="spLink" href="#" target="_blank" class="track-btn">Spotify</a>
+                <a id="scLink" href="#" target="_blank" class="track-btn">SoundCloud</a>
             </div>
         </div>
     </div>
 
     <script>
         const tracks = [
-            { src: "image1.jpg", title: "Mozes - BALAGAN", youtubeId: "yng3GffPK_U", spotify: "https://open.spotify.com/track/7smNpdIQgFXMevlfRpALPl?si=9b0031b3d1264de5", sc: "https://soundcloud.com/mozesofc/mozes-balagan-xtd/s-bcdLxijoMqc" },
-            { src: "image2.jpg", title: "Cosmic Gate, Christian Burns - Brave (Mozes Remix)", youtubeId: "kO8ylPtWT14", spotify: "https://open.spotify.com/track/4L0swo2Q5bgMFt7QLW2VLJ?si=2a65641dd59345b8", sc: "https://soundcloud.com/cosmicgateofficial/brave-mozes-remix" },
-            { src: "image3.jpg", title: "James Hype - Dont Wake Me Up (Mozes Remix)", youtubeId: "57W4t-hN3Vo", spotify: "", sc: "https://soundcloud.com/mozesofc/james-hype-dont-wake-me-up-mozes-remix" },
-            { src: "image4.jpg", title: "Tayri - Black Sheep (Mozes Remix)", youtubeId: "DKCr5GG4PXA", spotify: "https://open.spotify.com/track/4W9jAYLHL9WY0VSJReAWyz?si=e6cc592efde24263", sc: "https://soundcloud.com/tayrimusic/black-sheep-mozes-remix" },
-            { src: "image5.jpg", title: "Mozes - What Took You So Long (Mozes Remix)", youtubeId: "gcReNaVNd4E", spotify: "https://open.spotify.com/track/11GmTco3PeaDi8YL4e1bW9?si=9d1b0bb5358d45ac", sc: "https://soundcloud.com/mozesofc/wtyslmozesrmx" },
-            { src: "image6.jpg", title: "Mozes & Mushy - Found Myself", youtubeId: "It-mN5HDWvA", spotify: "https://open.spotify.com/track/2MBh2ud1J7vKwR4uJwwAJU?si=340c87450a8c4c3a", sc: "https://soundcloud.com/mozesofc/mozesxmushy-found-myself" },
-            { src: "image7.jpg", title: "Mozes - Trust Me", youtubeId: "It-mN5HDWvA", spotify: "https://open.spotify.com/track/5lEI5Ywvd7zUC9x6JATxkU?si=9e49dc74ef094e53", sc: "https://soundcloud.com/mozesofc/mozes-trust-me-r" },
-            { src: "image8.jpg", title: "Mozes - Nights In White Satin", youtubeId: "t1rYx5CewP8", spotify: "https://open.spotify.com/track/0nu2UYXq3rhxa1fNFRcfPu?si=1f53656a94124448", sc: "https://soundcloud.com/mozesofc/mozes-nights-In-white-satin" },
-            { src: "image9.jpg", title: "Shaggy ft. Lavbbe - MOVE (Mozes Remix)", youtubeId: "yhUHCS-IRmQ", spotify: "https://open.spotify.com/track/0xw5UUG2sOJxp8LaM08MAH?si=be5c8011bd364fea", sc: "" },
-            { src: "image10.jpg", title: "Mozes - Home", youtubeId: "KwZS_LO0ijc", spotify: "https://open.spotify.com/track/5gRfW2abrCOZQpG9PbWikH?si=619603f0165c421a", sc: "https://soundcloud.com/mozesofc/mozes-home-radio-edit" },
-            { src: "image11.jpg", title: "Mozes - Two Souls", youtubeId: "_fe05MJLhy8", spotify: "https://open.spotify.com/track/0xVrvo5uHs6I210jsv3vfy?si=9196baa8ac5c48b5", sc: "https://soundcloud.com/mozesofc/mozes-2-souls" },
-            { src: "image12.jpg", title: "Mozes - They Say", youtubeId: "AIVBYJC1Gtg", spotify: "https://open.spotify.com/track/452MRziT5Dq7opF9GCf5U?si=8466ebe7493e4550", sc: "https://soundcloud.com/mozesofc/mozes-they-say-r" },
-            { src: "image13.jpg", title: "Mozes ft. Sapir J. Fox - The Otherside", youtubeId: "y_LntJI2uqo", spotify: "https://open.spotify.com/track/4leube2v9p8EuVb52Dd3YG?si=c193f92a2d7a42c6", sc: "https://soundcloud.com/mozesofc/mozes-sapir-the-otherside" },
-            { src: "image14.jpg", title: "Mozes - Save Our Future", youtubeId: "AhefaUTmnwo", spotify: "https://open.spotify.com/track/5ea19cn1sh6lOCXMun7fzl?si=2d588f08d5cc415f", sc: "https://soundcloud.com/mozesofc/mozes-save-our-future-r" },
-            { src: "image15.jpg", title: "Mozes - Atlantis", youtubeId: "Tl4ZQ4KhtD4", spotify: "https://open.spotify.com/track/6z9GxXxcAvtcso9z0Q5ENz?si=5ccd25477dea4c1c", sc: "https://soundcloud.com/mozesofc/mozes-atlantis" },
-            { src: "image16.jpg", title: "Mozes - Nowhere To Hide", youtubeId: "0_tl1Xrsnus", spotify: "https://open.spotify.com/track/3K8fQDov2z6KgmrikuGeIA?si=85b1af1dd9834eb0", sc: "https://soundcloud.com/mozesofc/mozes-nowhere-to-hide-r" },
-            { src: "image17.jpg", title: "Mozes ft. Sapir J. Fox - Reborn Again", youtubeId: "EJeLvlcBXas", spotify: "https://open.spotify.com/track/3lbh8xwPegIaUzctkT2GNd?si=7cde9b64fd6d4eb7", sc: "https://soundcloud.com/mozesofc/mozes-sapir-reborn-again" },
-            { src: "image18.jpg", title: "Mozes - Trust Me (DnB Remix)", youtubeId: "Lk1KZFLwV3Q", spotify: "https://open.spotify.com/track/1d8Z4FpBiPmLzF15mTrUbA?si=f963e61c2ff840e5", sc: "https://soundcloud.com/mozesofc/mozes-trust-me-the-dnb-4" },
-            { src: "image19.jpg", title: "Mozes & Jazz - Wealth, Power & Fame", youtubeId: "ecL3Out6ja8", spotify: "https://open.spotify.com/track/5axqxREDfJF5vRibAghSWP?si=f5b9252112f24dd2", sc: "https://soundcloud.com/mozesofc/mozes-jazz-wealth-power-and-fame" },
-            { src: "image20.jpg", title: "Mozes - Late at Night", youtubeId: "4U_tvQ4WSRo", spotify: "https://open.spotify.com/track/7bUSduMOSEcBORTvDZcq5J?si=abebea2b300f44ca", sc: "https://soundcloud.com/mozesofc/mozes-late-at-night-radio-edit" }
+            { src: "https://raw.githubusercontent.com/Mozesofc/Mozes/main/image1.jpg", title: "Mozes - BALAGAN", ytId: "yng3GffPK_U", sp: "https://open.spotify.com/track/7smNpdIQgFXMevlfRpALPl" },
+            { src: "https://raw.githubusercontent.com/Mozesofc/Mozes/main/image2.jpg", title: "Cosmic Gate - Brave (Mozes Remix)", ytId: "kO8ylPtWT14", sp: "https://open.spotify.com/track/4L0swo2Q5bgMFt7QLW2VLJ" },
+            { src: "https://raw.githubusercontent.com/Mozesofc/Mozes/main/image3.jpg", title: "James Hype - Dont Wake Me Up (Mozes Remix)", ytId: "57W4t-hN3Vo" },
+            { src: "https://raw.githubusercontent.com/Mozesofc/Mozes/main/image4.jpg", title: "Tayri - Black Sheep (Mozes Remix)", ytId: "DKCr5GG4PXA" },
+            { src: "https://raw.githubusercontent.com/Mozesofc/Mozes/main/image5.jpg", title: "Mozes - What Took You So Long", ytId: "gcReNaVNd4E" },
+            { src: "https://raw.githubusercontent.com/Mozesofc/Mozes/main/image6.jpg", title: "Mozes & Mushy - Found Myself", ytId: "It-mN5HDWvA" }
         ];
 
-        let currentIndex = 0; let activeLayer = 1; let currentActivePage = 'home'; let isModalOpen = false; let modalIndex = 0;
-        const img1 = document.getElementById('img1'); const img2 = document.getElementById('img2');
-        const glow1 = document.getElementById('glow1'); const glow2 = document.getElementById('glow2');
-        const scrollIndicator = document.getElementById('scrollIndicator'); const releasesGrid = document.getElementById('releasesGrid');
+        let currentIndex = 0;
+        let currentPage = 'home';
+        let activeLayer = 1;
+
+        // Initialize Home Sections
         const scrollArea = document.getElementById('scrollArea');
-        const heroSocials = document.getElementById('hero-socials');
-
-        const totalHomeSections = tracks.length + 1;
-        
-        for(let i=0; i < tracks.length; i++) {
-            const sec = document.createElement('div'); sec.className = 'scroll-section'; scrollArea.appendChild(sec);
-        }
-
-        for(let i=0; i < totalHomeSections; i++) {
-            const isMilestone = i % 5 === 0 || i === totalHomeSections - 1;
-            const dot = document.createElement('div'); 
-            dot.className = `scroll-dot ${i === 0 ? 'active' : ''} ${isMilestone ? 'milestone' : ''}`; 
-            dot.id = `dot-${i}`;
-            dot.onclick = () => window.scrollTo({ top: i * window.innerHeight, behavior: 'smooth' });
-            scrollIndicator.appendChild(dot);
-        }
-
-        tracks.forEach((track, i) => {
-            const card = document.createElement('div'); card.className = 'release-card'; card.onclick = () => openModal(i);
-            card.innerHTML = `<img src="${track.src}" class="w-full aspect-square object-cover">
-                             <div class="p-4 text-[9px] tracking-[0.2em] uppercase text-white/80 truncate text-left" dir="ltr">${track.title}</div>`;
-            releasesGrid.appendChild(card);
-        });
-
-        img1.src = tracks[0].src; glow1.src = tracks[0].src; img2.src = tracks[0].src; glow2.src = tracks[0].src;
-
-        window.addEventListener('scroll', () => {
-            if (currentActivePage !== 'home' && currentActivePage !== 'social') return;
-            const scrollPos = window.scrollY;
-            const idx = Math.min(totalHomeSections - 1, Math.floor((scrollPos + window.innerHeight/2) / window.innerHeight));
+        const scrollIndicator = document.getElementById('scrollIndicator');
+        tracks.forEach((t, i) => {
+            const sec = document.createElement('div');
+            sec.className = 'scroll-section';
+            scrollArea.appendChild(sec);
             
-            // Hide hero socials when scrolling down
-            if (scrollPos > 100) heroSocials.style.opacity = "0";
-            else heroSocials.style.opacity = "1";
-
-            if (idx === tracks.length) document.getElementById('imageLayer').style.opacity = "0";
-            else if (idx < tracks.length) {
-                document.getElementById('imageLayer').style.opacity = "1";
-                if (idx !== currentIndex) { currentIndex = idx; updateUI(idx); }
-            }
-            document.querySelectorAll('.scroll-dot').forEach(d => d.classList.remove('active'));
-            document.getElementById(`dot-${idx}`)?.classList.add('active');
+            const dot = document.createElement('div');
+            dot.className = `scroll-dot ${i === 0 ? 'active' : ''}`;
+            dot.id = `dot-${i}`;
+            dot.onclick = () => { navigate('home'); window.scrollTo({ top: i * window.innerHeight, behavior: 'smooth' }); };
+            scrollIndicator.appendChild(dot);
         });
 
-        function scrollToExtreme(pos) {
-            let target = 0;
-            if (pos === 'start') target = 0;
-            else if (pos === 'last-image') target = (tracks.length - 1) * window.innerHeight;
-            window.scrollTo({ top: target, behavior: 'smooth' });
-        }
+        // Initialize Images
+        document.getElementById('img1').src = tracks[0].src;
+        document.getElementById('glow1').src = tracks[0].src;
 
-        function updateUI(idx) {
-            const [nextImg, currImg] = activeLayer === 1 ? [img2, img1] : [img1, img2];
-            const [nextGlow, currGlow] = activeLayer === 1 ? [glow2, glow1] : [glow1, glow2];
-            nextImg.src = tracks[idx].src; nextGlow.src = tracks[idx].src;
-            nextImg.classList.add('active'); nextGlow.classList.add('active');
-            currImg.classList.remove('active'); currGlow.classList.remove('active');
-            activeLayer = activeLayer === 1 ? 2 : 1;
-        }
+        // Handle Scroll for Home/Social Transitions
+        window.addEventListener('scroll', () => {
+            if (currentPage !== 'home' && currentPage !== 'social') return;
+            
+            const pos = window.scrollY;
+            const idx = Math.min(tracks.length - 1, Math.floor((pos + window.innerHeight/2) / window.innerHeight));
+            
+            // Hero Socials Fade
+            document.getElementById('hero-socials').style.opacity = pos > 100 ? "0" : "1";
 
+            // Visual Updates
+            if (idx !== currentIndex) {
+                currentIndex = idx;
+                const [nextImg, currImg] = activeLayer === 1 ? [img2, img1] : [img1, img2];
+                const [nextGlow, currGlow] = activeLayer === 1 ? [glow2, glow1] : [glow1, glow2];
+                
+                nextImg.src = tracks[idx].src;
+                nextGlow.src = tracks[idx].src;
+                nextImg.classList.add('active');
+                nextGlow.classList.add('active');
+                currImg.classList.remove('active');
+                currGlow.classList.remove('active');
+                activeLayer = activeLayer === 1 ? 2 : 1;
+
+                document.querySelectorAll('.scroll-dot').forEach(d => d.classList.remove('active'));
+                document.getElementById(`dot-${idx}`)?.classList.add('active');
+            }
+
+            // Image layer fade out when reaching bottom (Socials)
+            const bottomThreshold = document.body.scrollHeight - window.innerHeight - 100;
+            document.getElementById('imageLayer').style.opacity = pos > bottomThreshold ? "0" : "1";
+        });
+
+        // Navigation Controller
         function navigate(page) {
-            currentActivePage = page;
+            currentPage = page;
+            
+            // UI Cleanup
             document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
             document.getElementById(`nav-${page}`).classList.add('active');
             
-            // Hide all sub-pages first
-            document.querySelectorAll('.page-container').forEach(p => {
-                p.style.opacity = "0";
-                setTimeout(() => p.style.display = "none", 500);
+            // Handle Pages Visibility
+            const pages = ['news', 'releases'];
+            pages.forEach(p => {
+                const el = document.getElementById(`${p}-page`);
+                if (p === page) {
+                    el.style.display = 'block';
+                    setTimeout(() => el.style.opacity = '1', 50);
+                } else {
+                    el.style.opacity = '0';
+                    setTimeout(() => el.style.display = 'none', 400);
+                }
             });
 
+            // Logic for Home/Social
             if (page === 'home' || page === 'social') {
-                document.documentElement.style.scrollSnapType = 'none';
-                document.getElementById('side-nav').style.opacity = "1";
-                const target = page === 'home' ? 0 : document.body.scrollHeight;
-                window.scrollTo({ top: target, behavior: 'smooth' });
-                setTimeout(() => { document.documentElement.style.scrollSnapType = 'y mandatory'; }, 1000);
+                document.documentElement.style.scrollSnapType = 'y mandatory';
+                document.getElementById('imageLayer').style.display = 'flex';
+                document.getElementById('side-nav').style.display = 'flex';
+                document.getElementById('hero-socials').style.display = 'flex';
+                const targetPos = page === 'home' ? 0 : document.body.scrollHeight;
+                window.scrollTo({ top: targetPos, behavior: 'smooth' });
             } else {
-                const targetPage = document.getElementById(`${page}-page`);
-                targetPage.style.display = "block";
-                setTimeout(() => targetPage.style.opacity = "1", 10);
+                // Logic for News/Releases
                 document.documentElement.style.scrollSnapType = 'none';
-                document.getElementById('imageLayer').style.opacity = "0";
-                document.getElementById('side-nav').style.opacity = "0";
+                document.getElementById('imageLayer').style.display = 'none';
+                document.getElementById('side-nav').style.display = 'none';
+                document.getElementById('hero-socials').style.display = 'none';
+                window.scrollTo({ top: 0 });
             }
         }
 
-        function openModal(index) {
-            modalIndex = index; isModalOpen = true; updateModalContent();
-            const modal = document.getElementById('modal'); const frame = document.getElementById('modalFrame');
-            modal.classList.add('active'); setTimeout(() => { frame.classList.remove('scale-95'); frame.classList.add('scale-100'); }, 10);
+        // Releases Grid Population
+        const releasesGrid = document.getElementById('releasesGrid');
+        tracks.forEach((t, i) => {
+            const card = document.createElement('div');
+            card.className = 'release-card';
+            card.onclick = () => openModal(i);
+            card.innerHTML = `
+                <img src="${t.src}" class="w-full aspect-square object-cover">
+                <div class="p-4 text-[10px] tracking-widest uppercase text-white/60">${t.title}</div>
+            `;
+            releasesGrid.appendChild(card);
+        });
+
+        // Modal Logic
+        function openModal(idx) {
+            const t = tracks[idx];
+            document.getElementById('modalTitle').innerText = t.title;
+            document.getElementById('ytPlayer').src = `https://www.youtube.com/embed/${t.ytId}?autoplay=1`;
+            document.getElementById('spLink').href = t.sp || '#';
+            document.getElementById('modal').classList.add('active');
+            document.getElementById('modalFrame').classList.replace('scale-95', 'scale-100');
             document.body.style.overflow = 'hidden';
         }
 
-        function updateModalContent() {
-            const track = tracks[modalIndex];
-            document.getElementById('fullTitle').innerText = track.title;
-            document.getElementById('youtubePlayer').src = `https://www.youtube.com/embed/${track.youtubeId}?autoplay=1`;
-            const spBtn = document.getElementById('linkSpotify'); const scBtn = document.getElementById('linkSoundcloud');
-            if(track.spotify) { spBtn.style.display = "flex"; spBtn.href = track.spotify; } else { spBtn.style.display = "none"; }
-            if(track.sc) { scBtn.style.display = "flex"; scBtn.href = track.sc; } else { scBtn.style.display = "none"; }
-            document.getElementById('linkYoutube').href = `https://youtube.com/watch?v=${track.youtubeId}`;
-        }
-        function nextTrack(e) { if (e) e.stopPropagation(); modalIndex = (modalIndex + 1) % tracks.length; updateModalContent(); }
-        function prevTrack(e) { if (e) e.stopPropagation(); modalIndex = (modalIndex - 1 + tracks.length) % tracks.length; updateModalContent(); }
         function closeModal() {
-            isModalOpen = false; const modal = document.getElementById('modal'); const frame = document.getElementById('modalFrame');
-            frame.classList.remove('scale-100'); frame.classList.add('scale-95');
-            setTimeout(() => { modal.classList.remove('active'); document.getElementById('youtubePlayer').src = ""; document.body.style.overflow = 'auto'; }, 300);
+            document.getElementById('modalFrame').classList.replace('scale-100', 'scale-95');
+            document.getElementById('modal').classList.remove('active');
+            document.getElementById('ytPlayer').src = '';
+            document.body.style.overflow = 'auto';
         }
     </script>
 </body>
