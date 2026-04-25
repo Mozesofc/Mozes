@@ -11,13 +11,6 @@
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
       gtag('config', 'G-SJYT8M3ZZ2');
-
-      function trackClick(platform, trackTitle) {
-          gtag('event', 'click_music_link', {
-              'platform': platform,
-              'track_title': trackTitle
-          });
-      }
     </script>
 
     <link rel="icon" type="image/x-icon" href="https://raw.githubusercontent.com/Mozesofc/Mozes/main/favicon.ico">
@@ -49,33 +42,35 @@
         .main-image { position: absolute; width: 100%; height: 100%; object-fit: contain; cursor: pointer; opacity: 0; transition: all 0.9s cubic-bezier(0.23, 1, 0.32, 1); transform: scale(0.9) translateY(20px); filter: blur(15px); }
         .main-image.active { opacity: 1; transform: scale(1) translateY(0); filter: blur(0px); z-index: 20; }
 
-        /* Social Header - First Page Top */
-        .hero-socials { position: absolute; top: 30px; left: 50%; transform: translateX(-50%); z-index: 500; display: flex; gap: 1.5rem; transition: opacity 0.4s ease; }
+        /* Hero Social Links - Fixed on top */
+        .hero-socials { position: fixed; top: 30px; left: 40px; z-index: 500; display: flex; gap: 1.5rem; }
         .hero-social-link { color: rgba(255,255,255,0.4); transition: all 0.3s ease; }
-        .hero-social-link:hover { color: #fff; transform: scale(1.1); }
+        .hero-social-link:hover { color: #fff; transform: translateY(-3px); }
 
         /* Sections & Navigation */
         .scroll-section { height: 100vh; scroll-snap-align: start; }
         
-        /* Page Containers (News / Releases) */
-        .page-container { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: #000; z-index: 1000; overflow-y: auto; display: none; opacity: 0; transition: opacity 0.4s ease; padding-top: 5rem; padding-bottom: 8rem; }
+        /* Sub-pages containers */
+        .page-container { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: #000; z-index: 1000; overflow-y: auto; display: none; opacity: 0; transition: opacity 0.4s ease; padding: 6rem 2rem; box-sizing: border-box; }
         
         /* News Specific */
-        .video-wrapper { margin-bottom: 3rem; position: relative; width: 100%; border-radius: 12px; overflow: hidden; border: 1px solid rgba(255,255,255,0.1); background: #0a0a0a; }
-        .video-container { position: relative; padding-bottom: 56.25%; height: 0; }
-        .video-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
+        .news-video-wrapper { max-width: 900px; margin: 0 auto 3rem auto; border-radius: 1rem; overflow: hidden; background: #0a0a0a; border: 1px solid rgba(255,255,255,0.05); }
+        .video-ratio { position: relative; padding-bottom: 56.25%; height: 0; }
+        .video-ratio iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
 
-        .releases-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 2.5rem; max-width: 1200px; margin: 0 auto; padding: 20px; }
+        /* Releases */
+        .releases-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 2.5rem; max-width: 1300px; margin: 0 auto; }
         .release-card { background: rgba(255,255,255,0.03); border-radius: 0.5rem; overflow: hidden; transition: all 0.4s ease; border: 1px solid rgba(255,255,255,0.05); cursor: pointer; }
         .release-card:hover { transform: translateY(-8px); border-color: rgba(255,255,255,0.2); }
 
+        /* SOCIAL SECTION - AS IS */
         .social-section { height: 100vh; scroll-snap-align: start; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; position: relative; z-index: 100; }
         .social-link { font-size: 1.5rem; font-weight: 300; letter-spacing: 0.3em; text-transform: uppercase; color: rgba(255,255,255,0.4); transition: all 0.4s ease; margin: 0.5rem 0; display: block; }
         .social-link:hover { color: #fff; letter-spacing: 0.4em; }
 
-        .bottom-nav { position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%); z-index: 2000; background: rgba(10, 10, 10, 0.7); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.1); padding: 0.4rem; border-radius: 4rem; display: flex; gap: 0.2rem; }
-        .nav-btn { padding: 0.6rem 1.2rem; border-radius: 3rem; font-size: 0.7rem; font-weight: 400; text-transform: uppercase; letter-spacing: 2px; transition: all 0.3s ease; color: rgba(255, 255, 255, 0.4); cursor: pointer; }
-        .nav-btn.active { background: rgba(255, 255, 255, 0.1); color: #fff; }
+        .bottom-nav { position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%); z-index: 2000; background: rgba(15, 15, 15, 0.6); backdrop-filter: blur(25px); border: 1px solid rgba(255, 255, 255, 0.1); padding: 0.35rem; border-radius: 4rem; display: flex; gap: 0.2rem; }
+        .nav-btn { padding: 0.6rem 1.4rem; border-radius: 3rem; font-size: 0.7rem; font-weight: 400; text-transform: uppercase; letter-spacing: 2px; transition: all 0.3s ease; color: rgba(255, 255, 255, 0.4); cursor: pointer; }
+        .nav-btn.active { background: rgba(255, 255, 255, 0.12); color: #fff; }
 
         .scroll-dot { width: 5px; height: 5px; background: rgba(255, 255, 255, 0.2); border-radius: 50%; transition: all 0.3s ease; cursor: pointer; }
         .scroll-dot.active { background: #fff; transform: scale(1.6); }
@@ -88,32 +83,31 @@
         .track-btn:hover { background: rgba(255, 255, 255, 0.1); color: #fff; }
     </style>
 </head>
-<body class="bg-black">
+<body>
 
     <div class="glow-container">
         <img id="glow1" src="" class="ambient-glow active">
         <img id="glow2" src="" class="ambient-glow">
     </div>
 
-    <!-- Social Bar on First Page -->
-    <div id="hero-socials" class="hero-socials">
+    <!-- Hero Social Icons (Top Left) -->
+    <div class="hero-socials" id="hero-socials">
         <a href="https://www.youtube.com/@Mozesofc" target="_blank" class="hero-social-link">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
         </a>
         <a href="https://open.spotify.com/artist/4uRpFQ2D51xyz2O4V9pqon" target="_blank" class="hero-social-link">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.496 17.306c-.215.353-.675.465-1.028.249-2.846-1.74-6.429-2.134-10.648-1.172-.403.092-.806-.162-.898-.565-.092-.403.162-.806.565-.898 4.613-1.054 8.57-.605 11.762 1.348.353.215.465.675.247 1.038zm1.468-3.26c-.272.443-.846.582-1.29.31-3.258-2.003-8.225-2.585-12.078-1.415-.494.15-1.018-.13-1.168-.624-.15-.495.13-1.019.624-1.168 4.403-1.336 9.888-.68 13.602 1.6 0.444.273.583.847.31 1.291zm.127-3.39c-3.906-2.32-10.334-2.533-14.077-1.396-.6.182-1.23-.16-1.412-.76-.183-.6.16-1.23.76-1.412 4.298-1.306 11.408-1.055 15.908 1.616.54.32.716 1.014.396 1.554-.32.54-1.014.716-1.554.397z"/></svg>
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.496 17.306c-.215.353-.675.465-1.028.249-2.846-1.74-6.429-2.134-10.648-1.172-.403.092-.806-.162-.898-.565-.092-.403.162-.806.565-.898 4.613-1.054 8.57-.605 11.762 1.348.353.215.465.675.247 1.038zm1.468-3.26c-.272.443-.846.582-1.29.31-3.258-2.003-8.225-2.585-12.078-1.415-.494.15-1.018-.13-1.168-.624-.15-.495.13-1.019.624-1.168 4.403-1.336 9.888-.68 13.602 1.6 0.444.273.583.847.31 1.291zm.127-3.39c-3.906-2.32-10.334-2.533-14.077-1.396-.6.182-1.23-.16-1.412-.76-.183-.6.16-1.23.76-1.412 4.298-1.306 11.408-1.055 15.908 1.616.54.32.716 1.014.396 1.554-.32.54-1.014.716-1.554.397z"/></svg>
         </a>
         <a href="https://www.instagram.com/Mozesofc" target="_blank" class="hero-social-link">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
         </a>
     </div>
 
-    <!-- Scroll Indicator (Home only) -->
+    <!-- Side Indicators -->
     <div id="side-nav" class="fixed right-6 top-1/2 -translate-y-1/2 z-[100] flex flex-col items-center gap-5">
         <div id="scrollIndicator" class="flex flex-col gap-4"></div>
     </div>
 
-    <!-- Visual Layer -->
     <div id="imageLayer" class="fixed-image-layer">
         <div class="image-wrapper" onclick="openModal(currentIndex)">
             <img id="img1" src="" class="main-image active">
@@ -121,54 +115,57 @@
         </div>
     </div>
 
-    <!-- Main Content Areas -->
+    <!-- Main Content Area -->
     <div id="home-area">
         <div id="scrollArea"></div>
+        <!-- Social Section - AS IS -->
         <div id="social-anchor" class="social-section">
-            <h2 class="text-3xl md:text-5xl font-thin uppercase tracking-[0.4em] mb-12">Connect</h2>
+            <h2 class="text-4xl md:text-6xl font-thin uppercase tracking-[0.4em] mb-12">Connect</h2>
             <div class="flex flex-col gap-3">
                 <a href="https://open.spotify.com/artist/4uRpFQ2D51xyz2O4V9pqon" target="_blank" class="social-link">Spotify</a>
                 <a href="https://www.youtube.com/@Mozesofc" target="_blank" class="social-link">YouTube</a>
-                <a href="https://soundcloud.com/mozesofc" target="_blank" class="social-link">SoundCloud</a>
                 <a href="https://www.instagram.com/Mozesofc" target="_blank" class="social-link">Instagram</a>
+                <a href="https://soundcloud.com/mozesofc" target="_blank" class="social-link">SoundCloud</a>
+                <a href="https://linktr.ee/mozesofc" target="_blank" class="social-link">Linktree</a>
+            </div>
+            <div class="mt-20">
+                <p class="text-[10px] uppercase tracking-[0.5em] text-white/20 mb-2">Booking & Inquiries</p>
+                <a href="mailto:Info@mozesmusic.com" class="text-white/60 hover:text-white transition-all tracking-[0.1em]">Info@mozesmusic.com</a>
             </div>
         </div>
     </div>
 
-    <!-- News Page (Hidden by default) -->
+    <!-- News Page -->
     <div id="news-page" class="page-container">
-        <div class="max-w-4xl mx-auto px-6">
-            <h2 class="text-4xl font-light tracking-[0.3em] uppercase text-center mb-12">News</h2>
-            
-            <div class="video-wrapper">
-                <div class="video-container">
-                    <iframe src="https://www.youtube.com/embed/NNAMMayVLFg" frameborder="0" allowfullscreen></iframe>
-                </div>
-            </div>
-
-            <div class="video-wrapper">
-                <div class="video-container">
+        <div class="max-w-4xl mx-auto">
+            <h2 class="text-3xl font-light tracking-[0.3em] uppercase text-center mb-12">News</h2>
+            <div class="news-video-wrapper">
+                <div class="video-ratio">
                     <iframe src="https://www.youtube.com/embed/yng3GffPK_U" frameborder="0" allowfullscreen></iframe>
                 </div>
             </div>
-
-            <div class="video-wrapper">
-                <div class="video-container">
+            <div class="news-video-wrapper">
+                <div class="video-ratio">
                     <iframe src="https://www.youtube.com/embed/kO8ylPtWT14" frameborder="0" allowfullscreen></iframe>
+                </div>
+            </div>
+            <div class="news-video-wrapper">
+                <div class="video-ratio">
+                    <iframe src="https://www.youtube.com/embed/NNAMMayVLFg" frameborder="0" allowfullscreen></iframe>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Releases Page (Hidden by default) -->
+    <!-- Releases Page -->
     <div id="releases-page" class="page-container">
-        <div class="max-w-6xl mx-auto px-6">
-            <h2 class="text-4xl font-light tracking-[0.3em] uppercase text-center mb-12">Releases</h2>
+        <div class="max-w-6xl mx-auto pb-32">
+            <h2 class="text-3xl font-light tracking-[0.3em] uppercase text-center mb-12">Releases</h2>
             <div id="releasesGrid" class="releases-grid"></div>
         </div>
     </div>
 
-    <!-- Persistent Bottom Nav -->
+    <!-- Navigation -->
     <nav class="bottom-nav" dir="ltr">
         <button onclick="navigate('home')" id="nav-home" class="nav-btn active">Mozes</button>
         <button onclick="navigate('news')" id="nav-news" class="nav-btn">News</button>
@@ -176,7 +173,7 @@
         <button onclick="navigate('social')" id="nav-social" class="nav-btn">Socials</button>
     </nav>
 
-    <!-- Track Modal -->
+    <!-- Modal -->
     <div id="modal" class="fixed inset-0 flex items-center justify-center p-4">
         <div class="absolute inset-0 bg-black/80" onclick="closeModal()"></div>
         <div id="modalFrame" class="relative w-full max-w-xl liquid-glass p-8 flex flex-col gap-6 transform transition-all duration-300 scale-95">
@@ -196,20 +193,20 @@
         const tracks = [
             { src: "https://raw.githubusercontent.com/Mozesofc/Mozes/main/image1.jpg", title: "Mozes - BALAGAN", ytId: "yng3GffPK_U", sp: "https://open.spotify.com/track/7smNpdIQgFXMevlfRpALPl" },
             { src: "https://raw.githubusercontent.com/Mozesofc/Mozes/main/image2.jpg", title: "Cosmic Gate - Brave (Mozes Remix)", ytId: "kO8ylPtWT14", sp: "https://open.spotify.com/track/4L0swo2Q5bgMFt7QLW2VLJ" },
-            { src: "https://raw.githubusercontent.com/Mozesofc/Mozes/main/image3.jpg", title: "James Hype - Dont Wake Me Up (Mozes Remix)", ytId: "57W4t-hN3Vo" },
-            { src: "https://raw.githubusercontent.com/Mozesofc/Mozes/main/image4.jpg", title: "Tayri - Black Sheep (Mozes Remix)", ytId: "DKCr5GG4PXA" },
-            { src: "https://raw.githubusercontent.com/Mozesofc/Mozes/main/image5.jpg", title: "Mozes - What Took You So Long", ytId: "gcReNaVNd4E" },
+            { src: "https://raw.githubusercontent.com/Mozesofc/Mozes/main/image3.jpg", title: "James Hype - Dont Wake Me Up", ytId: "57W4t-hN3Vo" },
+            { src: "https://raw.githubusercontent.com/Mozesofc/Mozes/main/image4.jpg", title: "Tayri - Black Sheep (Remix)", ytId: "DKCr5GG4PXA" },
+            { src: "https://raw.githubusercontent.com/Mozesofc/Mozes/main/image5.jpg", title: "What Took You So Long", ytId: "gcReNaVNd4E" },
             { src: "https://raw.githubusercontent.com/Mozesofc/Mozes/main/image6.jpg", title: "Mozes & Mushy - Found Myself", ytId: "It-mN5HDWvA" }
         ];
 
         let currentIndex = 0;
-        let currentPage = 'home';
         let activeLayer = 1;
+        let currentPage = 'home';
 
-        // Initialize Home Sections
-        const scrollArea = document.getElementById('scrollArea');
+        // Init Scroll indicators
         const scrollIndicator = document.getElementById('scrollIndicator');
-        tracks.forEach((t, i) => {
+        const scrollArea = document.getElementById('scrollArea');
+        tracks.forEach((_, i) => {
             const sec = document.createElement('div');
             sec.className = 'scroll-section';
             scrollArea.appendChild(sec);
@@ -225,17 +222,15 @@
         document.getElementById('img1').src = tracks[0].src;
         document.getElementById('glow1').src = tracks[0].src;
 
-        // Handle Scroll for Home/Social Transitions
         window.addEventListener('scroll', () => {
             if (currentPage !== 'home' && currentPage !== 'social') return;
             
             const pos = window.scrollY;
             const idx = Math.min(tracks.length - 1, Math.floor((pos + window.innerHeight/2) / window.innerHeight));
             
-            // Hero Socials Fade
+            // Hero Socials Fade on scroll
             document.getElementById('hero-socials').style.opacity = pos > 100 ? "0" : "1";
 
-            // Visual Updates
             if (idx !== currentIndex) {
                 currentIndex = idx;
                 const [nextImg, currImg] = activeLayer === 1 ? [img2, img1] : [img1, img2];
@@ -253,20 +248,15 @@
                 document.getElementById(`dot-${idx}`)?.classList.add('active');
             }
 
-            // Image layer fade out when reaching bottom (Socials)
             const bottomThreshold = document.body.scrollHeight - window.innerHeight - 100;
             document.getElementById('imageLayer').style.opacity = pos > bottomThreshold ? "0" : "1";
         });
 
-        // Navigation Controller
         function navigate(page) {
             currentPage = page;
-            
-            // UI Cleanup
             document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
             document.getElementById(`nav-${page}`).classList.add('active');
-            
-            // Handle Pages Visibility
+
             const pages = ['news', 'releases'];
             pages.forEach(p => {
                 const el = document.getElementById(`${p}-page`);
@@ -279,38 +269,31 @@
                 }
             });
 
-            // Logic for Home/Social
             if (page === 'home' || page === 'social') {
                 document.documentElement.style.scrollSnapType = 'y mandatory';
                 document.getElementById('imageLayer').style.display = 'flex';
-                document.getElementById('side-nav').style.display = 'flex';
+                document.getElementById('side-nav').style.opacity = '1';
                 document.getElementById('hero-socials').style.display = 'flex';
-                const targetPos = page === 'home' ? 0 : document.body.scrollHeight;
-                window.scrollTo({ top: targetPos, behavior: 'smooth' });
+                const target = page === 'home' ? 0 : document.body.scrollHeight;
+                window.scrollTo({ top: target, behavior: 'smooth' });
             } else {
-                // Logic for News/Releases
                 document.documentElement.style.scrollSnapType = 'none';
                 document.getElementById('imageLayer').style.display = 'none';
-                document.getElementById('side-nav').style.display = 'none';
+                document.getElementById('side-nav').style.opacity = '0';
                 document.getElementById('hero-socials').style.display = 'none';
                 window.scrollTo({ top: 0 });
             }
         }
 
-        // Releases Grid Population
-        const releasesGrid = document.getElementById('releasesGrid');
+        const grid = document.getElementById('releasesGrid');
         tracks.forEach((t, i) => {
             const card = document.createElement('div');
             card.className = 'release-card';
             card.onclick = () => openModal(i);
-            card.innerHTML = `
-                <img src="${t.src}" class="w-full aspect-square object-cover">
-                <div class="p-4 text-[10px] tracking-widest uppercase text-white/60">${t.title}</div>
-            `;
-            releasesGrid.appendChild(card);
+            card.innerHTML = `<img src="${t.src}" class="w-full aspect-square object-cover"><div class="p-4 text-[10px] tracking-widest uppercase text-white/50">${t.title}</div>`;
+            grid.appendChild(card);
         });
 
-        // Modal Logic
         function openModal(idx) {
             const t = tracks[idx];
             document.getElementById('modalTitle').innerText = t.title;
