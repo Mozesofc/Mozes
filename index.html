@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
+
     <!-- Google Analytics (GA4) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-SJYT8M3ZZ2"></script>
     <script>
@@ -13,13 +13,13 @@
       gtag('config', 'G-SJYT8M3ZZ2');
     </script>
 
-    <link rel="icon" type="image/x-icon" href="https://raw.githubusercontent.com/Mozesofc/Mozes/main/favicon.ico">
-    <link rel="shortcut icon" href="https://raw.githubusercontent.com/Mozesofc/Mozes/main/favicon.ico">
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link rel="shortcut icon" href="favicon.ico">
 
     <title>Mozes Home</title>
     <meta property="og:title" content="Mozes Home">
     <meta property="og:description" content="The Official Website">
-    <meta property="og:image" content="https://raw.githubusercontent.com/Mozesofc/Mozes/main/image1.jpg">
+    <meta property="og:image" content="https://mozesmusic.com/image21.jpg">
     <meta property="og:url" content="https://mozesmusic.com">
     <meta property="og:type" content="website">
 
@@ -30,95 +30,94 @@
         html { scroll-behavior: smooth; }
         body { background-color: #000; color: #fff; font-family: 'Lato', sans-serif; margin: 0; padding: 0; overflow-x: hidden; }
 
-        /* Background & Glow */
         .glow-container { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; display: flex; justify-content: center; align-items: center; z-index: 1; pointer-events: none; overflow: hidden; }
         .ambient-glow { position: absolute; width: 140vmin; height: 140vmin; object-fit: cover; filter: blur(100px) saturate(3) contrast(1.2); opacity: 0; transition: opacity 1.5s ease-in-out; will-change: transform, opacity; }
         @keyframes fluidMove { 0% { transform: translate(0, 0) scale(1) rotate(0deg); } 33% { transform: translate(5%, -5%) scale(1.05) rotate(2deg); } 66% { transform: translate(-3%, 7%) scale(0.95) rotate(-1deg); } 100% { transform: translate(0, 0) scale(1) rotate(0deg); } }
         .ambient-glow.active { opacity: 0.45; animation: fluidMove 25s ease-in-out infinite; }
 
-        /* Main Image Layers */
         .fixed-image-layer { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; display: flex; justify-content: center; align-items: center; z-index: 10; pointer-events: none; transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1); }
         .image-wrapper { position: relative; width: 85vw; max-width: 550px; aspect-ratio: 1 / 1; pointer-events: auto; display: flex; justify-content: center; align-items: center; }
         .main-image { position: absolute; width: 100%; height: 100%; object-fit: contain; cursor: pointer; opacity: 0; transition: all 0.9s cubic-bezier(0.23, 1, 0.32, 1); transform: scale(0.9) translateY(20px); filter: blur(15px); }
         .main-image.active { opacity: 1; transform: scale(1) translateY(0); filter: blur(0px); z-index: 20; }
 
-        /* Hero Social Links - Fixed on top */
-        .hero-socials { position: fixed; top: 30px; left: 40px; z-index: 500; display: flex; gap: 1.5rem; }
+        .hero-socials { position: fixed; top: 30px; left: 40px; z-index: 500; display: flex; gap: 1.5rem; transition: opacity 0.35s ease; }
         .hero-social-link { color: rgba(255,255,255,0.4); transition: all 0.3s ease; }
         .hero-social-link:hover { color: #fff; transform: translateY(-3px); }
 
-        /* Sections & Navigation */
         .scroll-section { height: 100vh; scroll-snap-align: start; }
-        
-        /* Sub-pages containers */
         .page-container { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: #000; z-index: 1000; overflow-y: auto; display: none; opacity: 0; transition: opacity 0.4s ease; padding: 6rem 2rem; box-sizing: border-box; }
-        
-        /* News Specific */
+
         .news-video-wrapper { max-width: 900px; margin: 0 auto 3rem auto; border-radius: 1rem; overflow: hidden; background: #0a0a0a; border: 1px solid rgba(255,255,255,0.05); }
         .video-ratio { position: relative; padding-bottom: 56.25%; height: 0; }
         .video-ratio iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
 
-        /* Releases */
         .releases-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 2.5rem; max-width: 1300px; margin: 0 auto; }
         .release-card { background: rgba(255,255,255,0.03); border-radius: 0.5rem; overflow: hidden; transition: all 0.4s ease; border: 1px solid rgba(255,255,255,0.05); cursor: pointer; }
         .release-card:hover { transform: translateY(-8px); border-color: rgba(255,255,255,0.2); }
 
-        /* SOCIAL SECTION - AS IS */
         .social-section { height: 100vh; scroll-snap-align: start; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; position: relative; z-index: 100; }
         .social-link { font-size: 1.5rem; font-weight: 300; letter-spacing: 0.3em; text-transform: uppercase; color: rgba(255,255,255,0.4); transition: all 0.4s ease; margin: 0.5rem 0; display: block; }
         .social-link:hover { color: #fff; letter-spacing: 0.4em; }
 
-        .bottom-nav { position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%); z-index: 2000; background: rgba(15, 15, 15, 0.6); backdrop-filter: blur(25px); border: 1px solid rgba(255, 255, 255, 0.1); padding: 0.35rem; border-radius: 4rem; display: flex; gap: 0.2rem; }
-        .nav-btn { padding: 0.6rem 1.4rem; border-radius: 3rem; font-size: 0.7rem; font-weight: 400; text-transform: uppercase; letter-spacing: 2px; transition: all 0.3s ease; color: rgba(255, 255, 255, 0.4); cursor: pointer; }
-        .nav-btn.active { background: rgba(255, 255, 255, 0.12); color: #fff; }
+        .bottom-nav { --nav-x: 50%; --nav-y: 50%; --active-x: 0px; --active-w: 0px; position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%); z-index: 2000; background: rgba(15, 15, 15, 0.56); backdrop-filter: blur(28px) saturate(1.65); -webkit-backdrop-filter: blur(28px) saturate(1.65); border: 1px solid rgba(255, 255, 255, 0.12); padding: 0.35rem; border-radius: 4rem; display: flex; gap: 0.2rem; overflow: hidden; box-shadow: inset 0 1px 0 rgba(255,255,255,0.18), inset 0 -1px 0 rgba(255,255,255,0.05), 0 18px 55px rgba(0,0,0,0.35); transition: transform 0.45s cubic-bezier(0.23, 1, 0.32, 1), background 0.45s ease, border-color 0.45s ease; }
+        .bottom-nav::before { content: ""; position: absolute; inset: 0; pointer-events: none; background: radial-gradient(circle at var(--nav-x) var(--nav-y), rgba(255,255,255,0.24), rgba(255,255,255,0.06) 28%, transparent 58%); opacity: 0; transition: opacity 0.35s ease; }
+        .bottom-nav::after { content: ""; position: absolute; left: 12%; right: 12%; top: 1px; height: 1px; pointer-events: none; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.55), transparent); opacity: 0.55; }
+        .bottom-nav:hover { background: rgba(18, 18, 18, 0.68); border-color: rgba(255, 255, 255, 0.18); transform: translateX(-50%) translateY(-2px) scale(1.012); }
+        .bottom-nav:hover::before { opacity: 1; }
+        .bottom-nav:active { transform: translateX(-50%) translateY(0) scale(0.992); }
+        .nav-active-glass { position: absolute; top: 0.35rem; bottom: 0.35rem; left: 0; width: var(--active-w); transform: translateX(var(--active-x)); border-radius: 3rem; background: linear-gradient(135deg, rgba(255,255,255,0.22), rgba(255,255,255,0.07)); box-shadow: inset 0 1px 1px rgba(255,255,255,0.28), inset 0 -1px 1px rgba(255,255,255,0.06), 0 8px 22px rgba(255,255,255,0.05); pointer-events: none; transition: transform 0.62s cubic-bezier(0.22, 1, 0.36, 1), width 0.62s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.25s ease; opacity: 1; }
+        .nav-btn { position: relative; z-index: 1; padding: 0.6rem 1.4rem; border-radius: 3rem; font-size: 0.7rem; font-weight: 400; text-transform: uppercase; letter-spacing: 2px; transition: color 0.35s ease, transform 0.35s cubic-bezier(0.23, 1, 0.32, 1), text-shadow 0.35s ease; color: rgba(255, 255, 255, 0.4); cursor: pointer; }
+        .nav-btn:hover { color: rgba(255,255,255,0.78); transform: translateY(-1px); }
+        .nav-btn:active { transform: translateY(1px) scale(0.96); }
+        .nav-btn.active { color: #fff; text-shadow: 0 0 18px rgba(255,255,255,0.28); }
 
         .scroll-dot { width: 5px; height: 5px; background: rgba(255, 255, 255, 0.2); border-radius: 50%; transition: all 0.3s ease; cursor: pointer; }
         .scroll-dot.active { background: #fff; transform: scale(1.6); }
 
         #modal { transition: all 0.4s ease; opacity: 0; pointer-events: none; z-index: 3000; }
         #modal.active { opacity: 1; pointer-events: auto; }
-        .liquid-glass { background: rgba(20, 20, 20, 0.8); backdrop-filter: blur(40px); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 1.5rem; }
-
+        .liquid-glass { background: rgba(20, 20, 20, 0.8); backdrop-filter: blur(40px); -webkit-backdrop-filter: blur(40px); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 1.5rem; }
         .track-btn { background: rgba(255, 255, 255, 0.05); padding: 0.6rem 1rem; border-radius: 2rem; font-size: 0.6rem; letter-spacing: 0.15em; text-transform: uppercase; transition: all 0.3s ease; display: flex; align-items: center; justify-content: center; color: rgba(255,255,255,0.5); }
         .track-btn:hover { background: rgba(255, 255, 255, 0.1); color: #fff; }
+
+        @media (max-width: 620px) {
+            .hero-socials { left: 24px; top: 24px; gap: 1rem; }
+            .bottom-nav { bottom: 1rem; max-width: calc(100vw - 1.5rem); }
+            .nav-btn { padding: 0.55rem 0.9rem; font-size: 0.62rem; letter-spacing: 1px; }
+        }
     </style>
 </head>
 <body>
-
     <div class="glow-container">
-        <img id="glow1" src="" class="ambient-glow active">
-        <img id="glow2" src="" class="ambient-glow">
+        <img id="glow1" src="" class="ambient-glow active" alt="">
+        <img id="glow2" src="" class="ambient-glow" alt="">
     </div>
 
-    <!-- Hero Social Icons (Top Left) -->
-    <div class="hero-socials" id="hero-socials">
-        <a href="https://www.youtube.com/@Mozesofc" target="_blank" class="hero-social-link">
+    <div class="hero-socials" id="hero-socials" dir="ltr">
+        <a href="https://www.youtube.com/@Mozesofc" target="_blank" class="hero-social-link" aria-label="YouTube">
             <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
         </a>
-        <a href="https://open.spotify.com/artist/4uRpFQ2D51xyz2O4V9pqon" target="_blank" class="hero-social-link">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.496 17.306c-.215.353-.675.465-1.028.249-2.846-1.74-6.429-2.134-10.648-1.172-.403.092-.806-.162-.898-.565-.092-.403.162-.806.565-.898 4.613-1.054 8.57-.605 11.762 1.348.353.215.465.675.247 1.038zm1.468-3.26c-.272.443-.846.582-1.29.31-3.258-2.003-8.225-2.585-12.078-1.415-.494.15-1.018-.13-1.168-.624-.15-.495.13-1.019.624-1.168 4.403-1.336 9.888-.68 13.602 1.6 0.444.273.583.847.31 1.291zm.127-3.39c-3.906-2.32-10.334-2.533-14.077-1.396-.6.182-1.23-.16-1.412-.76-.183-.6.16-1.23.76-1.412 4.298-1.306 11.408-1.055 15.908 1.616.54.32.716 1.014.396 1.554-.32.54-1.014.716-1.554.397z"/></svg>
+        <a href="https://open.spotify.com/artist/4uRpFQ2D51xyz2O4V9pqon" target="_blank" class="hero-social-link" aria-label="Spotify">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.496 17.306c-.215.353-.675.465-1.028.249-2.846-1.74-6.429-2.134-10.648-1.172-.403.092-.806-.162-.898-.565-.092-.403.162-.806.565-.898 4.613-1.054 8.57-.605 11.762 1.348.353.215.465.675.247 1.038zm1.468-3.26c-.272.443-.846.582-1.29.31-3.258-2.003-8.225-2.585-12.078-1.415-.494.15-1.018-.13-1.168-.624-.15-.495.13-1.019.624-1.168 4.403-1.336 9.888-.68 13.602 1.6.444.273.583.847.31 1.291zm.127-3.39c-3.906-2.32-10.334-2.533-14.077-1.396-.6.182-1.23-.16-1.412-.76-.183-.6.16-1.23.76-1.412 4.298-1.306 11.408-1.055 15.908 1.616.54.32.716 1.014.396 1.554-.32.54-1.014.716-1.554.397z"/></svg>
         </a>
-        <a href="https://www.instagram.com/Mozesofc" target="_blank" class="hero-social-link">
+        <a href="https://www.instagram.com/Mozesofc" target="_blank" class="hero-social-link" aria-label="Instagram">
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
         </a>
     </div>
 
-    <!-- Side Indicators -->
     <div id="side-nav" class="fixed right-6 top-1/2 -translate-y-1/2 z-[100] flex flex-col items-center gap-5">
         <div id="scrollIndicator" class="flex flex-col gap-4"></div>
     </div>
 
     <div id="imageLayer" class="fixed-image-layer">
         <div class="image-wrapper" onclick="openModal(currentIndex)">
-            <img id="img1" src="" class="main-image active">
-            <img id="img2" src="" class="main-image">
+            <img id="img1" src="" class="main-image active" alt="">
+            <img id="img2" src="" class="main-image" alt="">
         </div>
     </div>
 
-    <!-- Main Content Area -->
     <div id="home-area">
         <div id="scrollArea"></div>
-        <!-- Social Section - AS IS -->
         <div id="social-anchor" class="social-section">
             <h2 class="text-4xl md:text-6xl font-thin uppercase tracking-[0.4em] mb-12">Connect</h2>
             <div class="flex flex-col gap-3">
@@ -135,29 +134,16 @@
         </div>
     </div>
 
-    <!-- News Page -->
     <div id="news-page" class="page-container">
         <div class="max-w-4xl mx-auto">
             <h2 class="text-3xl font-light tracking-[0.3em] uppercase text-center mb-12">News</h2>
-            <div class="news-video-wrapper">
-                <div class="video-ratio">
-                    <iframe src="https://www.youtube.com/embed/yng3GffPK_U" frameborder="0" allowfullscreen></iframe>
-                </div>
-            </div>
-            <div class="news-video-wrapper">
-                <div class="video-ratio">
-                    <iframe src="https://www.youtube.com/embed/kO8ylPtWT14" frameborder="0" allowfullscreen></iframe>
-                </div>
-            </div>
-            <div class="news-video-wrapper">
-                <div class="video-ratio">
-                    <iframe src="https://www.youtube.com/embed/NNAMMayVLFg" frameborder="0" allowfullscreen></iframe>
-                </div>
-            </div>
+            <div class="news-video-wrapper"><div class="video-ratio"><iframe src="https://www.youtube.com/embed/S1ziBNFiM2I" frameborder="0" allowfullscreen></iframe></div></div>
+            <div class="news-video-wrapper"><div class="video-ratio"><iframe src="https://www.youtube.com/embed/yng3GffPK_U" frameborder="0" allowfullscreen></iframe></div></div>
+            <div class="news-video-wrapper"><div class="video-ratio"><iframe src="https://www.youtube.com/embed/kO8ylPtWT14" frameborder="0" allowfullscreen></iframe></div></div>
+            <div class="news-video-wrapper"><div class="video-ratio"><iframe src="https://www.youtube.com/embed/NNAMMayVLFg" frameborder="0" allowfullscreen></iframe></div></div>
         </div>
     </div>
 
-    <!-- Releases Page -->
     <div id="releases-page" class="page-container">
         <div class="max-w-6xl mx-auto pb-32">
             <h2 class="text-3xl font-light tracking-[0.3em] uppercase text-center mb-12">Releases</h2>
@@ -165,19 +151,18 @@
         </div>
     </div>
 
-    <!-- Navigation -->
     <nav class="bottom-nav" dir="ltr">
+        <div class="nav-active-glass" aria-hidden="true"></div>
         <button onclick="navigate('home')" id="nav-home" class="nav-btn active">Mozes</button>
         <button onclick="navigate('news')" id="nav-news" class="nav-btn">News</button>
         <button onclick="navigate('releases')" id="nav-releases" class="nav-btn">Releases</button>
         <button onclick="navigate('social')" id="nav-social" class="nav-btn">Socials</button>
     </nav>
 
-    <!-- Modal -->
     <div id="modal" class="fixed inset-0 flex items-center justify-center p-4">
         <div class="absolute inset-0 bg-black/80" onclick="closeModal()"></div>
         <div id="modalFrame" class="relative w-full max-w-xl liquid-glass p-8 flex flex-col gap-6 transform transition-all duration-300 scale-95">
-            <button onclick="closeModal()" class="absolute top-4 right-4 text-white/30 hover:text-white text-xl">×</button>
+            <button onclick="closeModal()" class="absolute top-4 right-4 text-white/30 hover:text-white text-xl">&times;</button>
             <h3 id="modalTitle" class="text-xs tracking-[0.2em] font-light uppercase text-white/80"></h3>
             <div class="aspect-video w-full rounded-lg overflow-hidden bg-black">
                 <iframe id="ytPlayer" class="w-full h-full" src="" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
@@ -191,51 +176,95 @@
 
     <script>
         const tracks = [
-            { src: "https://raw.githubusercontent.com/Mozesofc/Mozes/main/image1.jpg", title: "Mozes - BALAGAN", ytId: "yng3GffPK_U", sp: "https://open.spotify.com/track/7smNpdIQgFXMevlfRpALPl" },
+            { src: "image21.jpg", title: "Mozes - End Of Time", ytId: "S1ziBNFiM2I", sp: "https://open.spotify.com/album/1TzzXVyNanpbujIlYUmTTz?si=Ok23nXBUQ1SkZcqwjzuruA" },
+            { src: "https://raw.githubusercontent.com/Mozesofc/Mozes/main/image1.jpg", title: "Mozes - BALAGAN", ytId: "yng3GffPK_U", sp: "https://open.spotify.com/track/7smNpdIQgFXMevlfRpALPl", sc: "https://soundcloud.com/mozesofc/mozes-balagan" },
             { src: "https://raw.githubusercontent.com/Mozesofc/Mozes/main/image2.jpg", title: "Cosmic Gate - Brave (Mozes Remix)", ytId: "kO8ylPtWT14", sp: "https://open.spotify.com/track/4L0swo2Q5bgMFt7QLW2VLJ" },
-            { src: "https://raw.githubusercontent.com/Mozesofc/Mozes/main/image3.jpg", title: "James Hype - Dont Wake Me Up", ytId: "57W4t-hN3Vo" },
-            { src: "https://raw.githubusercontent.com/Mozesofc/Mozes/main/image4.jpg", title: "Tayri - Black Sheep (Remix)", ytId: "DKCr5GG4PXA" },
-            { src: "https://raw.githubusercontent.com/Mozesofc/Mozes/main/image5.jpg", title: "What Took You So Long", ytId: "gcReNaVNd4E" },
-            { src: "https://raw.githubusercontent.com/Mozesofc/Mozes/main/image6.jpg", title: "Mozes & Mushy - Found Myself", ytId: "It-mN5HDWvA" }
+            { src: "https://raw.githubusercontent.com/Mozesofc/Mozes/main/image3.jpg", title: "James Hype - Dont Wake Me Up", ytId: "57W4t-hN3Vo", sc: "https://soundcloud.com/mozesofc/james-hype-dont-wake-me-up-mozes-remix" },
+            { src: "https://raw.githubusercontent.com/Mozesofc/Mozes/main/image4.jpg", title: "Tayri - Black Sheep (Remix)", ytId: "DKCr5GG4PXA", sp: "https://open.spotify.com/track/4W9jAYLHL9WY0VSJReAWyz" },
+            { src: "https://raw.githubusercontent.com/Mozesofc/Mozes/main/image5.jpg", title: "Mozes Feat. Sapir J. Fox - What Took You So Long (Mozes Remix)", ytId: "gcReNaVNd4E", sp: "https://open.spotify.com/album/4t12Tf0ZEYmyxzVBtFgpK1", sc: "https://soundcloud.com/mozesofc/wtyslmozesrmx" },
+            { src: "https://raw.githubusercontent.com/Mozesofc/Mozes/main/image6.jpg", title: "Mozes & Mushy - Found Myself", ytId: "It-mN5HDWvA", sc: "https://soundcloud.com/mozesofc/mozesxmushy-found-myself" },
+            { src: "image7.jpg", title: "Mozes - Trust Me", ytId: "34tKhmQV2tc", sc: "https://soundcloud.com/mozesofc/mozes-trust-me-r" },
+            { src: "image18.jpg", title: "Mozes - Trust Me (The DnB Version)", ytId: "Lk1KZFLwV3Q", sp: "https://open.spotify.com/album/4WG2PKyhiKymzQBQKK9w2H", sc: "https://soundcloud.com/mozesofc/mozes-trust-me-the-dnb-4" },
+            { src: "image8.jpg", title: "Mozes - Nights In White Satin", ytId: "t1rYx5CewP8", sp: "https://open.spotify.com/track/0nu2UYXq3rhxa1fNFRcfPu", sc: "https://soundcloud.com/mozesofc/mozes-nights-in-white-satin" },
+            { src: "image9.jpg", title: "Shaggy ft. Lavbbe - MOVE (Mozes Remix)", ytId: "yhUHCS-IRmQ", sp: "https://open.spotify.com/album/4Pl7o4swfcFpbz8Va0t0ST" },
+            { src: "image10.jpg", title: "Mozes - Home", ytId: "KwZS_LO0ijc", sc: "https://soundcloud.com/mozesofc/mozes-home-radio-edit" },
+            { src: "image11.jpg", title: "Mozes - Two Souls", ytId: "_fe05MJLhy8", sc: "https://soundcloud.com/mozesofc/mozes-2-souls" },
+            { src: "image12.jpg", title: "Mozes - They Say", ytId: "AIVBYJC1Gtg", sc: "https://soundcloud.com/mozesofc/mozes-they-say-r" },
+            { src: "image13.jpg", title: "Mozes Feat. Sapir J. Fox - The Otherside", ytId: "y_LntJI2uqo", sc: "https://soundcloud.com/mozesofc/mozes-sapir-the-otherside" },
+            { src: "image14.jpg", title: "Mozes - Save Our Future", ytId: "AhefaUTmnwo", sc: "https://soundcloud.com/mozesofc/mozes-save-our-future-r" },
+            { src: "image15.jpg", title: "Mozes - Atlantis", ytId: "Tl4ZQ4KhtD4", sp: "https://open.spotify.com/album/1F1iglpJSCA6iBDaNLLeem", sc: "https://soundcloud.com/mozesofc/mozes-atlantis" },
+            { src: "image16.jpg", title: "Mozes - Nowhere To Hide", ytId: "0_tl1Xrsnus", sc: "https://soundcloud.com/mozesofc/mozes-nowhere-to-hide-r" },
+            { src: "image17.jpg", title: "Mozes Feat. Sapir J. Fox - Reborn Again", ytId: "EJeLvlcBXas", sp: "https://open.spotify.com/track/3lbh8xwPegIaUzctkT2GNd?si=2baadd60dfbe4adc", sc: "https://soundcloud.com/mozesofc/mozes-sapir-reborn-again" },
+            { src: "image19.jpg", title: "Mozes & Jazz - Wealth, Power & Fame", ytId: "ecL3Out6ja8", sc: "https://soundcloud.com/mozesofc/mozes-jazz-wealth-power-and-fame" },
+            { src: "image20.jpg", title: "Mozes - Late At Night", ytId: "4U_tvQ4WSRo", sp: "https://open.spotify.com/album/5HMZ0MmOZa0nuPUZa1ZiU3", sc: "https://soundcloud.com/mozesofc/mozes-late-at-night-radio-edit" }
         ];
 
         let currentIndex = 0;
         let activeLayer = 1;
         let currentPage = 'home';
 
-        // Init Scroll indicators
         const scrollIndicator = document.getElementById('scrollIndicator');
         const scrollArea = document.getElementById('scrollArea');
+        const bottomNav = document.querySelector('.bottom-nav');
+
         tracks.forEach((_, i) => {
             const sec = document.createElement('div');
             sec.className = 'scroll-section';
             scrollArea.appendChild(sec);
-            
+
             const dot = document.createElement('div');
             dot.className = `scroll-dot ${i === 0 ? 'active' : ''}`;
             dot.id = `dot-${i}`;
-            dot.onclick = () => { navigate('home'); window.scrollTo({ top: i * window.innerHeight, behavior: 'smooth' }); };
+            dot.onclick = () => {
+                navigate('home');
+                window.scrollTo({ top: i * window.innerHeight, behavior: 'smooth' });
+            };
             scrollIndicator.appendChild(dot);
         });
 
-        // Initialize Images
         document.getElementById('img1').src = tracks[0].src;
         document.getElementById('glow1').src = tracks[0].src;
 
+        function updateLiquidNavIndicator() {
+            const activeBtn = document.querySelector('.nav-btn.active');
+            if (!bottomNav || !activeBtn) return;
+            const navRect = bottomNav.getBoundingClientRect();
+            const activeRect = activeBtn.getBoundingClientRect();
+            bottomNav.style.setProperty('--active-x', `${activeRect.left - navRect.left}px`);
+            bottomNav.style.setProperty('--active-w', `${activeRect.width}px`);
+        }
+
+        bottomNav?.addEventListener('pointermove', (event) => {
+            const rect = bottomNav.getBoundingClientRect();
+            bottomNav.style.setProperty('--nav-x', `${event.clientX - rect.left}px`);
+            bottomNav.style.setProperty('--nav-y', `${event.clientY - rect.top}px`);
+        });
+
+        bottomNav?.addEventListener('pointerleave', () => {
+            bottomNav.style.setProperty('--nav-x', '50%');
+            bottomNav.style.setProperty('--nav-y', '50%');
+        });
+
+        window.addEventListener('resize', updateLiquidNavIndicator);
+        window.addEventListener('load', updateLiquidNavIndicator);
+        requestAnimationFrame(updateLiquidNavIndicator);
+
         window.addEventListener('scroll', () => {
             if (currentPage !== 'home' && currentPage !== 'social') return;
-            
+
             const pos = window.scrollY;
-            const idx = Math.min(tracks.length - 1, Math.floor((pos + window.innerHeight/2) / window.innerHeight));
-            
-            // Hero Socials Fade on scroll
-            document.getElementById('hero-socials').style.opacity = pos > 100 ? "0" : "1";
+            const idx = Math.min(tracks.length - 1, Math.floor((pos + window.innerHeight / 2) / window.innerHeight));
+            document.getElementById('hero-socials').style.opacity = pos > 100 ? '0' : '1';
 
             if (idx !== currentIndex) {
                 currentIndex = idx;
+                const img1 = document.getElementById('img1');
+                const img2 = document.getElementById('img2');
+                const glow1 = document.getElementById('glow1');
+                const glow2 = document.getElementById('glow2');
                 const [nextImg, currImg] = activeLayer === 1 ? [img2, img1] : [img1, img2];
                 const [nextGlow, currGlow] = activeLayer === 1 ? [glow2, glow1] : [glow1, glow2];
-                
+
                 nextImg.src = tracks[idx].src;
                 nextGlow.src = tracks[idx].src;
                 nextImg.classList.add('active');
@@ -249,16 +278,16 @@
             }
 
             const bottomThreshold = document.body.scrollHeight - window.innerHeight - 100;
-            document.getElementById('imageLayer').style.opacity = pos > bottomThreshold ? "0" : "1";
+            document.getElementById('imageLayer').style.opacity = pos > bottomThreshold ? '0' : '1';
         });
 
         function navigate(page) {
             currentPage = page;
             document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
             document.getElementById(`nav-${page}`).classList.add('active');
+            updateLiquidNavIndicator();
 
-            const pages = ['news', 'releases'];
-            pages.forEach(p => {
+            ['news', 'releases'].forEach(p => {
                 const el = document.getElementById(`${p}-page`);
                 if (p === page) {
                     el.style.display = 'block';
@@ -290,7 +319,7 @@
             const card = document.createElement('div');
             card.className = 'release-card';
             card.onclick = () => openModal(i);
-            card.innerHTML = `<img src="${t.src}" class="w-full aspect-square object-cover"><div class="p-4 text-[10px] tracking-widest uppercase text-white/50">${t.title}</div>`;
+            card.innerHTML = `<img src="${t.src}" class="w-full aspect-square object-cover" alt=""><div class="p-4 text-left text-[10px] tracking-widest uppercase text-white/50">${t.title}</div>`;
             grid.appendChild(card);
         });
 
@@ -299,6 +328,7 @@
             document.getElementById('modalTitle').innerText = t.title;
             document.getElementById('ytPlayer').src = `https://www.youtube.com/embed/${t.ytId}?autoplay=1`;
             document.getElementById('spLink').href = t.sp || '#';
+            document.getElementById('scLink').href = t.sc || 'https://soundcloud.com/mozesofc';
             document.getElementById('modal').classList.add('active');
             document.getElementById('modalFrame').classList.replace('scale-95', 'scale-100');
             document.body.style.overflow = 'hidden';
